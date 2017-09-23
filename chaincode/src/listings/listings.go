@@ -109,7 +109,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	}
 
 	// store compaitible CC Demo application version
-	err = stub.PutState("marbles_ui", []byte("4.0.0"))
+	err = stub.PutState("listings_ui", []byte("4.0.0"))
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -133,21 +133,21 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return read(stub, args)
 	} else if function == "write" { //generic writes to ledger
 		return write(stub, args)
-	} else if function == "delete_marble" { //deletes a marble from state
-		return delete_marble(stub, args)
-	} else if function == "init_marble" { //create a new marble
-		return init_marble(stub, args)
-	} else if function == "set_owner" { //change owner of a marble
+	} else if function == "delete_listing" { //deletes a listing from state
+		return delete_listing(stub, args)
+	} else if function == "init_listing" { //create a new listing
+		return init_listing(stub, args)
+	} else if function == "set_owner" { //change owner of a listing
 		return set_owner(stub, args)
-	} else if function == "init_owner" { //create a new marble owner
+	} else if function == "init_owner" { //create a new listing owner
 		return init_owner(stub, args)
 	} else if function == "read_everything" { //read everything, (owners + CC Demo + companies)
 		return read_everything(stub)
-	} else if function == "getHistory" { //read history of a marble (audit)
+	} else if function == "getHistory" { //read history of a listing (audit)
 		return getHistory(stub, args)
-	} else if function == "getMarblesByRange" { //read a bunch of CC Demo by start and stop id
-		return getMarblesByRange(stub, args)
-	} else if function == "disable_owner" { //disable a marble owner from appearing on the UI
+	} else if function == "getListingsByRange" { //read a bunch of CC Demo by start and stop id
+		return getListingsByRange(stub, args)
+	} else if function == "disable_owner" { //disable a listing owner from appearing on the UI
 		return disable_owner(stub, args)
 	}
 
