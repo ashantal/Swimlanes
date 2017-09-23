@@ -214,7 +214,7 @@ func init_state(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	state.ObjectType = "listing_state"
 	state.Id = args[0]
 	state.StateName = strings.ToLower(args[1])
-	state.StateType = strings.ToLower(args[1])
+	state.StateType = strings.ToLower(args[2])
 	state.Enabled = true
 	fmt.Println(state)
 

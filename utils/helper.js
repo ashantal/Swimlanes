@@ -11,7 +11,7 @@ module.exports = function (config_filename, logger) {
 
 	// default config file name
 	if (!config_filename) {
-		config_filename = 'listings_tls.json';
+		config_filename = 'listings_local.json';
 	}
 
 	helper.config_path = path.join(__dirname, '../config/' + config_filename);
@@ -417,14 +417,14 @@ module.exports = function (config_filename, logger) {
 	// --------------------------------------------------------------------------------
 	// Config Getters
 	// --------------------------------------------------------------------------------
-	// get the listing owner names
-	helper.getListingUsernames = function () {
-		return getListingsField('usernames');
+	// get the listing state names
+	helper.getListingStates = function () {
+		return getListingsField('states');
 	};
 
 	// get the listings trading company name
 	helper.getCompanyName = function () {
-		return getListingsField('company');
+		return getListingsField('org');
 	};
 
 	// get the listing's server port number
@@ -723,7 +723,6 @@ module.exports = function (config_filename, logger) {
 			logger.error('Fix this file: ./config/' + helper.getNetworkCredFileName());
 			logger.warn('----------------------------------------------------------------------');
 			logger.warn('See this file for help:');
-			logger.warn('https://github.com/IBM-Blockchain/listings/blob/v4.0/docs/config_file.md');
 			logger.warn('----------------------------------------------------------------------');
 			console.log('\n\n');
 			return errors;

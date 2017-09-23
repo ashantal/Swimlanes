@@ -85,10 +85,9 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			cc_function: 'init_listing',
 			cc_args: [
 				'm' + leftPad(Date.now() + randStr(5), 19),
-				options.args.color,
-				options.args.size,
-				options.args.owner_id,
-				options.args.auth_company
+				options.args.uid,
+				options.args.sid,
+				options.args.stateID
 			],
 		};
 		fcw.invoke_chaincode(enrollObj, opts, function (err, resp) {
@@ -133,10 +132,10 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 		fcw.query_chaincode(enrollObj, opts, cb);
 	};
 
-	//set listing owner
-	listings_chaincode.set_listing_owner = function (options, cb) {
+	//set listing state
+	listings_chaincode.set_listing_state = function (options, cb) {
 		console.log('');
-		logger.info('Setting owner...');
+		logger.info('Setting state...');
 
 		var opts = {
 			peer_urls: g_options.peer_urls,
@@ -147,10 +146,10 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			event_url: g_options.event_url,
 			endorsed_hook: options.endorsed_hook,
 			ordered_hook: options.ordered_hook,
-			cc_function: 'set_owner',
+			cc_function: 'set_state',
 			cc_args: [
 				options.args.listing_id,
-				options.args.owner_id,
+				options.args.state_id,
 				options.args.auth_company
 			],
 		};
@@ -196,7 +195,7 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 		fcw.query_chaincode(enrollObj, opts, cb);
 	};
 
-	//get multiple listings/owners by start and stop ids
+	//get multiple listings/states by start and stop ids
 	listings_chaincode.get_multiple_keys = function (options, cb) {
 		logger.info('Getting between ids', options.args);
 
@@ -218,10 +217,10 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 
 	// Owners -------------------------------------------------------------------------------
 
-	//register a owner/user
-	listings_chaincode.register_owner = function (options, cb) {
+	//register a state/user
+	listings_chaincode.register_state = function (options, cb) {
 		console.log('');
-		logger.info('Creating an owner...');
+		logger.info('Creating a state...');
 
 		var opts = {
 			peer_urls: g_options.peer_urls,
@@ -232,27 +231,27 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			event_url: g_options.event_url,
 			endorsed_hook: options.endorsed_hook,
 			ordered_hook: options.ordered_hook,
-			cc_function: 'init_owner',
+			cc_function: 'init_state',
 			cc_args: [
-				'o' + leftPad(Date.now() + randStr(5), 19),
-				options.args.listing_owner,
-				options.args.owners_company
+				's' + leftPad(Date.now() + randStr(5), 19),
+				options.args.state_name,
+				options.args.state_type
 			],
 		};
 		fcw.invoke_chaincode(enrollObj, opts, function (err, resp) {
 			if (cb) {
 				if (!resp) resp = {};
-				resp.id = opts.cc_args[0];				//pass owner id back
+				resp.id = opts.cc_args[0];				//pass state id back
 				cb(err, resp);
 			}
 		});
 	};
 
-	//get a owner/user
-	listings_chaincode.get_owner = function (options, cb) {
-		var full_username = build_owner_name(options.args.listing_owner, options.args.owners_company);
+	//get a state/user
+	listings_chaincode.get_state = function (options, cb) {
+		var full_name = build_state_name(options.args.state_name, options.args.states_type);
 		console.log('');
-		logger.info('Fetching owner ' + full_username + ' list...');
+		logger.info('Fetching state ' + full_username + ' list...');
 
 		var opts = {
 			peer_urls: g_options.peer_urls,
@@ -261,15 +260,15 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			chaincode_id: g_options.chaincode_id,
 			chaincode_version: g_options.chaincode_version,
 			cc_function: 'read',
-			cc_args: [full_username]
+			cc_args: [full_name]
 		};
 		fcw.query_chaincode(enrollObj, opts, cb);
 	};
 
-	//get the owner list
-	listings_chaincode.get_owner_list = function (options, cb) {
+	//get the state list
+	listings_chaincode.get_state_list = function (options, cb) {
 		console.log('');
-		logger.info('Fetching owner index list...');
+		logger.info('Fetching state index list...');
 
 		var opts = {
 			peer_urls: g_options.peer_urls,
@@ -278,15 +277,15 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			chaincode_id: g_options.chaincode_id,
 			chaincode_version: g_options.chaincode_version,
 			cc_function: 'read',
-			cc_args: ['_ownerindex']
+			cc_args: ['_stateindex']
 		};
 		fcw.query_chaincode(enrollObj, opts, cb);
 	};
 
-	// disable a listing owner
-	listings_chaincode.disable_owner = function (options, cb) {
+	// disable a listing state
+	listings_chaincode.disable_state = function (options, cb) {
 		console.log('');
-		logger.info('Disabling an owner...');
+		logger.info('Disabling an state...');
 
 		var opts = {
 			peer_urls: g_options.peer_urls,
@@ -297,24 +296,24 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			event_url: g_options.event_url,
 			endorsed_hook: options.endorsed_hook,
 			ordered_hook: options.ordered_hook,
-			cc_function: 'disable_owner',
+			cc_function: 'disable_state',
 			cc_args: [
-				options.args.owner_id,
+				options.args.state_id,
 				options.args.auth_company
 			],
 		};
 		fcw.invoke_chaincode(enrollObj, opts, function (err, resp) {
 			if (cb) {
 				if (!resp) resp = {};
-				resp.id = opts.cc_args[0];				//pass owner id back
+				resp.id = opts.cc_args[0];				//pass state id back
 				cb(err, resp);
 			}
 		});
 	};
 
 	//build full name
-	listings_chaincode.build_owner_name = function (username, company) {
-		return build_owner_name(username, company);
+	listings_chaincode.build_state_name = function (username, company) {
+		return build_state_name(username, company);
 	};
 
 
@@ -350,7 +349,7 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 	// Other -------------------------------------------------------------------------------
 
 	// Format Owner's Actual Key Name
-	function build_owner_name(username, company) {
+	function build_state_name(username, company) {
 		return username.toLowerCase() + '.' + company;
 	}
 

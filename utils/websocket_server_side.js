@@ -54,11 +54,11 @@ module.exports = function (g_options, fcw, logger) {
 		if (data.type === 'create') {
 			logger.info('[ws] create listing req');
 			options.args = {
-				color: data.color,
-				size: data.size,
-				listing_owner: data.username,
-				owners_company: data.company,
-				owner_id: data.owner_id,
+				uid: data.uid,
+				sid: data.sid,
+				state_id: data.state_id,				
+				state_name: data.state_name,
+				states_type: data.state_type,
 				auth_company: process.env.listing_company,
 			};
 
@@ -73,11 +73,11 @@ module.exports = function (g_options, fcw, logger) {
 			logger.info('[ws] transferring req');
 			options.args = {
 				listing_id: data.id,
-				owner_id: data.owner_id,
+				state_id: data.state_id,
 				auth_company: process.env.listing_company
 			};
 
-			listings_lib.set_listing_owner(options, function (err, resp) {
+			listings_lib.set_listing_state(options, function (err, resp) {
 				if (err != null) send_err(err, data);
 				else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
 			});
@@ -97,7 +97,7 @@ module.exports = function (g_options, fcw, logger) {
 			});
 		}
 
-		// get all owners, listings, & companies
+		// get all states, listings, & companies
 		else if (data.type === 'read_everything') {
 			logger.info('[ws] read everything req');
 			ws_server.check_for_updates(ws);
@@ -117,15 +117,15 @@ module.exports = function (g_options, fcw, logger) {
 			}
 		}
 
-		// disable listing owner
-		else if (data.type === 'disable_owner') {
-			if (data.owner_id) {
-				logger.info('[ws] disable owner');
+		// disable listing state
+		else if (data.type === 'disable_state') {
+			if (data.state_id) {
+				logger.info('[ws] disable state');
 				options.args = {
-					owner_id: data.owner_id,
+					state_id: data.state_id,
 					auth_company: process.env.listing_company
 				};
-				listings_lib.disable_owner(options, function (err, resp) {
+				listings_lib.disable_state(options, function (err, resp) {
 					if (err != null) send_err(err, resp);
 					else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
 				});
@@ -250,13 +250,13 @@ module.exports = function (g_options, fcw, logger) {
 			}
 			else {
 				var data = resp.parsed;
-				if (data && data.owners && data.listings) {
+				if (data && data.states && data.listings) {
 					console.log('');
-					logger.debug('[checking] number of owners:', data.owners.length);
+					logger.debug('[checking] number of states:', data.states.length);
 					logger.debug('[checking] number of listings:', data.listings.length);
 				}
 
-				data.owners = organize_usernames(data.owners);
+				data.states = organize_states(data.states);
 				data.listings = organize_listings(data.listings);
 				var knownAsString = JSON.stringify(known_everything);			//stringify for easy comparison (order should stay the same)
 				var latestListAsString = JSON.stringify(data);
@@ -278,57 +278,36 @@ module.exports = function (g_options, fcw, logger) {
 		});
 	}
 
-	// organize the listing owner list
-	function organize_usernames(data) {
-		var ownerList = [];
-		var myUsers = [];
+	// organize the listing state list
+	function organize_states(data) {
+		var stateList = [];
 		for (var i in data) {						//lets reformat it a bit, only need 1 peer's response
 			var temp = {
 				id: data[i].id,
-				username: data[i].username,
-				company: data[i].company
+				state_name: data[i].state_name,
+				state_type: data[i].state_type
 			};
-			if (temp.company === process.env.listing_company) {
-				myUsers.push(temp);					//these are my companies users
-			}
-			else {
-				ownerList.push(temp);				//everyone else
-			}
+			stateList.push(temp);				//everyone else
 		}
-
-		ownerList = sort_usernames(ownerList);
-		ownerList = myUsers.concat(ownerList);		//my users are first, bring in the others
-		return ownerList;
+		return stateList;
 	}
 
 	//
 	function organize_listings(allListings) {
 		var ret = {};
 		for (var i in allListings) {
-			if (!ret[allListings[i].owner.username]) {
-				ret[allListings[i].owner.username] = {
-					owner_id: allListings[i].owner.id,
-					username: allListings[i].owner.username,
-					company: allListings[i].owner.company,
+			if (!ret[allListings[i].state.state_type]) {
+				ret[allListings[i].state.state_type] = {
+					state_id: allListings[i].state.id,
+					state_name: allListings[i].state.state_name,
+					state_type: allListings[i].state.state_type,
 					listings: []
 				};
 			}
-			ret[allListings[i].owner.username].listings.push(allListings[i]);
+			ret[allListings[i].state.state_type].listings.push(allListings[i]);
 		}
 		return ret;
 	}
-
-	// alpha sort everyone else
-	function sort_usernames(temp) {
-		temp.sort(function (a, b) {
-			var entryA = a.company + a.username;
-			var entryB = b.company + b.username;
-			if (entryA < entryB) return -1;
-			if (entryA > entryB) return 1;
-			return 0;
-		});
-		return temp;
-	}
-
+	
 	return ws_server;
 };

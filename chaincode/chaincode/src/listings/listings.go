@@ -48,15 +48,15 @@ type Listing struct {
 type State struct {
 	ObjectType string `json:"docType"` //field for couchdb
 	Id         string `json:"id"`
-	StateName  string `json:"statename"`
-	StateType  string `json:"statetype"`
+	StateName  string `json:"state_name"`
+	StateType  string `json:"state_type"`
 	Enabled    bool   `json:"enabled"` //disabled states will not be visible to the application
 }
 
 type StateRelation struct {
 	Id        string `json:"id"`
-	StateName string `json:"statename"` //this is mostly cosmetic/handy, the real relation is by Id not statename
-	StateType string `json:"statetype"` //this is mostly cosmetic/handy, the real relation is by Id not statetype
+	StateName string `json:"state_name"` //this is mostly cosmetic/handy, the real relation is by Id not statename
+	StateType string `json:"state_type"` //this is mostly cosmetic/handy, the real relation is by Id not statetype
 }
 
 // ============================================================================================================================
