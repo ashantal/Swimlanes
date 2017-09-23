@@ -1,0 +1,14 @@
+{
+    "cred_filename": "blockchain_creds_local.json",
+    "use_events": true,
+    "keep_alive_secs": 120,
+    "org": "MLS Blockchain Alliance",
+    "events": [
+       {"premarket":["contract signed", "coming soon"]},        
+       {"onmarket":["active","open house","appraisal received","pending","closed","price reduced","price increased"]},
+       {"preclosing" : ["offer made","offer accepted","deed recorded"]},
+       {"postclosing":["new loan","load paid off","second loan"]},
+       {"offmarket":["bedroom added","kitchen upgraded","floors upgraded","carpet installed"]}
+    ],
+    "port": 3001
+}

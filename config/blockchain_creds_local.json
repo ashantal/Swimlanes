@@ -1,0 +1,75 @@
+{
+	"name": "MLS Orgs Network",
+	"x-networkId": "not-important",
+	"x-type": "hlfv1",
+	"description": "Connection Profile for an Hyperledger Fabric network on a local machine",
+	"version": "1.0.0",
+	"client": {
+		"organization": "Org1MSP",
+		"credentialStore": {
+			"path": "./crypto/prebaked"
+		}
+	},
+	"channels": {
+		"mychannel": {
+			"orderers": [
+				"fabric-orderer"
+			],
+			"peers": {
+				"fabric-peer-org1": {
+					"endorsingPeer": true,
+					"chaincodeQuery": true,
+					"ledgerQuery": true,
+					"eventSource": true
+				}
+			},
+			"chaincodes": {
+				"listings": "v1"
+			},
+			"x-blockDelay": 10000
+		}
+	},
+	"organizations": {
+		"Org1MSP": {
+			"mspid": "Org1MSP",
+			"peers": [
+				"fabric-peer-org1"
+			],
+			"certificateAuthorities": [
+				"fabric-ca"
+			],
+			"adminPrivateKey": {
+				"path": "./crypto/prebaked/cd96d5260ad4757551ed4a5a991e62130f8008a0bf996e4e4b84cd097a747fec-priv"
+			},
+			"signedCert": {
+				"path": "./crypto/prebaked/PeerAdminCert.pem"
+			}
+		}
+	},
+	"orderers": {
+		"fabric-orderer": {
+			"url": "grpc://localhost:7050"
+		}
+	},
+	"peers": {
+		"fabric-peer-org1": {
+			"url": "grpc://localhost:7051",
+			"eventUrl": "grpc://localhost:7053"
+		}
+	},
+	"certificateAuthorities": {
+		"fabric-ca": {
+			"url": "http://localhost:7054",
+			"httpOptions": {
+				"verify": true
+			},
+			"registrar": [
+				{
+					"enrollId": "PeerAdmin",
+					"enrollSecret": "-"
+				}
+			],
+			"caName": null
+		}
+	}
+}
