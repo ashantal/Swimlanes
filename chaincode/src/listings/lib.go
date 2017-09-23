@@ -2,7 +2,7 @@
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
+regarding copyright owneship.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
@@ -46,21 +46,21 @@ func get_listing(stub shim.ChaincodeStubInterface, id string) (Listing, error) {
 }
 
 // ============================================================================================================================
-// Get Owner - get the owner asset from ledger
+// Get State - get the events data from ledger
 // ============================================================================================================================
-func get_owner(stub shim.ChaincodeStubInterface, id string) (Owner, error) {
-	var owner Owner
-	ownerAsBytes, err := stub.GetState(id) //getState retreives a key/value from the ledger
+func get_state(stub shim.ChaincodeStubInterface, id string) (State, error) {
+	var state State
+	stateAsBytes, err := stub.GetState(id) //getState retreives a key/value from the ledger
 	if err != nil {                        //this seems to always succeed, even if key didn't exist
-		return owner, errors.New("Failed to get owner - " + id)
+		return state, errors.New("Failed to get event - " + id)
 	}
-	json.Unmarshal(ownerAsBytes, &owner) //un stringify it aka JSON.parse()
+	json.Unmarshal(stateAsBytes, &state) //un stringify it aka JSON.parse()
 
-	if len(owner.Username) == 0 { //test if owner is actually here or just nil
-		return owner, errors.New("Owner does not exist - " + id + ", '" + owner.Username + "' '" + owner.Company + "'")
+	if len(state.StateName) == 0 { //test if state is actually here or just nil
+		return state, errors.New("State does not exist - " + id + ", '" + state.StateName + "'")
 	}
 
-	return owner, nil
+	return state, nil
 }
 
 // ========================================================

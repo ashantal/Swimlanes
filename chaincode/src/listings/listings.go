@@ -2,7 +2,7 @@
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
+regarding copyright stateship.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
@@ -40,16 +40,17 @@ type Listing struct {
 	ObjectType string        `json:"docType"` //field for couchdb
 	Id         string        `json:"id"`      //the fieldtags are needed to keep case from bouncing around
 	UId        string        `json:"uid"`
-	SourceId   string        `json:"sourceid"`
-	Event      EventRelation `json:"event"`
+	SId        string        `json:"sid"`
+	State      StateRelation `json:"state"`
 }
 
-// ----- Events ----- //
-type Events struct {
+// ----- States ----- //
+type State struct {
 	ObjectType string `json:"docType"` //field for couchdb
 	Id         string `json:"id"`
-	Eventname  string `json:"eventname"`
-	Enabled    bool   `json:"enabled"` //disabled owners will not be visible to the application
+	StateName  string `json:"statename"`
+	StateType  string `json:"statetype"`
+	Enabled    bool   `json:"enabled"` //disabled states will not be visible to the application
 }
 
 // ============================================================================================================================
@@ -137,18 +138,18 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return delete_listing(stub, args)
 	} else if function == "init_listing" { //create a new listing
 		return init_listing(stub, args)
-	} else if function == "set_owner" { //change owner of a listing
-		return set_owner(stub, args)
-	} else if function == "init_owner" { //create a new listing owner
-		return init_owner(stub, args)
-	} else if function == "read_everything" { //read everything, (owners + CC Demo + companies)
+	} else if function == "set_state" { //change state of a listing
+		return set_state(stub, args)
+	} else if function == "init_state" { //create a new listing state
+		return init_state(stub, args)
+	} else if function == "read_everything" { //read everything, (states + CC Demo + companies)
 		return read_everything(stub)
 	} else if function == "getHistory" { //read history of a listing (audit)
 		return getHistory(stub, args)
 	} else if function == "getListingsByRange" { //read a bunch of CC Demo by start and stop id
 		return getListingsByRange(stub, args)
-	} else if function == "disable_owner" { //disable a listing owner from appearing on the UI
-		return disable_owner(stub, args)
+	} else if function == "disable_state" { //disable a listing state from appearing on the UI
+		return disable_state(stub, args)
 	}
 
 	// error out

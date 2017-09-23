@@ -2,7 +2,7 @@
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
+regarding copyright stateship.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
@@ -98,9 +98,9 @@ func delete_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response
 		return shim.Error(err.Error())
 	}
 
-	// check authorizing company (see note in set_owner() about how this is quirky)
-	if listing.Owner.Company != authed_by_company {
-		return shim.Error("The company '" + authed_by_company + "' cannot authorize deletion for '" + listing.Owner.Company + "'.")
+	// check authorizing company (see note in set_state() about how this is quirky)
+	if listing.State.Company != authed_by_company {
+		return shim.Error("The company '" + authed_by_company + "' cannot authorize deletion for '" + listing.State.Company + "'.")
 	}
 
 	// remove the listing
@@ -120,7 +120,7 @@ func delete_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response
 //
 // Inputs - Array of strings
 //      0      ,    1  ,  2  ,      3          ,       4
-//     id      ,  color, size,     owner id    ,  authing company
+//     id      ,  color, size,     state id    ,  authing company
 // "m999999999", "blue", "35", "o9999999999999", "united listings"
 // ============================================================================================================================
 func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
@@ -138,25 +138,26 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	}
 
 	id := args[0]
-	color := strings.ToLower(args[1])
-	owner_id := args[3]
-	authed_by_company := args[4]
+	uid := strings.ToLower(args[1])
+	sid := strings.ToLower(args[2])
+	state_id := args[3]
+	//authed_by_company := args[4]
 	size, err := strconv.Atoi(args[2])
 	if err != nil {
 		return shim.Error("3rd argument must be a numeric string")
 	}
 
-	//check if new owner exists
-	owner, err := get_owner(stub, owner_id)
+	//check if new state exists
+	state, err := get_state(stub, state_id)
 	if err != nil {
-		fmt.Println("Failed to find owner - " + owner_id)
+		fmt.Println("Failed to find state - " + state_id)
 		return shim.Error(err.Error())
 	}
 
-	//check authorizing company (see note in set_owner() about how this is quirky)
-	if owner.Company != authed_by_company {
-		return shim.Error("The company '" + authed_by_company + "' cannot authorize creation for '" + owner.Company + "'.")
-	}
+	//check authorizing company (see note in set_state() about how this is quirky)
+	//if state.Company != authed_by_company {
+	//	return shim.Error("The company '" + authed_by_company + "' cannot authorize creation for '" + state.Company + "'.")
+	//}
 
 	//check if listing id already exists
 	listing, err := get_listing(stub, id)
@@ -170,12 +171,12 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	str := `{
 		"docType":"listing", 
 		"id": "` + id + `", 
-		"color": "` + color + `", 
-		"size": ` + strconv.Itoa(size) + `, 
-		"owner": {
-			"id": "` + owner_id + `", 
-			"username": "` + owner.Username + `", 
-			"company": "` + owner.Company + `"
+		"uid": "` + uid + `", 
+		"sid": ` + sid + `, 
+		"state": {
+			"id": "` + state_id + `", 
+			"statename": "` + state.StateName + `", 
+			"statetype": "` + state.StateType + `"
 		}
 	}`
 	err = stub.PutState(id, []byte(str)) //store listing with id as key
@@ -188,18 +189,18 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 }
 
 // ============================================================================================================================
-// Init Owner - create a new owner aka end user, store into chaincode state
+// Init State - create a new state aka end user, store into chaincode state
 //
 // Shows off building key's value from GoLang Structure
 //
 // Inputs - Array of Strings
 //           0     ,     1   ,   2
-//      owner id   , username, company
+//      state id   , username, company
 // "o9999999999999",     bob", "united listings"
 // ============================================================================================================================
-func init_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func init_state(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
-	fmt.Println("starting init_owner")
+	fmt.Println("starting init_state")
 
 	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 3")
@@ -211,46 +212,46 @@ func init_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	var owner Owner
-	owner.ObjectType = "listing_owner"
-	owner.Id = args[0]
-	owner.Username = strings.ToLower(args[1])
-	owner.Company = args[2]
-	owner.Enabled = true
-	fmt.Println(owner)
+	var state State
+	state.ObjectType = "listing_state"
+	state.Id = args[0]
+	state.StateName = strings.ToLower(args[1])
+	state.StateType = strings.ToLower(args[1])
+	state.Enabled = true
+	fmt.Println(state)
 
-	//check if user already exists
-	_, err = get_owner(stub, owner.Id)
+	//check if state already exists
+	_, err = get_state(stub, state.Id)
 	if err == nil {
-		fmt.Println("This owner already exists - " + owner.Id)
-		return shim.Error("This owner already exists - " + owner.Id)
+		fmt.Println("This state already exists - " + state.Id)
+		return shim.Error("This state already exists - " + state.Id)
 	}
 
-	//store user
-	ownerAsBytes, _ := json.Marshal(owner)      //convert to array of bytes
-	err = stub.PutState(owner.Id, ownerAsBytes) //store owner by its Id
+	//store state
+	stateAsBytes, _ := json.Marshal(state)      //convert to array of bytes
+	err = stub.PutState(state.Id, stateAsBytes) //store state by its Id
 	if err != nil {
-		fmt.Println("Could not store user")
+		fmt.Println("Could not store state")
 		return shim.Error(err.Error())
 	}
 
-	fmt.Println("- end init_owner listing")
+	fmt.Println("- end init_state listing")
 	return shim.Success(nil)
 }
 
 // ============================================================================================================================
-// Set Owner on listing
+// Set State on listing
 //
 // Shows off GetState() and PutState()
 //
 // Inputs - Array of Strings
 //       0     ,        1      ,        2
-//  listing id  ,  to owner id  , company that auth the transfer
-// "m999999999", "o99999999999", united_mables"
+//  listing id  ,  to state id  , state type
+// "m999999999", "o99999999999", construction,marketing,sales,legal etc..."
 // ============================================================================================================================
-func set_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func set_state(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
-	fmt.Println("starting set_owner")
+	fmt.Println("starting set_state")
 
 	// this is quirky
 	// todo - get the "company that authed the transfer" from the certificate instead of an argument
@@ -268,14 +269,14 @@ func set_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	}
 
 	var listing_id = args[0]
-	var new_owner_id = args[1]
-	var authed_by_company = args[2]
-	fmt.Println(listing_id + "->" + new_owner_id + " - |" + authed_by_company)
+	var new_state_id = args[1]
+	//var authed_by_company = args[2]
+	fmt.Println(listing_id + "->" + new_state_id)
 
 	// check if user already exists
-	owner, err := get_owner(stub, new_owner_id)
+	state, err := get_state(stub, new_state_id)
 	if err != nil {
-		return shim.Error("This owner does not exist - " + new_owner_id)
+		return shim.Error("This state does not exist - " + new_state_id)
 	}
 
 	// get listing's current state
@@ -287,37 +288,37 @@ func set_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	json.Unmarshal(listingAsBytes, &res) //un stringify it aka JSON.parse()
 
 	// check authorizing company
-	if res.Owner.Company != authed_by_company {
-		return shim.Error("The company '" + authed_by_company + "' cannot authorize transfers for '" + res.Owner.Company + "'.")
-	}
+	//if res.State.Company != authed_by_company {
+	//	return shim.Error("The company '" + authed_by_company + "' cannot authorize transfers for '" + res.State.Company + "'.")
+	//}
 
 	// transfer the listing
-	res.Owner.Id = new_owner_id //change the owner
-	res.Owner.Username = owner.Username
-	res.Owner.Company = owner.Company
+	res.State.Id = new_state_id //change the state
+	res.State.StateName = state.StateName
+	res.State.StateType = state.StateType
 	jsonAsBytes, _ := json.Marshal(res)       //convert to array of bytes
 	err = stub.PutState(args[0], jsonAsBytes) //rewrite the listing with id as key
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	fmt.Println("- end set owner")
+	fmt.Println("- end set state")
 	return shim.Success(nil)
 }
 
 // ============================================================================================================================
-// Disable listing Owner
+// Disable listing State
 //
 // Shows off PutState()
 //
 // Inputs - Array of Strings
 //       0     ,        1
-//  owner id       , company that auth the transfer
+//  state id       , company that auth the transfer
 // "o9999999999999", "united_mables"
 // ============================================================================================================================
-func disable_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func disable_state(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
-	fmt.Println("starting disable_owner")
+	fmt.Println("starting disable_state")
 
 	if len(args) != 2 {
 		return shim.Error("Incorrect number of arguments. Expecting 2")
@@ -329,28 +330,28 @@ func disable_owner(stub shim.ChaincodeStubInterface, args []string) pb.Response 
 		return shim.Error(err.Error())
 	}
 
-	var owner_id = args[0]
-	var authed_by_company = args[1]
+	var state_id = args[0]
+	//var authed_by_company = args[1]
 
-	// get the listing owner data
-	owner, err := get_owner(stub, owner_id)
+	// get the listing state data
+	state, err := get_state(stub, state_id)
 	if err != nil {
-		return shim.Error("This owner does not exist - " + owner_id)
+		return shim.Error("This state does not exist - " + state_id)
 	}
 
 	// check authorizing company
-	if owner.Company != authed_by_company {
-		return shim.Error("The company '" + authed_by_company + "' cannot change another companies listing owner")
-	}
+	//if state.Company != authed_by_company {
+	//	return shim.Error("The company '" + authed_by_company + "' cannot change another companies listing state")
+	//}
 
-	// disable the owner
-	owner.Enabled = false
-	jsonAsBytes, _ := json.Marshal(owner)     //convert to array of bytes
-	err = stub.PutState(args[0], jsonAsBytes) //rewrite the owner
+	// disable the state
+	state.Enabled = false
+	jsonAsBytes, _ := json.Marshal(state)     //convert to array of bytes
+	err = stub.PutState(args[0], jsonAsBytes) //rewrite the state
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	fmt.Println("- end disable_owner")
+	fmt.Println("- end disable_state")
 	return shim.Success(nil)
 }

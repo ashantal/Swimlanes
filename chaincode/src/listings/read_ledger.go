@@ -2,7 +2,7 @@
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
+regarding copyright stateship.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
@@ -67,13 +67,13 @@ func read(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 }
 
 // ============================================================================================================================
-// Get everything we need (owners + CC Demo + companies)
+// Get everything we need (states + CC Demo + companies)
 //
 // Inputs - none
 //
 // Returns:
 // {
-//	"owners": [{
+//	"states": [{
 //			"id": "o99999999",
 //			"company": "United listings"
 //			"username": "alice"
@@ -82,7 +82,7 @@ func read(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 //		"id": "m1490898165086",
 //		"color": "white",
 //		"docType" :"listing",
-//		"owner": {
+//		"state": {
 //			"company": "United listings"
 //			"username": "alice"
 //		},
@@ -92,7 +92,7 @@ func read(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 // ============================================================================================================================
 func read_everything(stub shim.ChaincodeStubInterface) pb.Response {
 	type Everything struct {
-		Owners   []Owner   `json:"owners"`
+		States   []State   `json:"states"`
 		Listings []Listing `json:"listings"`
 	}
 	var everything Everything
@@ -118,29 +118,29 @@ func read_everything(stub shim.ChaincodeStubInterface) pb.Response {
 	}
 	fmt.Println("listing array - ", everything.Listings)
 
-	// ---- Get All Owners ---- //
-	ownersIterator, err := stub.GetStateByRange("o0", "o9999999999999999999")
+	// ---- Get All States ---- //
+	statesIterator, err := stub.GetStateByRange("o0", "o9999999999999999999")
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	defer ownersIterator.Close()
+	defer statesIterator.Close()
 
-	for ownersIterator.HasNext() {
-		aKeyValue, err := ownersIterator.Next()
+	for statesIterator.HasNext() {
+		aKeyValue, err := statesIterator.Next()
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		queryKeyAsStr := aKeyValue.Key
 		queryValAsBytes := aKeyValue.Value
-		fmt.Println("on owner id - ", queryKeyAsStr)
-		var owner Owner
-		json.Unmarshal(queryValAsBytes, &owner) //un stringify it aka JSON.parse()
+		fmt.Println("on state id - ", queryKeyAsStr)
+		var state State
+		json.Unmarshal(queryValAsBytes, &state) //un stringify it aka JSON.parse()
 
-		if owner.Enabled { //only return enabled owners
-			everything.Owners = append(everything.Owners, owner) //add this listing to the list
+		if state.Enabled { //only return enabled states
+			everything.States = append(everything.States, state) //add this listing to the list
 		}
 	}
-	fmt.Println("owner array - ", everything.Owners)
+	fmt.Println("state array - ", everything.States)
 
 	//change to array of bytes
 	everythingAsBytes, _ := json.Marshal(everything) //convert to array of bytes
