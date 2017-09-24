@@ -84,7 +84,7 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 			ordered_hook: options.ordered_hook,
 			cc_function: 'init_listing',
 			cc_args: [
-				'm' + leftPad(Date.now() + randStr(5), 19),
+				'l' + leftPad(Date.now() + randStr(5), 19),
 				options.args.uid,
 				options.args.sid,
 				options.args.stateID

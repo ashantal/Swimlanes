@@ -141,7 +141,7 @@ if (config_error) {
 			setup_lib(function () {
 				detect_prev_startup({ startup: true }, function (err) {
 					if (err) {
-						startup_unsuccessful();
+						create_states(helper.getListingStates()); 	//builds states, then starts webapp
 					} else {
 						logger.debug('Detected that we have launched successfully before');
 						logger.debug('Welcome back - Initiating start up\n\n');
@@ -182,7 +182,7 @@ function setupWebSocket() {
 							setup_lib(function () {
 								detect_prev_startup({ startup: false }, function (err) {
 									if (err) {
-										create_states(helper.getListingStates()); 	//builds marbles, then starts webapp
+										create_states(helper.getListingStates()); 	//builds states, then starts webapp
 									}
 								});
 							});
@@ -190,7 +190,7 @@ function setupWebSocket() {
 					});
 				}
 			}
-						
+
 		});
 
 		ws.on('error', function (e) { logger.debug('[ws] error', e); });
@@ -280,7 +280,8 @@ function detect_prev_startup(opts, cb) {
 			logger.warn('Error reading ledger');
 			if (cb) cb(true);
 		} else {
-			if (find_missing_states(resp)) {						//check if each state in the settings file has been created in the ledger
+			console.log(resp.States);
+			if (resp.State.length==0) {						//check if each state in the settings file has been created in the ledger
 				logger.info('We need to create states');			//there are states that do not exist!
 				broadcast_state('register_states', 'waiting');
 				if (cb) cb(true);
@@ -292,12 +293,6 @@ function detect_prev_startup(opts, cb) {
 			}
 		}
 	});
-}
-
-
-// Detect if there are states in the settings doc that are not in the ledger
-function find_missing_states(resp) {
-	return false;
 }
 
 // Create states
@@ -361,6 +356,15 @@ function removeKVS() {
 	} catch (e) {
 		logger.error('could not delete old kvs', e);
 	}
+}
+
+// Wait for the user to help correct the config file so we can startup!
+function startup_unsuccessful() {
+	process.env.app_first_setup = 'yes';
+	console.log('');
+	logger.info('Detected that we have NOT launched successfully yet');
+	logger.debug('Open your browser to http://' + host + ':' + port + ' and login as "admin" to initiate startup\n\n');
+	// we wait here for the user to go the browser, then setup_marbles_lib() will be called from WS msg
 }
 
 // We are done, inform the clients

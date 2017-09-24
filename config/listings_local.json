@@ -4,11 +4,10 @@
     "keep_alive_secs": 120,
     "org": "MLS Blockchain Alliance",
     "states": [
-       {"state_type" : "premarket","state_names":["contract signed", "coming soon"]},        
-       {"state_type" :"onmarket","state_names":["active","open house","appraisal received","pending","closed","price reduced","price increased"]},
-       {"state_type" :"preclosing","state_names" : ["offer made","offer accepted","deed recorded"]},
-       {"state_type" :"postclosing","state_names":["new loan","load paid off","second loan"]},
-       {"state_type" :"offmarket","state_names":["registered","bedroom added","kitchen upgraded","floors upgraded","carpet installed"]}
+        {"state_type" :"offmarket","state_names":["registered","bedroom added","kitchen upgraded","floors upgraded","new loan","loan paid"]},
+        {"state_type" :"premarket","state_names":["contract signed", "coming soon"]},        
+        {"state_type" :"onmarket","state_names":["active","open house","price reduced","price increased","appraisal received","offer made","offer accepted"]},
+        {"state_type" :"preclosing","state_names" : ["sale pending","in escrow","closed","deed recorded"]}    
     ],
     "port": 3001
 }
