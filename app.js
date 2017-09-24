@@ -30,10 +30,24 @@ var ws_server = require('./utils/websocket_server_side.js')({ block_delay: helpe
 
 // ------------- Init ------------- //
 var host = 'localhost';
-var port = helper.getMarblesPort();
+var port = helper.getListingsPort();
 var wss = {};
 
-// --- Module Setup --- //
+// -- states --//
+var start_up_states = {												//Startup Steps
+	checklist: { state: 'waiting', step: 'step1' },					// Step 1 - check config files for somewhat correctness
+	enrolling: { state: 'waiting', step: 'step2' },					// Step 2 - enroll the admin
+	find_chaincode: { state: 'waiting', step: 'step3' },			// Step 3 - find the chaincode on the channel
+	register_states: { state: 'waiting', step: 'step4' },			// Step 4 - create the listing states
+};
+
+// --- setup --- //
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(compression());
+app.use(cookieParser());
+app.use(serve_static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'lostmymarbles', resave: true, saveUninitialized: true }));
 app.options('*', cors());
 app.use(cors());
 
@@ -96,8 +110,26 @@ if (config_error) {
 	broadcast_state('checklist', 'failed');			//checklist step is done
 } else {
 	broadcast_state('checklist', 'success');		//checklist step is done
-	console.log('\n');
-	logger.info('Using settings in ' + process.env.creds_filename + ' to see if we have launch marbles before...');
+}
+
+console.log('\n');
+//logger.info('Using settings in ' + process.env.creds_filename + ' to see if we have launched this app before...');
+
+// Message to client to communicate where we are in the start up
+function build_state_msg() {
+	return {
+		msg: 'app_state',
+		state: start_up_states,
+		first_setup: process.env.app_first_setup
+	};
+}
+
+// Send to all connected clients
+function broadcast_state(change_state, outcome) {
+	try {
+		start_up_states[change_state].state = outcome;
+		wss.broadcast(build_state_msg());								//tell client our app state
+	} catch (e) { }														//this is expected to fail for "checking"
 }
 
 // ============================================================================================================================
@@ -122,6 +154,7 @@ function setupWebSocket() {
 
 		ws.on('error', function (e) { logger.debug('[ws] error', e); });
 		ws.on('close', function () { logger.debug('[ws] closed'); });
+
 		ws.send(JSON.stringify(build_state_msg()));							//tell client our app state
 	});
 

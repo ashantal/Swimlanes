@@ -77,7 +77,7 @@ router.route('/create').get(function (req, res) {
 });
 
 function route_me(req, res) {
-	if (!req.session.user || !req.session.user.username) {
+	if (false/* || !req.session.user || !req.session.user.username*/) {
 		res.redirect('/login');
 	}
 	else {
