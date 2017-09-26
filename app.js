@@ -241,7 +241,6 @@ function setup_lib(cb) {
 	var opts = helper.makeListingsLibOptions();
 	listings_lib = require('./utils/listings_cc_lib.js')(enrollObj, opts, fcw, logger);
 	ws_server.setup(wss.broadcast, listings_lib);
-
 	logger.debug('Checking if chaincode is already instantiated or not');
 	const channel = helper.getChannelId();
 	const first_peer = helper.getFirstPeerName(channel);
@@ -280,8 +279,8 @@ function detect_prev_startup(opts, cb) {
 			logger.warn('Error reading ledger');
 			if (cb) cb(true);
 		} else {
-			console.log(resp.States);
-			if (resp.State.length==0) {						//check if each state in the settings file has been created in the ledger
+			console.log(resp);
+			if (!resp.parsed.states) {						//check if each state in the settings file has been created in the ledger
 				logger.info('We need to create states');			//there are states that do not exist!
 				broadcast_state('register_states', 'waiting');
 				if (cb) cb(true);
@@ -289,7 +288,7 @@ function detect_prev_startup(opts, cb) {
 				broadcast_state('register_states', 'success');			//everything is good
 				process.env.app_first_setup = 'no';
 				logger.info('Everything is in place');
-				if (cb) cb(null);
+				if (cb) cb(false);
 			}
 		}
 	});
@@ -318,7 +317,7 @@ function create_states(states) {
 }
 
 // Create State
-function create_state(state, statetype, cbs) {
+function create_state(state, cbs) {
 	const channel = helper.getChannelId();
 	const first_peer = helper.getFirstPeerName(channel);
 	var options = {
