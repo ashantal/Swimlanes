@@ -3,7 +3,10 @@ extends ./template/layout.pug
 	
 block custom_header
 	// --------------- Header -------------- //
+	script(src='/js/ui_building.js?v=' + bag.jshash)
 	script(src='/js/websocket.js?v=' + bag.jshash)
+	script(src='/js/startup.js?v=' + bag.jshash)
+	
 	script(type='text/javascript').
 		$(document).ready(function(){
 			connect_to_server();
@@ -18,6 +21,8 @@ block content
 	// --------------- Main Stuff  -------------- //
 			
 	#contentPanel
+		// --------------- Home Panel
+		include ./panel_home.pug
 		
 		
 block footer

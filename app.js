@@ -68,6 +68,14 @@ app.use(session({ secret: 'lostmymarbles', resave: true, saveUninitialized: true
 app.options('*', cors());
 app.use(cors());
 
+//---------------------
+// Cache Busting Hash
+//---------------------
+process.env.cachebust_js = Date.now();
+process.env.cachebust_css = Date.now();
+logger.debug('cache busting hash js', process.env.cachebust_js, 'css', process.env.cachebust_css);
+
+
 // ============================================================================================================================
 // 													Webserver Routing
 // ============================================================================================================================
@@ -117,11 +125,7 @@ process.on('uncaughtException', function (err) {
 });
 
 // ------------------------------------------------------------------------------------------------------------------------------
-// Life Starts Here!
-// ------------------------------------------------------------------------------------------------------------------------------
-
 setupWebSocket();
-
 process.env.app_first_setup = 'yes';
 let config_error = helper.checkConfig();
 if (config_error) {
@@ -152,16 +156,11 @@ if (config_error) {
 	});	
 }
 
-// ============================================================================================================================
-// 												WebSocket Communication Madness
-// ============================================================================================================================
 function setupWebSocket() {
 	console.log('------------------------------------------ Websocket Up ------------------------------------------');
 	wss = new ws.Server({ server: server });								//start the websocket now
 	wss.on('connection', function connection(ws) {
 		ws.on('message', function incoming(message) {
-			console.log(' ');
-			console.log('-------------------------------- Incoming WS Msg --------------------------------');
 			logger.debug('[ws] received ws msg:', message);
 			var data = null;
 			try {
@@ -170,32 +169,12 @@ function setupWebSocket() {
 			catch (e) {
 				logger.debug('[ws] message error', message, e.stack);
 			}
-			if (data && data.type == 'setup') {
-				logger.debug('[ws] setup message', data);
-
-				//enroll admin
-				if (data.configure === 'enrollment') {
-					removeKVS();
-					helper.write(data);													//write new config data to file
-					enroll_admin(1, function (e) {
-						if (e == null) {
-							setup_lib(function () {
-								detect_prev_startup({ startup: false }, function (err) {
-									if (err) {
-										create_states(helper.getListingStates()); 	//builds states, then starts webapp
-									}
-								});
-							});
-						}
-					});
-				}
+			if (data) {
+				ws_server.process_msg(ws, data);				
 			}
-
 		});
-
 		ws.on('error', function (e) { logger.debug('[ws] error', e); });
 		ws.on('close', function () { logger.debug('[ws] closed'); });
-
 		ws.send(JSON.stringify(build_state_msg()));							//tell client our app state
 	});
 

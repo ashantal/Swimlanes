@@ -1,4 +1,7 @@
 var wsTxt = '[ws]';
+var getEverythingWatchdog = null;
+var pendingTransaction = null;
+
 // =================================================================================
 // Socket Stuff
 // =================================================================================
@@ -39,6 +42,25 @@ function connect_to_server() {
 		try {
 			var msgObj = JSON.parse(msg.data);
 			console.log(msgObj);
+
+			if (msgObj.msg === 'everything') {
+				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
+				clearTimeout(getEverythingWatchdog);
+				clearTimeout(pendingTransaction);
+				$('#appStartingText').hide();
+				build_company_panel("Swim Lanes");				
+				build_state_panels(msgObj.everything.states);
+				for (var i in msgObj.everything.listings) {
+					populate_state_listings(msgObj.everything.listings[i]);
+				}
+				start_up = false;
+			}else if (msgObj.msg === 'app_state') {
+				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
+				setTimeout(function () {
+					show_start_up_step(msgObj);
+				}, 1000);
+			}
+
 		}
 		catch (e) {
 			console.log(wsTxt + ' error handling a ws message', e);
@@ -48,6 +70,28 @@ function connect_to_server() {
 	function onError(evt) {
 		console.log(wsTxt + ' ERROR ', evt);
 	}
+	
+}
+
+
+//get everything with timeout to get it all again!
+function get_everything_or_else(attempt) {
+	console.log(wsTxt + ' sending get everything msg');
+	clearTimeout(getEverythingWatchdog);
+	ws.send(JSON.stringify({ type: 'read_everything', v: 1 }));
+
+	if (!attempt) attempt = 1;
+	else attempt++;
+
+	getEverythingWatchdog = setTimeout(function () {
+		if (attempt <= 3) {
+			console.log('\n\n! [timeout] did not get owners in time, impatiently calling it again', attempt, '\n\n');
+			get_everything_or_else(attempt);
+		}
+		else {
+			console.log('\n\n! [timeout] did not get owners in time, hopeless', attempt, '\n\n');
+		}
+	}, 5000 + getRandomInt(0, 10000));
 }
 
 
