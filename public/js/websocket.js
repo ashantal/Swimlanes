@@ -1,6 +1,9 @@
 var wsTxt = '[ws]';
 var getEverythingWatchdog = null;
 var pendingTransaction = null;
+var auditingMarbleId = null;
+var pendingTxDrawing = [];
+
 var ws = {};
 var block_ui_delay = 15000; 
 // =================================================================================
@@ -63,6 +66,37 @@ function connect_to_server() {
 				setTimeout(function () {
 					show_start_up_step(msgObj);
 				}, 1000);
+			}else if (msgObj.msg === 'tx_step') {
+				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
+				show_tx_step(msgObj);
+			}
+
+			//tx history
+			else if (msgObj.msg === 'history') {
+				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
+				var built = 0;
+				var x = 0;
+				var count = $('.txDetails').length;
+
+				for(x in pendingTxDrawing) clearTimeout(pendingTxDrawing[x]);
+
+				if (count <= 0) {									//if no tx shown yet, append to back
+					$('.txHistoryWrap').html('');					//clear
+					for (x=msgObj.data.parsed.length-1; x >= 0; x--) {
+						built++;
+						slowBuildtx(msgObj.data.parsed[x], x, built);
+					}
+
+				} else {											//if we already showing tx, prepend to front
+					console.log('skipping tx', count);
+					for (x=msgObj.data.parsed.length-1; x >= count; x--) {
+						var html = build_a_tx(msgObj.data.parsed[x], x);
+						$('.txHistoryWrap').prepend(html);
+						$('.txDetails:first').animate({ opacity: 1, left: 0 }, 600, function () {
+							//after animate
+						});
+					}
+				}
 			}
 
 		}
@@ -119,3 +153,13 @@ function get_everything_or_else(attempt) {
 }
 
 
+// delay build each transaction
+function slowBuildtx(data, txNumber, built){
+	pendingTxDrawing.push(setTimeout(function () {
+		var html = build_a_tx(data, txNumber);
+		$('.txHistoryWrap').append(html);
+		$('.txDetails:last').animate({ opacity: 1, left: 0 }, 600, function () {
+			//after animate
+		});
+	}, (built * 150)));
+}
