@@ -48,12 +48,16 @@ function connect_to_server() {
 				clearTimeout(getEverythingWatchdog);
 				clearTimeout(pendingTransaction);
 				$('#appStartingText').hide();
-				build_company_panel("Swim Lanes");				
 				build_state_panels(msgObj.everything.states);
-				for (var i in msgObj.everything.listings) {
-					populate_state_listings(msgObj.everything.listings[i]);
-				}
+				msgObj.everything.listings = [	
+					{"id":"1","state":{"id":"s01506400852865zUFDm"}},
+					{"id":"2","state":{"id":"s01506400852865zUFDm"}}
+				];
+				populate_state_listings(msgObj.everything.listings);
 				start_up = false;
+			}else if (msgObj.msg === 'state_listings') {
+				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
+				populate_state_listings(msgObj);
 			}else if (msgObj.msg === 'app_state') {
 				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
 				setTimeout(function () {

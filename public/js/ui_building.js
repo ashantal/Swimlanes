@@ -10,19 +10,15 @@ var listings = {};
 // =================================================================================
 //build a listing
 function build_listing(listing) {
-	var html = '';
 	var colorClass = 'bluebg';
-	var size = 'smalllisting';
+	var size = 'smallMarble';
 	var auditing = '';
 
 	listings[listing.id] = listing;
 	listing.id = escapeHtml(listing.id);
-
-	console.log('[ui] building : ', listing.id);
-	if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
-
-	html += '<span id="' + listing.id + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + ' title="' + listing.id + '"';
-	html += ' state_name="' + listing.state.statename + '" state_type="' + listing.state.state_type + '" state_id="' + listing.state.id + '"></span>';
+	console.log('[ui] building : ', listing);
+	//if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
+	var html = '<span id="' + listing.id + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + ' title="' + listing.id + '" state_id="' + listing.state.id + '"></span>';
 
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.innerlistingWrap').prepend(html);
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.nolistingsMsg').hide();
@@ -31,15 +27,14 @@ function build_listing(listing) {
 }
 
 //redraw the state's listings
-function populate_states_listings(msg) {
-
+function populate_state_listings(listings) {
 	//reset
-	console.log('[ui] clearing listings for state ' + msg.id);
-	$('.listingsWrap[state_id="' + msg.id + '"]').find('.innerlistingWrap').html('<i class="fa fa-plus addlisting"></i>');
-	$('.listingsWrap[state_id="' + msg.state_id + '"]').find('.nolistingsMsg').show();
+	console.log('[ui] clearing listings for state ');
+	//$('.listingsWrap[state_id="' + msg.state.id + '"]').find('.innerlistingWrap').html('<i class="fa fa-plus addlisting"></i>');
+	//$('.listingsWrap[state_id="' + msg.state.id + '"]').find('.nolistingsMsg').show();
 
-	for (var i in msg.listings) {
-		build_listing(msg.listings[i]);
+	for (var i in listings) {
+		build_listing(listings[i]);
 	}
 }
 
@@ -79,14 +74,17 @@ function build_company_panel(company) {
 function build_state_panels(data) {
 	//reset
 	console.log('[ui] clearing all state panels');
+	
 	$('.stateWrap').html('');
 	for (var i in data) {
 		var html = '';
 		var colorClass = '';
 		data[i].id = escapeHtml(data[i].id);
 		data[i].state_name = escapeHtml(data[i].state_name);
-		console.log('[ui] building state panel ' + data[i].id);
-
+		if($('.companyPanel[company="' + data[i].state_type + '"]').length==0){
+			build_company_panel(data[i].state_type);							
+		};
+		
 		let disableHtml = '';
 		html += `<div id="state` + i + `wrap" state_name="` + data[i].state_name + `" state_type="` + data[i].state_type +
 			`" state_id="` + data[i].id + `" class="listingsWrap ` + colorClass + `">
@@ -99,7 +97,7 @@ function build_state_panels(data) {
 					<div class="nolistingsMsg hint">No listings</div>
 				</div>`;
 
-		$('.companyPanel[company="' + data[i].company + '"]').find('.ownerWrap').append(html);
+		$('.companyPanel[company="' + data[i].state_type + '"]').find('.ownerWrap').append(html);
 	}
 
 	//drag and drop listing
