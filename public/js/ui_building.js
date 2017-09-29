@@ -27,14 +27,14 @@ function build_listing(listing) {
 }
 
 //redraw the state's listings
-function populate_state_listings(listings) {
+function populate_state_listings(msg) {
 	//reset
 	console.log('[ui] clearing listings for state ');
-	//$('.listingsWrap[state_id="' + msg.state.id + '"]').find('.innerlistingWrap').html('<i class="fa fa-plus addlisting"></i>');
-	//$('.listingsWrap[state_id="' + msg.state.id + '"]').find('.nolistingsMsg').show();
-
-	for (var i in listings) {
-		build_listing(listings[i]);
+	$('.listingsWrap[state_id="' + msg.state_id + '"]').find('.innerlistingWrap').html('');
+	$('.listingsWrap[state_id="' + msg.state_id + '"]').find('.nolistingsMsg').show();
+	console.log(msg);
+	for (var i in msg.listings) {
+		build_listing(msg.listings[i]);
 	}
 }
 
@@ -81,23 +81,27 @@ function build_state_panels(data) {
 		var colorClass = '';
 		data[i].id = escapeHtml(data[i].id);
 		data[i].state_name = escapeHtml(data[i].state_name);
-		if($('.companyPanel[company="' + data[i].state_type + '"]').length==0){
+		var lane =$('.companyPanel[company="' + data[i].state_type + '"]');
+		if(lane.length==0){
 			build_company_panel(data[i].state_type);							
-		};
-		
-		let disableHtml = '';
-		html += `<div id="state` + i + `wrap" state_name="` + data[i].state_name + `" state_type="` + data[i].state_type +
-			`" state_id="` + data[i].id + `" class="listingsWrap ` + colorClass + `">
-					<div class="legend" style="` + size_state_name(data[i].state_name) + `">
-						` + toTitleCase(data[i].state_name) + `
-						<span class="fa fa-thumb-tack listingsFix" title="Never Hide state"></span>
-						` + disableHtml + `
-					</div>
-					<div class="innerlistingWrap"><i class="fa fa-plus addlisting"></i></div>
-					<div class="nolistingsMsg hint">No listings</div>
-				</div>`;
-
-		$('.companyPanel[company="' + data[i].state_type + '"]').find('.ownerWrap').append(html);
+		}
+		var state = $('.listingsWrap[state_id="' + data[i].id  + '"]');
+		if(state.length>0){			
+			state.find('.innerlistingWrap').html('');
+		}else{		
+			let disableHtml = '';
+			html += `<div id="state` + i + `wrap" state_name="` + data[i].state_name + `" state_type="` + data[i].state_type +
+				`" state_id="` + data[i].id + `" class="listingsWrap ` + colorClass + `">
+						<div class="legend" style="` + size_state_name(data[i].state_name) + `">
+							` + toTitleCase(data[i].state_name) + `
+							<span class="fa fa-thumb-tack listingsFix" title="Never Hide state"></span>
+							` + disableHtml + `
+						</div>
+						<div class="innerlistingWrap innerMarbleWrap"></div>
+						<div class="nolistingsMsg hint">No listings</div>
+					</div>`;
+			$('.companyPanel[company="' + data[i].state_type + '"]').find('.ownerWrap').append(html);
+		}
 	}
 
 	//drag and drop listing
@@ -105,25 +109,7 @@ function build_state_panels(data) {
 	$('.innerlistingWrap').droppable({
 		drop:
 		function (event, ui) {
-			var listing_id = $(ui.draggable).attr('id');
-
-			//  ------------ Delete listing ------------ //
-			if ($(event.target).attr('id') === 'trashbin') {
-				console.log('removing listing', listing_id);
-				show_tx_step({ state: 'building_proposal' }, function () {
-					var obj = {
-						type: 'delete_listing',
-						id: listing_id,
-						v: 1
-					};
-					ws.send(JSON.stringify(obj));
-					$(ui.draggable).addClass('invalid bounce');
-					refreshHomePanel();
-				});
-			}
-
-			//  ------------ Transfer listing ------------ //
-			else {
+				var listing_id = $(ui.draggable).attr('id');
 				var dragged_state_id = $(ui.draggable).attr('state_id');
 				var dropped_state_id = $(event.target).parents('.listingsWrap').attr('state_id');
 
@@ -134,7 +120,6 @@ function build_state_panels(data) {
 					return true;
 				}
 			}
-		}
 	});
 
 	//state count

@@ -126,7 +126,7 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
 	fmt.Println("starting init_listing")
 
-	if len(args) != 5 {
+	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 5")
 	}
 
@@ -140,10 +140,6 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	uid := strings.ToLower(args[1])
 	sid := strings.ToLower(args[2])
 	stateID := args[3]
-	//authed_by_company := args[4]
-	if err != nil {
-		return shim.Error("3rd argument must be a numeric string")
-	}
 
 	//check if new state exists
 	state, err := get_state(stub, stateID)
@@ -170,11 +166,11 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		"docType":"listing", 
 		"id": "` + id + `", 
 		"uid": "` + uid + `", 
-		"sid": ` + sid + `, 
+		"sid": "` + sid + `", 
 		"state": {
 			"id": "` + stateID + `", 
-			"statename": "` + state.StateName + `", 
-			"statetype": "` + state.StateType + `"
+			"state_name": "` + state.StateName + `", 
+			"state_type": "` + state.StateType + `"
 		}
 	}`
 	err = stub.PutState(id, []byte(str)) //store listing with id as key

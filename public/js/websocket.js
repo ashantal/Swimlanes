@@ -1,7 +1,8 @@
 var wsTxt = '[ws]';
 var getEverythingWatchdog = null;
 var pendingTransaction = null;
-
+var ws = {};
+var block_ui_delay = 15000; 
 // =================================================================================
 // Socket Stuff
 // =================================================================================
@@ -49,11 +50,10 @@ function connect_to_server() {
 				clearTimeout(pendingTransaction);
 				$('#appStartingText').hide();
 				build_state_panels(msgObj.everything.states);
-				msgObj.everything.listings = [	
-					{"id":"1","state":{"id":"s01506400852865zUFDm"}},
-					{"id":"2","state":{"id":"s01506400852865zUFDm"}}
-				];
-				populate_state_listings(msgObj.everything.listings);
+				for (var i in msgObj.everything.listings) {
+					populate_state_listings(msgObj.everything.listings[i]);
+				}
+							
 				start_up = false;
 			}else if (msgObj.msg === 'state_listings') {
 				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
@@ -77,6 +77,26 @@ function connect_to_server() {
 	
 }
 
+function refreshHomePanel() {
+	clearTimeout(pendingTransaction);
+	pendingTransaction = setTimeout(function () {								//need to wait a bit
+		get_everything_or_else();
+	}, block_ui_delay);
+}
+
+function transfer_listing(listingId, to_state_id) {
+	show_tx_step({ state: 'building_proposal' }, function () {
+		var obj = {
+			type: 'transfer_listing',
+			listing_id: listingId,
+			state_id: to_state_id,
+			v: 1
+		};
+		console.log(wsTxt + ' sending transfer msg', obj);
+		ws.send(JSON.stringify(obj));
+		refreshHomePanel();
+	});
+}
 
 //get everything with timeout to get it all again!
 function get_everything_or_else(attempt) {

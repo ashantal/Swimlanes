@@ -6,6 +6,8 @@ block custom_header
 	script(src='/js/ui_building.js?v=' + bag.jshash)
 	script(src='/js/websocket.js?v=' + bag.jshash)
 	script(src='/js/startup.js?v=' + bag.jshash)
+	script(src='/js/tx_story.js?v=' + bag.jshash)
+	script(src='/js/ui_events.js?v=' + bag.jshash)
 	
 	script(type='text/javascript').
 		$(document).ready(function(){
@@ -23,6 +25,6 @@ block content
 	#contentPanel
 		// --------------- Home Panel
 		include ./panel_home.pug
-		
+		include ./panel_create.pug
 		
 block footer

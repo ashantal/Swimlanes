@@ -56,10 +56,7 @@ module.exports = function (g_options, fcw, logger) {
 			options.args = {
 				uid: data.uid,
 				sid: data.sid,
-				state_id: data.state_id,				
-				state_name: data.state_name,
-				states_type: data.state_type,
-				auth_company: process.env.listing_company,
+				state_id: data.state_id
 			};
 
 			listings_lib.create_a_listing(options, function (err, resp) {
@@ -72,9 +69,9 @@ module.exports = function (g_options, fcw, logger) {
 		else if (data.type === 'transfer_listing') {
 			logger.info('[ws] transferring req');
 			options.args = {
-				listing_id: data.id,
+				listing_id: data.listing_id,
 				state_id: data.state_id,
-				auth_company: process.env.listing_company
+				auth_company: "process.env.listing_company"
 			};
 
 			listings_lib.set_listing_state(options, function (err, resp) {

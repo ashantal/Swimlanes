@@ -1,0 +1,61 @@
+#createPanel(hidden).panel
+	
+	span.fa.fa-close#closeCreate
+
+	h2 Register
+	hr
+	
+	#innerWrap
+		//span.createball
+		
+		form(action="/create" method="POST")#createform
+			//legend 
+			input(type="text" name="country" placeholder="COUNTRY")
+			br
+			span.hint ISO e.g. US CA
+			br
+			input(type="text" name="sub-country" placeholder="SUB COUNTRY")
+			br
+			span.hint US = FIPS e.g. 04105
+			br
+			input(type="text" name="township" placeholder="TOWNSHIP")
+			br
+			span.hint if exists e.g. 01
+			br
+			span.hint SFR, Coop, etc.
+			br
+			input(type="text" name="parcel" placeholder="999777888")
+			br
+			span.hint APN e.g 999777888
+			br
+			input(type="text" name="sub" placeholder="SUB")
+			br
+			span.hint e.g unit# floor etc.
+			
+			//br
+			//legend
+			//	include ./template/color_options.pug
+				
+			br
+			legend 
+				select(name="property-type")
+					option(value="SFR" disabled="disabled") Class
+					option(value="SFR" selected="selected") Single Family
+					option(value="TWH") Townhouse
+					option(value="CON") Condominium
+					
+			br
+			legend 
+				select(name="user" disabled="disabled")
+					option(value="" disabled="disabled" selected="selected") User
+			input(type="hidden" name="company" value="")
+			input(type="hidden" name="owner_id" value="")
+			input(type="hidden" name="size" value="16")
+
+			br
+			br
+			button(type="button")#createMarbleButton
+				span.fa.fa-plus-circle &nbsp;&nbsp;
+				span Create
+			
+			

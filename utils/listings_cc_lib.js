@@ -87,7 +87,7 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 				'l' + leftPad(Date.now() + randStr(5), 19),
 				options.args.uid,
 				options.args.sid,
-				options.args.stateID
+				options.args.state_id
 			],
 		};
 		fcw.invoke_chaincode(enrollObj, opts, function (err, resp) {
