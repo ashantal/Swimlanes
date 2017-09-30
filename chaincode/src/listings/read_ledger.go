@@ -262,3 +262,48 @@ func getListingsByRange(stub shim.ChaincodeStubInterface, args []string) pb.Resp
 
 	return shim.Success(buffer.Bytes())
 }
+
+/*{
+	"selector": {
+	  "data.state.state_name": {
+		"$eq": "kitchen upgraded"
+	  }
+	}
+}
+*/
+func getQueryResultForQueryString(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	queryString := args[0]
+	fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
+	resultsIterator, err := stub.GetQueryResult(queryString)
+	defer resultsIterator.Close()
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	// buffer is a JSON array containing QueryRecords
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		queryResponse,
+			err := resultsIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\"")
+		buffer.WriteString(", \"Record\":")
+		// Record is a JSON object, so we write as-is
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+	fmt.Printf("- getQueryResultForQueryString queryResult:\n%s\n", buffer.String())
+	return shim.Success(buffer.Bytes())
+}

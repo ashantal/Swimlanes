@@ -156,6 +156,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return getListingsByRange(stub, args)
 	} else if function == "disable_state" { //disable a listing state from appearing on the UI
 		return disable_state(stub, args)
+	} else if function == "query" { //query data
+		return getQueryResultForQueryString(stub, args)
 	}
 
 	// error out

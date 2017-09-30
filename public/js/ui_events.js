@@ -4,7 +4,8 @@ $(document).on('ready', function () {
     $(document).on('click', '.addListing', function () {
         console.log('add listing');
         $('#tint').fadeIn();
-        $('#createPanel').fadeIn();
+		$('#createPanel').fadeIn();
+		query_results();
     });
 
 	$('#createMarbleButton').click(function () {
@@ -21,7 +22,7 @@ $(document).on('ready', function () {
 			type: 'create',
             uid: id,
             sid: "registry",
-			state_id: 's01506400852865zUFDm',
+			state_id: 's01506732319513SMUHf',
 			v: 1
 		};
 		console.log('creating listing, sending', obj);
@@ -37,11 +38,14 @@ $(document).on('ready', function () {
 		return false;
 	});
 
+	//close create panel
+	$('#closeCreate').click(function () {
+		$('#createPanel, #tint').fadeOut();
+	});
+
 	/**  
 	 * Audit Listing
-	*/
-
-	
+	*/	
 	//right click opens audit on marble
 	$(document).on('contextmenu', '.ball', function () {
 		auditMarble(this, true);
@@ -85,7 +89,7 @@ $(document).on('ready', function () {
 			$('.txHistoryWrap').html('<div class="auditHint">Click a Marble to Audit Its Transactions</div>');//clear
 		}, 750);
 		$('#marbleId').html('-');
-		auditingMarble = null;
+		auditingMarbleId = null;
 
 		setTimeout(function () {
 			$('#rightEverything').removeClass('rightEverythingOpened');

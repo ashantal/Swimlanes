@@ -10,7 +10,7 @@ var listings = {};
 // =================================================================================
 //build a listing
 function build_listing(listing) {
-	var colorClass = 'bluebg';
+	var colorClass = 'whitebg';
 	var size = 'smallMarble';
 	var auditing = '';
 
@@ -40,12 +40,7 @@ function populate_state_listings(msg) {
 
 //crayp resize - dsh to do, dynamic one
 function size_state_name(name) {
-	var style = '';
-	if (name.length >= 10) style = 'font-size: 22px;';
-	if (name.length >= 15) style = 'font-size: 18px;';
-	if (name.length >= 20) style = 'font-size: 15px;';
-	if (name.length >= 25) style = 'font-size: 11px;';
-	return style;
+	return 'font-size: 12px;';
 }
 
 function build_company_panel(company) {
@@ -55,10 +50,9 @@ function build_company_panel(company) {
 	var mycss = '';
 	if (company === escapeHtml(bag.marble_company)) mycss = 'myCompany';
 
-	var html = `<div class="companyPanel" company="` + company + `">
+	var html = `<div class="companyPanel bluebg" style="width:22%;margin:5px;height:1200px;overflow:hiddel;float:left" company="` + company + `">
 					<div class="companyNameWrap ` + mycss + `">
-					<span class="companyName">` + company + `&nbsp;-&nbsp;</span>
-					<span class="companyVisible">0</span>/<span class="companyCount">0</span>`;
+					<span class="companyName">` + toTitleCase(company) + `</span>`;
 	if (company === escapeHtml(bag.marble_company)) {
 		html += '<span class="fa fa-exchange floatRight"></span>';
 	} else {
@@ -94,7 +88,6 @@ function build_state_panels(data) {
 				`" state_id="` + data[i].id + `" class="listingsWrap ` + colorClass + `">
 						<div class="legend" style="` + size_state_name(data[i].state_name) + `">
 							` + toTitleCase(data[i].state_name) + `
-							<span class="fa fa-thumb-tack listingsFix" title="Never Hide state"></span>
 							` + disableHtml + `
 						</div>
 						<div class="innerlistingWrap innerMarbleWrap"></div>
@@ -158,23 +151,19 @@ function build_a_tx(data, pos) {
 	if (data && data.value && data.value.state && data.value.state.state_name) {
 		state_name = data.value.state.state_name;
 		state_type = data.value.state.state_type;
-		id = data.value.state.id;
-		pid = data.value.color;
+		uid = data.value.uid;
 	}
 
 	html += `<div class="txDetails">
 				<div class="txCount">TX ` + (Number(pos) + 1) + `</div>
 				<p>
-					<div class="listingLegend">Transaction: </div>
-					<div class="listingName txId">` + data.txId.substring(0, 14) + `...</div>
+					<div class="listingName txId">` + data.txId.substring(0, 20) + `...</div>
 				</p>
 				<p>
-					<div class="listingLegend">Id: </div>
-					<div class="listingName txId">` + pid +`</div>
+					<div class="listingName txId">` + uid +`</div>
 				</p>
 				<p>
-					<div class="listingLegend">Event: </div>
-					<div class="listingName">` + state_name + `</div>
+					<div class="listingName">` + state_name + `-` + state_type + `</div>
 				</p>
 			</div>`;
 	return html;

@@ -99,7 +99,18 @@ module.exports = function (g_options, fcw, logger) {
 			logger.info('[ws] read everything req');
 			ws_server.check_for_updates(ws);
 		}
-
+		else if(data.type =="query_results"){
+			logger.info('[ws] query results');
+			options.args = {
+				left : data.left,
+				op : data.op,
+				right : data.right		
+			};
+			listings_lib.query_results(options, function (err, resp) {
+				if (err != null) send_err(err, resp);
+				else options.ws.send(JSON.stringify({ msg: 'query_results', data: resp }));
+			});
+		}
 		// get history of listing
 		else if (data.type === 'audit') {
 			if (data.listing_id) {

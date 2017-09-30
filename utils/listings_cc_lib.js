@@ -336,6 +336,22 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 		fcw.query_chaincode(enrollObj, opts, cb);
 	};
 
+	listings_chaincode.query_results = function (options, cb) {
+		console.log('');
+		logger.info('Querying...');
+
+		var opts = {
+			peer_urls: g_options.peer_urls,
+			peer_tls_opts: g_options.peer_tls_opts,
+			channel_id: g_options.channel_id,
+			chaincode_version: g_options.chaincode_version,
+			chaincode_id: g_options.chaincode_id,
+			cc_function: 'query',
+			cc_args: ["{\"selector\": {\""+options.args.left +"\": {\""+options.args.op+"\": \""+ options.args.right + "\"}}}"]
+		};
+		fcw.query_chaincode(enrollObj, opts, cb);
+	};
+
 	// get block height of the channel
 	listings_chaincode.channel_stats = function (options, cb) {
 		var opts = {

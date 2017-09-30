@@ -1,31 +1,14 @@
 #homePanel.panel
 	div
-		#tips
-			span Tips: Simply 
-			strong drag 
-			span and 
-			strong drop 
-			span a marble from one user to another
-
-		#ownerWrap
+		#ownerWrap(style="height:50px")
 			div#toolbarWrap
-				.bottomAlign
+				.topAlign
 					input(type="text" placeholder="Search Listings" style="margin-left: 0; border-radius:2px;")#searchUsers.longer
 					span.hint(style="margin-left: 10px;margin-right: 10px; font-size: 16px;") 
 						span#foundUsers 0
 						span /
 						span#totalUsers 0
 					<i class="fa fa-plus addListing"></i>
-				button(disabled="disabled")#showStartupPanel
-					span.fa.fa-gears
-					span &nbsp; Start Up Help
-					
-				span &nbsp;&nbsp;
-
-				button(disabled="disabled")#showSettingsPanel
-					span.fa.fa-gear
-					span &nbsp; Settings			
-
-
+	div
 		#allUserPanelsWrap
-			#appStartingText Connecting...
+			#appStartingText Connecting To Server...

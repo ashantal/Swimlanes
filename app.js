@@ -73,6 +73,8 @@ app.use(cors());
 //---------------------
 process.env.cachebust_js = Date.now();
 process.env.cachebust_css = Date.now();
+process.env.org = helper.getCompanyName();
+
 logger.debug('cache busting hash js', process.env.cachebust_js, 'css', process.env.cachebust_css);
 
 

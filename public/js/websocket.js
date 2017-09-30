@@ -152,6 +152,12 @@ function get_everything_or_else(attempt) {
 	}, 5000 + getRandomInt(0, 10000));
 }
 
+//get everything with timeout to get it all again!
+function query_results() {
+	console.log(wsTxt + ' sending get everything msg');
+	clearTimeout(getEverythingWatchdog);
+	ws.send(JSON.stringify({ type: 'query_results', left:'state.state_type',op:'$eq',right:'onmarket', v: 1 }));
+}
 
 // delay build each transaction
 function slowBuildtx(data, txNumber, built){
