@@ -10,6 +10,8 @@ var listings = {};
 // =================================================================================
 //build a listing
 function build_listing(listing) {
+	console.log(listing);
+
 	var colorClass = 'whitebg';
 	var size = 'smallMarble';
 	var auditing = '';
@@ -37,6 +39,17 @@ function populate_state_listings(msg) {
 		build_listing(msg.listings[i]);
 	}
 }
+
+//show query results
+function populate_query_results(msg) {
+	console.log('[ui] clearing listings for all states');
+	$('.listingsWrap').find('.innerlistingWrap').html('');
+	for (var i in msg.data.parsed) {
+		build_listing(msg.data.parsed[i].Record);
+	}	
+}
+
+
 
 //crayp resize - dsh to do, dynamic one
 function size_state_name(name) {

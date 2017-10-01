@@ -5,7 +5,6 @@ $(document).on('ready', function () {
         console.log('add listing');
         $('#tint').fadeIn();
 		$('#createPanel').fadeIn();
-		query_results();
     });
 
 	$('#createMarbleButton').click(function () {
@@ -105,7 +104,15 @@ $(document).on('ready', function () {
 
 
 
+/**
+ * Query
+ */
 
+	//username/company search
+	$('.searchListings').click(function () {
+		var input = $('#searchUsers').val();
+		query_results('state.state_name','$regex','^'+input)
+	});
 
 });
 

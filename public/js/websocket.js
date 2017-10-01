@@ -45,10 +45,8 @@ function connect_to_server() {
 		console.log(wsTxt + ' MESSAGE');
 		try {
 			var msgObj = JSON.parse(msg.data);
-			console.log(msgObj);
-
+			console.log(wsTxt + ' rec', msgObj.msg, msgObj);			
 			if (msgObj.msg === 'everything') {
-				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
 				clearTimeout(getEverythingWatchdog);
 				clearTimeout(pendingTransaction);
 				$('#appStartingText').hide();
@@ -58,22 +56,18 @@ function connect_to_server() {
 				}
 							
 				start_up = false;
+			}else if (msgObj.msg === 'query_results') {
+				populate_query_results(msgObj);
 			}else if (msgObj.msg === 'state_listings') {
-				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
 				populate_state_listings(msgObj);
 			}else if (msgObj.msg === 'app_state') {
-				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
 				setTimeout(function () {
 					show_start_up_step(msgObj);
 				}, 1000);
 			}else if (msgObj.msg === 'tx_step') {
-				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
 				show_tx_step(msgObj);
 			}
-
-			//tx history
 			else if (msgObj.msg === 'history') {
-				console.log(wsTxt + ' rec', msgObj.msg, msgObj);
 				var built = 0;
 				var x = 0;
 				var count = $('.txDetails').length;
@@ -153,10 +147,10 @@ function get_everything_or_else(attempt) {
 }
 
 //get everything with timeout to get it all again!
-function query_results() {
-	console.log(wsTxt + ' sending get everything msg');
+function query_results(l, o, r) {
+	console.log(wsTxt + ' sending query msg' + r);
 	clearTimeout(getEverythingWatchdog);
-	ws.send(JSON.stringify({ type: 'query_results', left:'state.state_type',op:'$eq',right:'onmarket', v: 1 }));
+	ws.send(JSON.stringify({ type: 'query_results', left:l,op:o,right: r, v: 1 }));
 }
 
 // delay build each transaction
