@@ -66,8 +66,10 @@ function connect_to_server() {
 				}, 1000);
 			}else if (msgObj.msg === 'tx_step') {
 				show_tx_step(msgObj);
-			}
-			else if (msgObj.msg === 'history') {
+			}else if (msgObj.msg === 'block') {
+				if (msgObj.block_delay) block_ui_delay = msgObj.block_delay * 2;
+				new_block(msgObj.block_height);											
+			}else if (msgObj.msg === 'history') {
 				var built = 0;
 				var x = 0;
 				var count = $('.txDetails').length;

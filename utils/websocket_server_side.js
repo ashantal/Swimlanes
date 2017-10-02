@@ -76,7 +76,10 @@ module.exports = function (g_options, fcw, logger) {
 
 			listings_lib.set_listing_state(options, function (err, resp) {
 				if (err != null) send_err(err, data);
-				else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
+				else{ 
+					options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
+					ws_server.check_for_updates(null);					
+			    }
 			});
 		}
 
@@ -193,7 +196,7 @@ module.exports = function (g_options, fcw, logger) {
 	// Check for Updates to Ledger
 	// --------------------------------------------------------
 	ws_server.check_for_updates = function (ws_client) {
-		listings_lib.channel_stats(null, function (err, resp) {
+		listings_lib.channel_stats(null, function (err, resp) {			
 			var newBlock = false;
 			if (err != null) {
 				var eObj = {

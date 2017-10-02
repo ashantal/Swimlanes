@@ -4,15 +4,15 @@
 /* exported build_a_tx, listings */
 
 var listings = {};
-
+var colors = ["whitebg","orangebg","greenbg","redbg"];
 // =================================================================================
 //	UI Building
 // =================================================================================
 //build a listing
 function build_listing(listing) {
 	console.log(listing);
-
-	var colorClass = 'whitebg';
+	var lane =$('.companyPanel[company="' + listing.state.state_type + '"]');
+	var colorClass =colors[$('.companyPanel').index(lane)];
 	var size = 'smallMarble';
 	var auditing = '';
 
@@ -23,9 +23,7 @@ function build_listing(listing) {
 	var html = '<span id="' + listing.id + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + ' title="' + listing.id + '" state_id="' + listing.state.id + '"></span>';
 
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.innerlistingWrap').prepend(html);
-	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.nolistingsMsg').hide();
-	
-	return html;
+	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.nolistingsMsg').hide();	
 }
 
 //redraw the state's listings
@@ -66,12 +64,8 @@ function build_company_panel(company) {
 	var html = `<div class="companyPanel bluebg" style="width:22%;margin:5px;height:1200px;overflow:hiddel;float:left" company="` + company + `">
 					<div class="companyNameWrap ` + mycss + `">
 					<span class="companyName">` + toTitleCase(company) + `</span>`;
-	if (company === escapeHtml(bag.marble_company)) {
-		html += '<span class="fa fa-exchange floatRight"></span>';
-	} else {
-		html += '<span class="fa fa-long-arrow-left floatRight"></span>';
-	}
-	html += `	</div>
+			html += '<span class="fa fa-exchange floatRight"></span>';
+		html += `	</div>
 				<div class="ownerWrap"></div>
 			</div>`;
 	$('#allUserPanelsWrap').append(html);

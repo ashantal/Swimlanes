@@ -8,6 +8,7 @@ block custom_header
 	script(src='/js/startup.js?v=' + bag.jshash)
 	script(src='/js/tx_story.js?v=' + bag.jshash)
 	script(src='/js/ui_events.js?v=' + bag.jshash)
+	script(src='/js/blockchain.js?v=' + bag.jshash)
 	
 	script(type='text/javascript').
 		$(document).ready(function(){
@@ -29,3 +30,4 @@ block content
 		include ./panel_create.pug
 		
 block footer
+	include ./template/blockchain.pug

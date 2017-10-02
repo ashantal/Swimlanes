@@ -3,12 +3,16 @@
 		#ownerWrap(style="height:50px")
 			div#toolbarWrap
 				.topAlign
+					select(name="query-type")
+						option(value="state.state_type" selected="selected") State Type
+						option(value="state.state_name") State Name
+						option(value="uid") UId
+						option(value="sid") Source				
 					input(type="text" placeholder="Search Listings" style="margin-left: 0; border-radius:2px;")#searchUsers.longer
 					span.hint(style="margin-left: 10px;margin-right: 10px; font-size: 16px;") 
 						span#foundUsers 0
 						span /
 						span#totalUsers 0
-					<i class="fa fa-search searchListings"></i>						
 					<i class="fa fa-plus addListing"></i>
 	div
 		#allUserPanelsWrap

@@ -109,9 +109,12 @@ $(document).on('ready', function () {
  */
 
 	//username/company search
-	$('.searchListings').click(function () {
-		var input = $('#searchUsers').val();
-		query_results('state.state_name','$regex','^'+input)
+	$('#searchUsers').keyup(function (e) {
+		if(e.keyCode==13){
+			var qt = $('select[name="query-type"]').val();
+			var input = $('#searchUsers').val();
+			query_results(qt,'$regex',input)
+		}
 	});
 
 });
