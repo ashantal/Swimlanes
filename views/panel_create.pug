@@ -2,50 +2,33 @@
 	
 	span.fa.fa-close#closeCreate
 
-	h2 Register
+	h2.reg Register
 	hr
-	
+
 	#innerWrap
 		//span.createball
 		
 		form(action="/create" method="POST")#createform
-			//legend 
-			input(type="text" name="country" placeholder="COUNTRY")
+			input(type="text" id="fips" name="fips" placeholder="County Name")
 			br
-			span.hint ISO e.g. US CA
+			input(type="text" name="country" placeholder="Country" value="US" disabled="disabled")
 			br
-			input(type="text" name="sub-country" placeholder="SUB COUNTRY")
+			input(type="text" name="county" placeholder="County" value="00000"  disabled="disabled")
 			br
-			span.hint US = FIPS e.g. 04105
+			input(type="text" name="sub-county" placeholder="N/A" value="N"  disabled="disabled")
 			br
-			input(type="text" name="township" placeholder="TOWNSHIP")
+			input(type="text" name="parcel" placeholder="APN")
 			br
-			span.hint if exists e.g. 01
+			legend
+			select(name="property-type" style="font-size:20px;width:135px")
+				option(value="R" selected="selected") Real
+				option(value="S") Stock
+				option(value="T") Temp
 			br
-			span.hint SFR, Coop, etc.
-			br
-			input(type="text" name="parcel" placeholder="999777888")
-			br
-			span.hint APN e.g 999777888
-			br
-			input(type="text" name="sub" placeholder="SUB")
-			br
-			span.hint e.g unit# floor etc.
-			
-			//br
-			//legend
-			//	include ./template/color_options.pug
-				
-			br
-			legend 
-				select(name="property-type")
-					option(value="SFR" disabled="disabled") Class
-					option(value="SFR" selected="selected") Single Family
-					option(value="TWH") Townhouse
-					option(value="CON") Condominium
-					
-			br
-			br
+			input(type="text" name="sub" placeholder="SUB" value="N")
+			hr
+			h3.sreg
+			hr
 			button(type="button")#createMarbleButton
 				span.fa.fa-plus-circle &nbsp;&nbsp;
 				span Create

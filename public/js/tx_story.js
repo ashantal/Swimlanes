@@ -5,7 +5,9 @@ var story2html = '';
 var story3html = '';
 var story4html = '';
 var lsKey = 'listings';
-var fromLS = {};
+var fromLS = {
+	story_mode:true
+};
 
 //toggle story mode
 function set_story_mode(setting) {

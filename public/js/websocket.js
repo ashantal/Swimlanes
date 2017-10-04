@@ -58,6 +58,8 @@ function connect_to_server() {
 				start_up = false;
 			}else if (msgObj.msg === 'query_results') {
 				populate_query_results(msgObj);
+			}else if (msgObj.msg === 'query_fips') {
+				populate_query_fips(msgObj);
 			}else if (msgObj.msg === 'state_listings') {
 				populate_state_listings(msgObj);
 			}else if (msgObj.msg === 'app_state') {
@@ -153,6 +155,12 @@ function query_results(l, o, r) {
 	console.log(wsTxt + ' sending query msg' + r);
 	clearTimeout(getEverythingWatchdog);
 	ws.send(JSON.stringify({ type: 'query_results', left:l,op:o,right: r, v: 1 }));
+}
+
+//get everything with timeout to get it all again!
+function query_fips(text) {
+	console.log(wsTxt + ' sending query msg' + text);
+	ws.send(JSON.stringify({ type: 'query_fips', search:text, v: 1 }));
 }
 
 // delay build each transaction

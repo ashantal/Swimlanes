@@ -5,6 +5,8 @@
 var path = require('path');
 
 module.exports = function (g_options, fcw, logger) {
+	var fips = require(path.join(__dirname, '../config/fips.json'));
+	var jsonQuery = require('json-query');
 	var helper = require(path.join(__dirname, './helper.js'))(process.env.creds_filename, logger);
 	var ws_server = {};
 	var broadcast = null;
@@ -14,6 +16,7 @@ module.exports = function (g_options, fcw, logger) {
 	var checkPeriodically = null;
 	var enrollInterval = null;
 
+	
 	//--------------------------------------------------------
 	// Setup WS Module
 	//--------------------------------------------------------
@@ -113,6 +116,30 @@ module.exports = function (g_options, fcw, logger) {
 				if (err != null) send_err(err, resp);
 				else options.ws.send(JSON.stringify({ msg: 'query_results', data: resp }));
 			});
+		}
+		else if(data.type=="query_fips"){			
+			var resp = jsonQuery('fips[STATE=CA & COUNTYNAME~'+ data.search +']', {
+				data: fips
+			});			
+			/*resp = jsonQuery('fips[*COUNTYNAME~'+ data.search +']:select(STATE)', {
+				data: fips,
+				locals: {
+				  select: function (input) {
+					if (Array.isArray(input)) {
+					  var keys = [].slice.call(arguments, 1)
+					  return input.map(function (item) {
+						return Object.keys(item).reduce(function (result, key) {							
+						  if (~keys.indexOf(key)) {
+							result[key] = item[key]
+						  }
+						  return result
+						}, {})
+					  })
+					}
+				  }
+				}
+			  });*/			
+			options.ws.send(JSON.stringify({ msg: 'query_fips', data: resp.value }));
 		}
 		// get history of listing
 		else if (data.type === 'audit') {

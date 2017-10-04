@@ -13,7 +13,6 @@ module.exports = function (config_filename, logger) {
 	if (!config_filename) {
 		config_filename = 'listings_local.json';
 	}
-
 	helper.config_path = path.join(__dirname, '../config/' + config_filename);
 	helper.config = require(helper.config_path);											//load the config file
 	helper.creds_path = path.join(__dirname, '../config/' + helper.config.cred_filename);

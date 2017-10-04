@@ -46,7 +46,33 @@ function populate_query_results(msg) {
 		build_listing(msg.data.parsed[i].Record);
 	}	
 }
+//show query results
+function populate_query_fips(msg) {
+	if(msg.data!=null){
+		console.log(msg.data.STATEFP);
+		console.log(msg.data.COUNTYFP);
+		var s = ('00' + msg.data.STATEFP).slice(-2)
+		var c = ('000' + msg.data.COUNTYFP).slice(-3)
+		$('input[name="county"]').val(s+c);
+		$('input[name="sub-county"]').val('N');
+		populate_uid();
+		$('.reg').html(msg.data.COUNTYNAME +', ' + msg.data.STATE);
+	}
+}
 
+function populate_uid(){
+	var uid = $('input[name="country"]').val() + 
+	'-' + $('input[name="county"]').val() 
+	if($('input[name="parcel"]').val()!=''){ 
+	uid = uid +
+	'-' + $('input[name="sub-county"]').val() + 
+	'-' + $('select[name="property-type"]').val() + 
+	'-' + $('input[name="parcel"]').val() + 
+	'-' + $('input[name="sub"]').val() 
+	}
+	$('.sreg').html(uid);
+	return uid;   	
+}
 
 
 //crayp resize - dsh to do, dynamic one

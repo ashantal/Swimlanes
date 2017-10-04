@@ -9,14 +9,7 @@ $(document).on('ready', function () {
 
 	$('#createMarbleButton').click(function () {
 		console.log('creating listing');
-		var id  = 
-			 $('input[name="country"]').val() + 
-			 '-' + $('input[name="sub-country"]').val() + 
-			 '-' + $('input[name="township"]').val() + 
-			 '-' + $('select[name="property-type"]').val() + 
-			 '-' + $('input[name="parcel"]').val() + 
-			 '-' + $('input[name="sub"]').val() 			
-		
+		var id  = populate_uid();					
 		var obj = {
 			type: 'create',
             uid: id,
@@ -117,5 +110,22 @@ $(document).on('ready', function () {
 		}
 	});
 
+	//username/company search
+	$('#fips').keyup(function (e) {
+		query_fips($('#fips').val());
+	});
+	$('input[name="parcel"').keyup(function (e) {
+		populate_uid();
+	});
+	$('select[name="property-type"').change(function (e) {
+		console.log(this);
+		if($(this).val()!='S'){
+			$('input[name="sub"').val('N');
+		}
+		populate_uid();
+	});
+	$('input[name="sub"').keyup(function (e) {
+		populate_uid();
+	});	
 });
 
