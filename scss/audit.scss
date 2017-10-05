@@ -27,26 +27,38 @@ $left_width: 175px;
 .txHistoryWrap{
 	display: inline-block;
 	vertical-align: bottom;
-	margin-top: 35px;
-} 
-.txHistoryWrap div{
-	vertical-align:top;
 	margin:10px;
-	font-size: 12px;	
+} 
+.txListingWrap{
+	display: inline-block;
+	vertical-align: bottom;
+	margin:10px;
+} 
+.txListingDetails{
+	vertical-align:top;
+	padding: 5px;
+	font-size: 12px;
+	background-color:#343d48;	
+	position: relative;
+	left: 100%;	
+} 
+.txListingDetails strong{
+	color: #67F508;
 } 
 .txHistoryWrap strong{
-	color: #D6D9DB;
-	font-size: 16px;	
+	color: #08B2F5;
 } 
 
 .txDetails{
+	vertical-align:top;
+	margin:10px;
+	padding: 5px;
+	font-size: 12px;
+	background-color:#343d48;		
 	position: relative;
 	vertical-align: bottom;
-	font-size: 14px;
 	display: inline-block;
 	left: 100%;
-	margin-top: 5px;
-	margin-bottom: 5px;
 }
 
 .leftTxWrap{

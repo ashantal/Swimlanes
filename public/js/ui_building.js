@@ -177,28 +177,15 @@ function build_notification(error, msg) {
 //build a tx history div
 function build_a_tx(data, pos) {
 	var html = '';
-	var state_name = '-';
-	var state_type = '-';
-	var id = '-';
-	var pid = '-'
-	if (data && data.value && data.value.state && data.value.state.state_name) {
-		state_name = data.value.state.state_name;
-		state_type = data.value.state.state_type;
-		uid = data.value.uid;
-	}
-
-	html += `<div class="txDetails">
+	if (data && data.value) {
+		html += `<div class="txDetails">
 				<div class="txCount">TX ` + (Number(pos) + 1) + `</div>
-				<p>
-					<div class="listingName txId">` + data.txId.substring(0, 20) + `...</div>
-				</p>
-				<p>
-					<div class="listingName txId">` + uid +`</div>
-				</p>
-				<p>
-					<div class="listingName">` + state_name + `-` + state_type + `</div>
-				</p>
+				<div class="txId">` + data.txId.substring(0, 20) + `...</div>
+				<div class="txId">` + data.value.uid +`</div>
+				<div class="txId">` + data.value.sid +`</div>
+				<div class="txId"><strong>` + data.value.state.state_name + `</strong></div>
 			</div>`;
+	}
 	return html;
 }
 
@@ -207,7 +194,7 @@ function build_a_listing(data) {
 	var html = '';
 	if(data.length>0){
 		var o = data[0];		
-		html = `
+		html = `<div class="txListingDetails">
 			<strong>`+ o['PropertySubType']+` ` +o['SourceSystemName'] +`(`+ o['StandardStatus'] + `)</strong> 
 			<br/><br/>
 			`+ o['UnparsedAddress'] +`
@@ -222,7 +209,10 @@ function build_a_listing(data) {
 			<br/>By ` + o['ListAgentFullName'] +`<br/>` + o['ListOfficeName'] +` 
 			<br/><br/>Features: <br/>
 			`+ o['AssociationAmenities'] +` `+ o['Appliances'] +` `+ o['RoomBathroomFeatures'] +` `+ o['RoomBedroomFeatures'] +` `+ o['RoomDiningRoomFeatures']
-			+`<br/>`		  		
+			+`</div>`		  		
 	}
 	$('.txListingWrap').html(html);
+	$('.txListingDetails').animate({ opacity: 1, left: 0 }, 600, function () {
+		//after animate
+	});
 }

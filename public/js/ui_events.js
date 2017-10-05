@@ -72,12 +72,12 @@ $(document).on('ready', function () {
 
 	function auditMarble(that) {
 		var obj1 = {
-			type: 'audit',
-			listing_id: $(that).attr('id')
-		};
-		var obj2 = {
 			type: 'query_listing',
 			listing_id: $(that).attr('sid')
+		};
+		var obj2 = {
+			type: 'audit',
+			listing_id: $(that).attr('id')
 		};
 		
 		$('.auditingMarble').removeClass('auditingMarble');
@@ -85,6 +85,8 @@ $(document).on('ready', function () {
 			for (var x in pendingTxDrawing) clearTimeout(pendingTxDrawing[x]);
 			$('.txHistoryWrap').html('');										//clear
 		}*/
+		$('.txHistoryWrap').html('');
+		$('.txListingWrap').html('');		
 		$(that).addClass('auditingMarble');
 		$('#auditContentWrap').fadeIn();
 		$('#marbleId').html($(that).attr('uid'));

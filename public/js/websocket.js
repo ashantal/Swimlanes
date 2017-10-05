@@ -78,14 +78,12 @@ function connect_to_server() {
 				var count = $('.txDetails').length;
 
 				for(x in pendingTxDrawing) clearTimeout(pendingTxDrawing[x]);
-
+				$('.txHistoryWrap').html('');					//clear				
 				if (count <= 0) {									//if no tx shown yet, append to back
-					$('.txHistoryWrap').html('');					//clear
 					for (x=msgObj.data.parsed.length-1; x >= 0; x--) {
 						built++;
 						slowBuildtx(msgObj.data.parsed[x], x, built);
 					}
-
 				} else {											//if we already showing tx, prepend to front
 					console.log('skipping tx', count);
 					for (x=msgObj.data.parsed.length-1; x >= count; x--) {
