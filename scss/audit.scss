@@ -29,6 +29,26 @@ $left_width: 175px;
 	vertical-align: bottom;
 	margin-top: 35px;
 } 
+.txHistoryWrap div{
+	vertical-align:top;
+	margin:10px;
+	font-size: 12px;	
+} 
+.txHistoryWrap strong{
+	color: #D6D9DB;
+	font-size: 16px;	
+} 
+
+.txDetails{
+	position: relative;
+	vertical-align: bottom;
+	font-size: 14px;
+	display: inline-block;
+	left: 100%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
 .leftTxWrap{
 	width: 100%;
 	display: inline-block;
@@ -36,20 +56,11 @@ $left_width: 175px;
 	text-align: center;
 }
 
+
 .biggerLeft{
 	margin-bottom: 50px;
 }
 
-.txDetails{
-	position: relative;
-	vertical-align: bottom;
-	font-size: 14px;
-	display: inline-block;
-	margin-left: 30px;
-	left: 100%;
-	margin-top: 5px;
-	margin-bottom: 10px;
-}
 .marbleLegend{
 	width: 85px;
 	display: inline-block;

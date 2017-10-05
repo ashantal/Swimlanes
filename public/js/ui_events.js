@@ -50,20 +50,19 @@ $(document).on('ready', function () {
 
 
 	//close create panel
-	$('#closeCreate').click(function () {
-		$('#createPanel,#savePanel, #tint, #infoPanel').fadeOut();
+	$('.fa-close').click(function () {
+		$('#createPanel,#marketPanel, #tint, #infoPanel').fadeOut();
 	});
 
 	/**  
 	 * Audit Listing
 	*/		
 	$(document).on('contextmenu', '.ball', function () {
-		auditMarble(this,'query_listing',$(this).attr('sid'));
+		auditMarble(this);		
 		return false;
 	});
 
 	$(document).on('click', '.ball', function () {
-		//auditMarble(this,'audit', $(this).attr('id'));
 		console.log('edit listing');
 		$('input[name=id]').val($(this).attr('id'));
 		$('.market').html($(this).attr('uid'));		
@@ -71,24 +70,27 @@ $(document).on('ready', function () {
 		$('#marketPanel').fadeIn();				
 	});
 
-	function auditMarble(that, type, listing_id) {
+	function auditMarble(that) {
+		var obj1 = {
+			type: 'audit',
+			listing_id: $(that).attr('id')
+		};
+		var obj2 = {
+			type: 'query_listing',
+			listing_id: $(that).attr('sid')
+		};
+		
 		$('.auditingMarble').removeClass('auditingMarble');
-
-		if (!auditingMarbleId || listing_id != auditingMarbleId) {//different marble than before!
+		/*if (!auditingMarbleId || listing_id != auditingMarbleId) {//different marble than before!
 			for (var x in pendingTxDrawing) clearTimeout(pendingTxDrawing[x]);
 			$('.txHistoryWrap').html('');										//clear
-		}
-		console.log('\nuser clicked on marble', listing_id);
-
+		}*/
 		$(that).addClass('auditingMarble');
 		$('#auditContentWrap').fadeIn();
-		$('#marbleId').html(listing_id);
+		$('#marbleId').html($(that).attr('uid'));
 		$('#rightEverything').addClass('rightEverythingOpened');
 		$('#leftEverything').fadeIn();
-		var obj2 = {
-			type: type,
-			listing_id: listing_id
-		};
+		ws.send(JSON.stringify(obj1));		
 		ws.send(JSON.stringify(obj2));
 	}
 

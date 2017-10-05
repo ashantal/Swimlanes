@@ -2,7 +2,7 @@
 	
 	span.fa.fa-close#closeCreate
 
-	h2.reg Register
+	h5.reg Register
 	hr
 
 	#innerWrap
@@ -20,14 +20,14 @@
 			input(type="text" name="parcel" placeholder="APN")
 			br
 			legend
-			select(name="property-type" style="font-size:20px;width:135px")
+			select(name="property-type")
 				option(value="R" selected="selected") Real
 				option(value="S") Stock
 				option(value="T") Temp
 			br
 			input(type="text" name="sub" placeholder="SUB" value="N")
 			hr
-			h3.sreg
+			h5.sreg
 			hr
 			button(type="button")#createMarbleButton
 				span.fa.fa-plus-circle &nbsp;&nbsp;

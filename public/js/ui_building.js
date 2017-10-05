@@ -207,7 +207,7 @@ function build_a_listing(data) {
 	var html = '';
 	if(data.length>0){
 		var o = data[0];		
-		html = `<div>
+		html = `
 			<strong>`+ o['PropertySubType']+` ` +o['SourceSystemName'] +`(`+ o['StandardStatus'] + `)</strong> 
 			<br/><br/>
 			`+ o['UnparsedAddress'] +`
@@ -222,7 +222,7 @@ function build_a_listing(data) {
 			<br/>By ` + o['ListAgentFullName'] +`<br/>` + o['ListOfficeName'] +` 
 			<br/><br/>Features: <br/>
 			`+ o['AssociationAmenities'] +` `+ o['Appliances'] +` `+ o['RoomBathroomFeatures'] +` `+ o['RoomBedroomFeatures'] +` `+ o['RoomDiningRoomFeatures']
-			+`</div>`		  		
+			+`<br/>`		  		
 	}
-	$('.txHistoryWrap').prepend(html);
+	$('.txListingWrap').html(html);
 }

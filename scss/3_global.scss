@@ -319,8 +319,8 @@ $auditSize: 300px;
 }
 #createform{
 	display: inline-block;
-	margin-top: 40px;
-	margin-left: 15px;
+	margin-top: 5px;
+	margin-left: 5px;
 	vertical-align: middle;
 }
 .createLegend{
@@ -337,11 +337,22 @@ $auditSize: 300px;
 	top: 75px;
 	background: #343d48;
 	z-index: 1005;
-	padding: 40px 60px;
+	padding: 20px 60px;
 	left: 50%;
 	margin-left: -265px;
-	width: 410px;
+	width: 200px;
 }
+#marketPanel{
+	position: fixed;
+	top: 75px;
+	background: #343d48;
+	z-index: 1005;
+	padding: 20px 20px;
+	left: 50%;
+	margin-left: -265px;
+	width: 200px;
+}
+
 #tint{
 	display:none;
 	background: #000;
