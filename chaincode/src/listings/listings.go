@@ -140,8 +140,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return read(stub, args)
 	} else if function == "write" { //generic writes to ledger
 		return write(stub, args)
-	} else if function == "delete_listing" { //deletes a listing from state
-		return delete_listing(stub, args)
+	} else if function == "update_source" { //updates a listing from state
+		return update_source(stub, args)
 	} else if function == "init_listing" { //create a new listing
 		return init_listing(stub, args)
 	} else if function == "set_state" { //change state of a listing

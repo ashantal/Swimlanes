@@ -1,0 +1,13 @@
+#marketPanel(hidden style="position: fixed;top: 75px;background: #343d48;z-index: 1005; padding: 40px 60px;left: 50%; margin-left: -265px;width: 410px;").panel
+	span.fa.fa-close#closeCreate
+	h2.reg On Market
+	hr
+	#innerWrap
+		form(action="/create" method="POST")#createform
+			input(type="hidden" name="id" disabled="disabled")
+			br
+			input(type="text" name="sid" placeholder="Enter Listing ID")
+			hr
+			button(type="button")#saveMarbleButton
+				span.fa.fa-plus-circle &nbsp;&nbsp;
+				span Save

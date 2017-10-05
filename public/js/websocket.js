@@ -53,8 +53,7 @@ function connect_to_server() {
 				build_state_panels(msgObj.everything.states);
 				for (var i in msgObj.everything.listings) {
 					populate_state_listings(msgObj.everything.listings[i]);
-				}
-							
+				}							
 				start_up = false;
 			}else if (msgObj.msg === 'query_listing') {
 				build_a_listing(msgObj.data);

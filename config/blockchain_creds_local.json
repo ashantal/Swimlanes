@@ -24,7 +24,7 @@
 				}
 			},
 			"chaincodes": {
-				"l2": "v2"
+				"l2": "v3"
 			},
 			"x-blockDelay": 10000
 		}

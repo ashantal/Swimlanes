@@ -8,7 +8,6 @@ $(document).on('ready', function () {
     });
 
 	$('#createMarbleButton').click(function () {
-		console.log('creating listing');
 		var id  = populate_uid();					
 		var obj = {
 			type: 'create',
@@ -30,21 +29,46 @@ $(document).on('ready', function () {
 		return false;
 	});
 
+	$('#saveMarbleButton').click(function () {
+		var obj = {
+			type: 'update_source',
+            listing_id: $('input[name=id]').val(),
+            source_id:$('input[name=sid]').val()
+		};
+		console.log('saving listing, sending', obj);
+		$('#marketPanel').fadeOut();
+		$('#tint').fadeOut();
+
+		show_tx_step({ state: 'building_proposal' }, function () {
+			ws.send(JSON.stringify(obj));
+			refreshHomePanel();
+		});
+
+		return false;
+	});
+
+
+
 	//close create panel
 	$('#closeCreate').click(function () {
-		$('#createPanel, #tint', '#infoPanel').fadeOut();
+		$('#createPanel,#savePanel, #tint, #infoPanel').fadeOut();
 	});
 
 	/**  
 	 * Audit Listing
 	*/		
 	$(document).on('contextmenu', '.ball', function () {
-		auditMarble(this,'query_listing','ML81680342');
+		auditMarble(this,'query_listing',$(this).attr('sid'));
 		return false;
 	});
 
 	$(document).on('click', '.ball', function () {
-		auditMarble(this,'audit', $(this).attr('id'));
+		//auditMarble(this,'audit', $(this).attr('id'));
+		console.log('edit listing');
+		$('input[name=id]').val($(this).attr('id'));
+		$('.market').html($(this).attr('uid'));		
+        $('#tint').fadeIn();
+		$('#marketPanel').fadeIn();				
 	});
 
 	function auditMarble(that, type, listing_id) {

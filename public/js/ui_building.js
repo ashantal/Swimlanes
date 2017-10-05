@@ -20,7 +20,7 @@ function build_listing(listing) {
 	listing.id = escapeHtml(listing.id);
 	console.log('[ui] building : ', listing);
 	//if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
-	var html = '<span id="' + listing.id + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + ' title="' + listing.id + '" state_id="' + listing.state.id + '"></span>';
+	var html = '<span id="' + listing.id + '" uid="' + listing.uid + '" sid="' + listing.sid + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + ' title="' + listing.id + '" state_id="' + listing.state.id + '"></span>';
 
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.innerlistingWrap').prepend(html);
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.nolistingsMsg').hide();	

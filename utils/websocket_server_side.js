@@ -67,7 +67,7 @@ module.exports = function (g_options, fcw, logger) {
 				else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
 			});
 		}
-
+		
 		// transfer a listing
 		else if (data.type === 'transfer_listing') {
 			logger.info('[ws] transferring req');
@@ -78,6 +78,23 @@ module.exports = function (g_options, fcw, logger) {
 			};
 
 			listings_lib.set_listing_state(options, function (err, resp) {
+				if (err != null) send_err(err, data);
+				else{ 
+					options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
+					ws_server.check_for_updates(null);					
+			    }
+			});
+		}
+		// transfer a listing
+		else if (data.type === 'update_source') {
+			logger.info('[ws] update req');
+			options.args = {
+				listing_id: data.listing_id,
+				source_id: data.source_id,
+				auth_company: "process.env.listing_company"
+			};
+
+			listings_lib.set_listing_source(options, function (err, resp) {
 				if (err != null) send_err(err, data);
 				else{ 
 					options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));

@@ -182,6 +182,42 @@ func init_listing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	return shim.Success(nil)
 }
 
+func update_source(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var err error
+	fmt.Println("starting update_source")
+
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting 5")
+	}
+
+	//input sanitation
+	err = sanitize_arguments(args)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	id := args[0]
+	sid := strings.ToLower(args[1])
+
+	// get listing's current state
+	listingAsBytes, err := stub.GetState(id)
+	if err != nil {
+		return shim.Error("Failed to get listing")
+	}
+	res := Listing{}
+	json.Unmarshal(listingAsBytes, &res) //un stringify it aka JSON.parse()
+
+	res.SId = sid                        //change the source id
+	jsonAsBytes, _ := json.Marshal(res)  //convert to array of bytes
+	err = stub.PutState(id, jsonAsBytes) //rewrite the listing with id as key
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	fmt.Println("- end update_source")
+	return shim.Success(nil)
+}
+
 // ============================================================================================================================
 // Init State - create a new state aka end user, store into chaincode state
 //
