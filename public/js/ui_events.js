@@ -32,25 +32,22 @@ $(document).on('ready', function () {
 
 	//close create panel
 	$('#closeCreate').click(function () {
-		$('#createPanel, #tint').fadeOut();
+		$('#createPanel, #tint', '#infoPanel').fadeOut();
 	});
 
 	/**  
 	 * Audit Listing
-	*/	
-	//right click opens audit on marble
+	*/		
 	$(document).on('contextmenu', '.ball', function () {
-		auditMarble(this, true);
+		auditMarble(this,'query_listing','ML81680342');
 		return false;
 	});
 
-	//left click audits marble
 	$(document).on('click', '.ball', function () {
-		auditMarble(this, false);
+		auditMarble(this,'audit', $(this).attr('id'));
 	});
 
-	function auditMarble(that, open) {
-		var listing_id = $(that).attr('id');
+	function auditMarble(that, type, listing_id) {
 		$('.auditingMarble').removeClass('auditingMarble');
 
 		if (!auditingMarbleId || listing_id != auditingMarbleId) {//different marble than before!
@@ -59,18 +56,16 @@ $(document).on('ready', function () {
 		}
 		console.log('\nuser clicked on marble', listing_id);
 
-		if (open || $('#auditContentWrap').is(':visible')) {
-			$(that).addClass('auditingMarble');
-			$('#auditContentWrap').fadeIn();
-			$('#marbleId').html(listing_id);
-			$('#rightEverything').addClass('rightEverythingOpened');
-			$('#leftEverything').fadeIn();
-			var obj2 = {
-				type: 'audit',
-				listing_id: listing_id
-			};
-			ws.send(JSON.stringify(obj2));
-		}
+		$(that).addClass('auditingMarble');
+		$('#auditContentWrap').fadeIn();
+		$('#marbleId').html(listing_id);
+		$('#rightEverything').addClass('rightEverythingOpened');
+		$('#leftEverything').fadeIn();
+		var obj2 = {
+			type: type,
+			listing_id: listing_id
+		};
+		ws.send(JSON.stringify(obj2));
 	}
 
 	$('#auditClose').click(function () {

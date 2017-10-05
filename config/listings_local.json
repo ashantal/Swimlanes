@@ -1,5 +1,6 @@
 {
     "cred_filename": "blockchain_creds_local.json",
+    "api_filename": "api_creds_local.json",
     "use_events": true,
     "keep_alive_secs": 120,
     "org": "MLS Blockchain Alliance",

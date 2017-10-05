@@ -16,6 +16,7 @@
 		"fabric-ca-client": "1.0.1",
 		"fabric-client": "1.0.1",
 		"json-query": "^2.2.2",
+		"odata-client": "^0.5.5",
 		"pug": "2.0.0-beta11",
 		"serve-static": "1.11.*",
 		"winston": "2.2.*",

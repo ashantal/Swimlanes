@@ -17,6 +17,9 @@ module.exports = function (config_filename, logger) {
 	helper.config = require(helper.config_path);											//load the config file
 	helper.creds_path = path.join(__dirname, '../config/' + helper.config.cred_filename);
 	helper.creds = require(helper.creds_path);												//load the credential file
+	helper.api_path = path.join(__dirname, '../config/' + helper.config.api_filename);
+	helper.api = require(helper.api_path);												//load the api config
+    helper.odata = require('odata-client');
 	var package_json = require(path.join(__dirname, '../package.json'));					//get release version of listings from package.json
 
 	logger.info('Loaded config file', helper.config_path);									//path to config file
@@ -728,6 +731,13 @@ module.exports = function (config_filename, logger) {
 		}
 		return null;
 	};
+
+	helper.query_api= function(id,cb){
+		var q = this.odata({service: this.api.uri, resources: 'Property', headers:{"Authorization":"Bearer "+this.api.access_token}});		
+		q.top(1).filter("ListingId eq '"+id+"'").select('SourceSystemName','StandardStatus','UnparsedAddress','ParcelNumber','StateOrProvince','PropertyType','PropertySubType','YearBuilt','CountyOrParish','ListPrice','ListOfficeName','ListAgentFullName','AssociationAmenities','Appliances','RoomBathroomFeatures','RoomBedroomFeatures','RoomDiningRoomFeatures','RoomFamilyRoomFeatures').get().then(function(response){
+			cb(JSON.parse(response.body));
+		});
+	}
 
 	return helper;
 };

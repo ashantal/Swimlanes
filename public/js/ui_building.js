@@ -201,3 +201,28 @@ function build_a_tx(data, pos) {
 			</div>`;
 	return html;
 }
+
+//build a tx history div
+function build_a_listing(data) {
+	var html = '';
+	if(data.length>0){
+		var o = data[0];		
+		html = `<div>
+			<strong>`+ o['PropertySubType']+` ` +o['SourceSystemName'] +`(`+ o['StandardStatus'] + `)</strong> 
+			<br/><br/>
+			`+ o['UnparsedAddress'] +`
+			<br/>
+			#` + o['ParcelNumber'] +` `+ o['StateOrProvince'] +` `+ o['CountyOrParish'] +`
+			<br/><br/>
+			`+ o['PropertyType']  +`
+			<br/>
+			Year Built ` + o['YearBuilt'] +`
+			<br/>
+			Listed For $ `+  o['ListPrice']+`
+			<br/>By ` + o['ListAgentFullName'] +`<br/>` + o['ListOfficeName'] +` 
+			<br/><br/>Features: <br/>
+			`+ o['AssociationAmenities'] +` `+ o['Appliances'] +` `+ o['RoomBathroomFeatures'] +` `+ o['RoomBedroomFeatures'] +` `+ o['RoomDiningRoomFeatures']
+			+`</div>`		  		
+	}
+	$('.txHistoryWrap').prepend(html);
+}

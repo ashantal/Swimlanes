@@ -117,7 +117,12 @@ module.exports = function (g_options, fcw, logger) {
 				else options.ws.send(JSON.stringify({ msg: 'query_results', data: resp }));
 			});
 		}
-		else if(data.type=="query_fips"){			
+		else if(data.type=="query_listing"){
+			helper.query_api(data.listing_id, function(body){
+				options.ws.send(JSON.stringify({ msg: 'query_listing', data: body.value}));											
+			});	
+		}		
+		else if(data.type=="query_fips"){
 			var resp = jsonQuery('fips[STATE=CA & COUNTYNAME~'+ data.search +']', {
 				data: fips
 			});			
