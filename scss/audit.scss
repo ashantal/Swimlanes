@@ -6,6 +6,7 @@ $left_width: 175px;
 	background: $acc_color2;
 	color: $main_color;
 	height: 100%;
+	font-family: monospace;	
 }
 #auditLegend{
 	color: $acc_color3;
@@ -63,7 +64,7 @@ $left_width: 175px;
 
 .txDetails{
 	vertical-align:top;
-	margin:10px;
+	margin:5px;
 	padding: 5px;
 	font-size: 12px;
 	background-color:#343d48;		
@@ -97,7 +98,6 @@ $left_width: 175px;
 .txId, .marbleName{
 	background: $main_bg;
 	font-size: 12px;
-	font-family: monospace;
 	padding: 3px 10px;
 }
 .txCount{

@@ -182,11 +182,9 @@ function build_a_tx(data, pos) {
 	var html = '';
 	if (data && data.value) {
 		html += `<div class="txDetails">
-				<div class="txCount">TX ` + (Number(pos) + 1) + `</div>
-				<div class="txId">` + data.txId.substring(0, 20) + `...</div>
-				<div class="txId">` + data.value.uid +`</div>
-				<div class="txId">` + data.value.sid +`</div>
-				<div class="txId"><strong>` + data.value.state.state_name + `</strong></div>
+				<div class="txCount"><strong>Tx ` + (Number(pos) + 1) + ' ' + data.value.sid +' '+ data.value.state.state_name + `</strong></div>
+				<div class="txId">` + data.txId.substring(0, 30) + `</div>
+				<div class="txId">`+`</div>
 			</div>`;
 	}
 	return html;
@@ -198,19 +196,16 @@ function build_a_listing(data) {
 	if(data.length>0){
 		var o = data[0];		
 		html = `<div class="txListingDetails"><div class="txListingImageWrap"/>
-			<strong>`+ o['PropertySubType']+` ` +o['SourceSystemName'] +`(`+ o['StandardStatus'] + `)</strong> 
-			<br/><br/>
+			<strong>`+ o['PropertyType'] +` (#`+ o['ParcelNumber'] + `)</strong> 
+			<br/>
 			`+ o['UnparsedAddress'] +`
 			<br/>
-			#` + o['ParcelNumber'] +` `+ o['StateOrProvince'] +` `+ o['CountyOrParish'] +`
-			<br/><br/>
-			`+ o['PropertyType']  +`
+			` +  o['StateOrProvince'] +` `+ o['CountyOrParish'] +`
+			<hr/>
+			`+ o['PropertySubType']  +` Built ` + o['YearBuilt'] +`
 			<br/>
-			Year Built ` + o['YearBuilt'] +`
-			<br/>
-			Listed For $ `+  o['ListPrice']+`
-			<br/>By ` + o['ListAgentFullName'] +`<br/>` + o['ListOfficeName'] +` 
-			<br/><br/>Features: <br/>
+			Listed For $`+  o['ListPrice']+` By ` + o['ListAgentFullName'] +` ` + o['ListOfficeName'] +` 
+			<hr/>
 			`+ o['AssociationAmenities'] +` `+ o['Appliances'] +` `+ o['RoomBathroomFeatures'] +` `+ o['RoomBedroomFeatures'] +` `+ o['RoomDiningRoomFeatures']
 			+`</div>`;
 		var obj = {
