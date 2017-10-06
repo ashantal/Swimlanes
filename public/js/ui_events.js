@@ -57,17 +57,16 @@ $(document).on('ready', function () {
 	/**  
 	 * Audit Listing
 	*/		
-	$(document).on('contextmenu', '.ball', function () {
-		auditMarble(this);		
-		return false;
-	});
-
 	$(document).on('click', '.ball', function () {
-		console.log('edit listing');
-		$('input[name=id]').val($(this).attr('id'));
-		$('.market').html($(this).attr('uid'));		
-        $('#tint').fadeIn();
-		$('#marketPanel').fadeIn();				
+		var state = $(this).attr('state_type');
+		if(state=="premarket"){
+			$('input[name=id]').val($(this).attr('id'));
+			$('.market').html($(this).attr('uid'));		
+			$('#tint').fadeIn();
+			$('#marketPanel').fadeIn();
+		}else{
+			auditMarble(this);					
+		}				
 	});
 
 	function auditMarble(that) {

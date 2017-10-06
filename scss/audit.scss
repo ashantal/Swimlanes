@@ -33,7 +33,19 @@ $left_width: 175px;
 	display: inline-block;
 	vertical-align: bottom;
 	margin:10px;
+}
+.txListingImageWrap{
+	display: inline-block;
+	vertical-align: bottom;
+	margin:10px;
+}
+.txListingImage{
+	vertical-align:top;
+	padding: 5px;
+	position: relative;
+	left: 100%;	
 } 
+ 
 .txListingDetails{
 	vertical-align:top;
 	padding: 5px;

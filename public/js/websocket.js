@@ -57,6 +57,8 @@ function connect_to_server() {
 				start_up = false;
 			}else if (msgObj.msg === 'query_listing') {
 				build_a_listing(msgObj.data);
+			}else if (msgObj.msg === 'query_media') {
+				build_a_media(msgObj.data);
 			}else if (msgObj.msg === 'query_results') {
 				populate_query_results(msgObj);
 			}else if (msgObj.msg === 'query_fips') {

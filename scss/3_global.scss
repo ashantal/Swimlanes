@@ -4,11 +4,11 @@ $auditSize: 300px;
 
 #rightEverything{
 	transition: width 3s;
-	min-width: 765px;
+	min-width: 500px;
 }
 
 .rightEverythingOpened{
-	width: calc(100% - $auditSize);
+	width: calc(100% - 300px);
 	left: $auditSize;
 	position: absolute;
 }

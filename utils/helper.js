@@ -734,7 +734,13 @@ module.exports = function (config_filename, logger) {
 
 	helper.query_api= function(id,cb){
 		var q = this.odata({service: this.api.uri, resources: 'Property', headers:{"Authorization":"Bearer "+this.api.access_token}});		
-		q.top(1).filter("ListingId eq '"+id+"'").select('SourceSystemName','StandardStatus','UnparsedAddress','ParcelNumber','StateOrProvince','PropertyType','PropertySubType','YearBuilt','CountyOrParish','ListPrice','ListOfficeName','ListAgentFullName','AssociationAmenities','Appliances','RoomBathroomFeatures','RoomBedroomFeatures','RoomDiningRoomFeatures','RoomFamilyRoomFeatures').get().then(function(response){
+		q.top(1).filter("ListingId eq '"+id+"'").select("ListingId","ListingKeyNumeric",'SourceSystemName','StandardStatus','UnparsedAddress','ParcelNumber','StateOrProvince','PropertyType','PropertySubType','YearBuilt','CountyOrParish','ListPrice','ListOfficeName','ListAgentFullName','AssociationAmenities','Appliances','RoomBathroomFeatures','RoomBedroomFeatures','RoomDiningRoomFeatures','RoomFamilyRoomFeatures').get().then(function(response){
+			cb(JSON.parse(response.body));
+		});
+	}
+	helper.query_media= function(key,cb){
+		var q = this.odata({service: this.api.uri, resources: 'Media', headers:{"Authorization":"Bearer "+this.api.access_token}});		
+		q.top(1).filter("ResourceRecordKeyNumeric eq "+key).select('MediaURL').get().then(function(response){
 			cb(JSON.parse(response.body));
 		});
 	}

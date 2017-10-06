@@ -20,8 +20,11 @@ function build_listing(listing) {
 	listing.id = escapeHtml(listing.id);
 	console.log('[ui] building : ', listing);
 	//if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
-	var html = '<span id="' + listing.id + '" uid="' + listing.uid + '" sid="' + listing.sid + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + ' title="' + listing.id + '" state_id="' + listing.state.id + '"></span>';
-
+	var html = '<span id="' + listing.id + 
+	'" uid="' + listing.uid + 
+	'" sid="' + listing.sid + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + 
+	'" state_id="' + listing.state.id + 
+	'" state_type="' + listing.state.state_type + '" state_name="' + listing.state.state_name + '"></span>';
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.innerlistingWrap').prepend(html);
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.nolistingsMsg').hide();	
 }
@@ -194,7 +197,7 @@ function build_a_listing(data) {
 	var html = '';
 	if(data.length>0){
 		var o = data[0];		
-		html = `<div class="txListingDetails">
+		html = `<div class="txListingDetails"><div class="txListingImageWrap"/>
 			<strong>`+ o['PropertySubType']+` ` +o['SourceSystemName'] +`(`+ o['StandardStatus'] + `)</strong> 
 			<br/><br/>
 			`+ o['UnparsedAddress'] +`
@@ -209,10 +212,27 @@ function build_a_listing(data) {
 			<br/>By ` + o['ListAgentFullName'] +`<br/>` + o['ListOfficeName'] +` 
 			<br/><br/>Features: <br/>
 			`+ o['AssociationAmenities'] +` `+ o['Appliances'] +` `+ o['RoomBathroomFeatures'] +` `+ o['RoomBedroomFeatures'] +` `+ o['RoomDiningRoomFeatures']
-			+`</div>`		  		
+			+`</div>`;
+		var obj = {
+			type: 'query_media',
+			listing_key: o["ListingKeyNumeric"]
+		}
+		ws.send(JSON.stringify(obj));				   			  		
 	}
 	$('.txListingWrap').html(html);
 	$('.txListingDetails').animate({ opacity: 1, left: 0 }, 600, function () {
+		//after animate
+	});
+}
+function build_a_media(data) {
+	var html = '';
+	if(data.length>0){
+		var o = data[0];		
+		html = `<img class="txListingImage" src="`+ o['MediaURL'] +`"/>`
+	}
+	console.log(html);
+	$('.txListingImageWrap').html(html);
+	$('.txListingImage').animate({ opacity: 1, left: 0 }, 600, function () {
 		//after animate
 	});
 }
