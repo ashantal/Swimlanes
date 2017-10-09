@@ -143,7 +143,7 @@ if (config_error) {
 		} else {
 			logger.info('Success enrolling admin');
 			broadcast_state('enrolling', 'success');
-
+			
 			setup_lib(function () {
 				detect_prev_startup({ startup: true }, function (err) {
 					if (err) {
@@ -151,6 +151,7 @@ if (config_error) {
 					} else {
 						logger.debug('Detected that we have launched successfully before');
 						logger.debug('Welcome back - Initiating start up\n\n');
+						logger.info('Querying Block');									
 					}
 				});
 			});

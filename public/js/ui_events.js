@@ -117,11 +117,9 @@ $(document).on('ready', function () {
 		$('#leftEverything').fadeIn();
 	});
 
-
-
-/**
- * Query
- */
+	/**
+	 * Query
+ 	*/
 
 	//username/company search
 	$('#searchUsers').keyup(function (e) {

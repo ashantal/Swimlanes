@@ -385,6 +385,18 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 	};
 
 
+	listings_chaincode.query_block = function (id,cb) {
+		fcw.query_block(enrollObj, {
+			block_id:id,
+		}, function(err,obj){
+			cb(err,obj);
+		});		
+	}
+
+
+
+
+
 	// Other -------------------------------------------------------------------------------
 
 	// Format Owner's Actual Key Name

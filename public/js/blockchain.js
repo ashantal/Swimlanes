@@ -49,7 +49,7 @@ function build_block(id) {										//build and append the block html
 		id = nDig(id, 3);
 	}
 
-	var html = `<div class="block ` + sizeClass + `">
+	var html = `<div class="block ` + sizeClass + `" block_id="`+id+`">
 					<div class="tooltip">
 						<span class="tooltiptext">Block ` + Number(id) + ` has been committed to the ledger</span>
 						` + id + `
@@ -60,7 +60,15 @@ function build_block(id) {										//build and append the block html
 	// move the block left (number_of_blocks * blocks_width) + 2 blocks_width
 	$('.block:last').animate({ opacity: 1, left: (uiBlocksCount * block_left_px) + block_left_px * 2 }, 600, function () {
 		$('.lastblock').removeClass('lastblock');
-		$('.block:last').addClass('lastblock');
+		$('.block:last').addClass('lastblock').click(function(){
+			var obj = { 
+				type: 'query_block', 
+				id:100 //$(this).attr('block_id')
+			}
+			console.log(obj);
+			ws.send(JSON.stringify(obj));	
+			return false;												
+		});
 	});
 	uiBlocksCount++;
 }

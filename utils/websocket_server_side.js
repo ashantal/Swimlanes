@@ -23,7 +23,7 @@ module.exports = function (g_options, fcw, logger) {
 	ws_server.setup = function (l_broadcast, l_listings_lib) {
 		broadcast = l_broadcast;
 		listings_lib = l_listings_lib;
-
+		
 		// --- Keep Alive  --- //
 		clearInterval(enrollInterval);
 		enrollInterval = setInterval(function () {					//to avoid REQUEST_TIMEOUT errors we periodically re-enroll
@@ -121,6 +121,11 @@ module.exports = function (g_options, fcw, logger) {
 		else if (data.type === 'read_everything') {
 			logger.info('[ws] read everything req');
 			ws_server.check_for_updates(ws);
+		}
+		else if(data.type == "query_block"){
+			listings_lib.query_block(data.id,function(err,block){
+				options.ws.send(JSON.stringify({ msg: 'query_block', e:err, data: block }));													
+			});							
 		}
 		else if(data.type =="query_results"){
 			logger.info('[ws] query results');
@@ -263,11 +268,11 @@ module.exports = function (g_options, fcw, logger) {
 				if (resp && resp.height && resp.height.low) {
 					if (resp.height.low > known_height || ws_client) {
 						if (!ws_client) {
-							console.log('');
 							logger.info('New block detected!', resp.height.low, resp);
 							known_height = resp.height.low;
 							newBlock = true;
 							logger.debug('[checking] there are new things, sending to all clients');
+
 							broadcast({ msg: 'block', e: null, block_height: resp.height.low });	//send to all clients
 						} else {
 							logger.debug('[checking] on demand req, sending to a client');
