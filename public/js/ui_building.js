@@ -225,9 +225,30 @@ function build_a_media(data) {
 		var o = data[0];		
 		html = `<img class="txListingImage" src="`+ o['MediaURL'] +`"/>`
 	}
-	console.log(html);
 	$('.txListingImageWrap').html(html);
 	$('.txListingImage').animate({ opacity: 1, left: 0 }, 600, function () {
 		//after animate
 	});
+}
+
+
+function build_a_block(obj) {
+	var html = `<div class="txDetails">` + render_obj(obj) + `</div>`;
+	$('.txHistoryWrap').html(html);
+	$('.txDetails').animate({ opacity: 1, left: 0 }, 600, function () {
+		//after animate
+	});	
+}
+
+function render_obj(obj){
+		var result = "";		
+		$.each(obj, function(k, v) {
+			result += "<strong>" + k + "</strong>&nbsp;"
+			if(v.constructor === Object || v.constructor === Array){
+				result += "<hr/><div style='margin-left:5px'>" + render_obj(v) + "</div>";
+			}else{
+				result += v + "<br/>";
+			}
+		});		
+		return result;
 }

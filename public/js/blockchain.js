@@ -41,17 +41,17 @@ function new_block(id) {											//rec a new block
 
 function build_block(id) {										//build and append the block html
 	var sizeClass = '';
+    var nid = Number(id)-1;	
 	if (id >= 1000000) {
 		sizeClass = 'million';									//figure out a size thats okay
 	} else if (id >= 1000) {
 		sizeClass = 'thousands';
 	} else {
-		id = nDig(id, 3);
+		id = nDig(nid, 3);
 	}
-
-	var html = `<div class="block ` + sizeClass + `" block_id="`+id+`">
+	var html = `<div class="block ` + sizeClass + `" block_id="`+nid+`">
 					<div class="tooltip">
-						<span class="tooltiptext">Block ` + Number(id) + ` has been committed to the ledger</span>
+						<span class="tooltiptext">Block ` + nid + ` has been committed to the ledger</span>
 						` + id + `
 					</div>
 				</div>`;
@@ -63,7 +63,7 @@ function build_block(id) {										//build and append the block html
 		$('.block:last').addClass('lastblock').click(function(){
 			var obj = { 
 				type: 'query_block', 
-				id:100 //$(this).attr('block_id')
+				id:$(this).attr('block_id')
 			}
 			console.log(obj);
 			ws.send(JSON.stringify(obj));	

@@ -55,6 +55,8 @@ function connect_to_server() {
 					populate_state_listings(msgObj.everything.listings[i]);
 				}							
 				start_up = false;
+			}else if (msgObj.msg === 'query_block') {
+			 console.log(build_a_block(msgObj.data));
 			}else if (msgObj.msg === 'query_listing') {
 				build_a_listing(msgObj.data);
 			}else if (msgObj.msg === 'query_media') {
