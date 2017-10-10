@@ -6,7 +6,7 @@ $(document).on('ready', function () {
 			type: 'create',
             uid: id,
             sid: "registry",
-			state_id: 's01506732319513SMUHf',
+			state_id: default_state.id,
 			v: 1
 		};
 		console.log('creating listing, sending', obj);
@@ -15,7 +15,6 @@ $(document).on('ready', function () {
 
 		show_tx_step({ state: 'building_proposal' }, function () {
 			ws.send(JSON.stringify(obj));
-
 			refreshHomePanel();
 		});
 
@@ -117,14 +116,16 @@ $(document).on('ready', function () {
 	});
 	
 	//story mode selection
-	$('#disableStoryMode').click(function () {
-		fromLS.story_mode = false;
-		$('#disableStoryMode').prop('disabled', true);
-		$('#enableStoryMode').prop('disabled', false);
-	});
-	$('#enableStoryMode').click(function () {
+	$('.fa-toggle-off').click(function () {
 		fromLS.story_mode = true;
-		$('#enableStoryMode').prop('disabled', true);
-		$('#disableStoryMode').prop('disabled', false);
+		$('.fa-toggle-off').fadeOut(function(){
+			$('.fa-toggle-on').fadeIn();			
+		});
+	});
+	$('.fa-toggle-on').click(function () {
+		fromLS.story_mode = false;
+		$('.fa-toggle-on').fadeOut(function(){
+			$('.fa-toggle-off').fadeIn();			
+		});		
 	});	
 });

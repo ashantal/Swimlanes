@@ -151,6 +151,10 @@ function get_everything_or_else(attempt) {
 			console.log('\n\n! [timeout] did not get owners in time, hopeless', attempt, '\n\n');
 		}
 	}, 5000 + getRandomInt(0, 10000));
+/*
+	var qt = $('select[name="query-type"]').val();
+	var input = $('#searchUsers').val();
+	query_results(qt,'$regex',input);*/
 }
 
 //get everything with timeout to get it all again!

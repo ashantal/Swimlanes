@@ -81,7 +81,8 @@ input[type="text"], input[type="password"], select{
 }
 
 input[type="text"]:disabled, input[type="password"]:disabled, select:disabled{
-	color: $acc_color2;
+	//color: $acc_color2;
+	color:#a0f309;
 }
 input.longer{
 	min-width:333px;

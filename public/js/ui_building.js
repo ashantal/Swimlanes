@@ -5,6 +5,7 @@
 
 var listings = {};
 var colors = ["greybg","orangebg","greenbg","redbg"];
+var default_state = {};
 // =================================================================================
 //	UI Building
 // =================================================================================
@@ -85,8 +86,6 @@ function size_state_name(name) {
 
 function build_lane_panel(lane) {
 	lane = escapeHtml(lane);
-	console.log('[ui] building lane' + lane);
-
 	var html = `<div class="lanePanel bluebg" style="width:22%;margin:5px;height:1200px;overflow:hiddel;float:left" lane="` + lane + `">
 					<div class="laneNameWrap ` + lane + `Lane">
 					<span class="laneName">` + toTitleCase(lane) + `</span>`;
@@ -116,6 +115,9 @@ function build_state_panels(data) {
 		var colorClass = '';
 		data[i].id = escapeHtml(data[i].id);
 		data[i].state_name = escapeHtml(data[i].state_name);
+		if(data[i].state_name=="registered"){
+			default_state = data[i];			
+		}
 		var lane =$('.lanePanel[lane="' + data[i].state_type + '"]');
 		if(lane.length==0){
 			build_lane_panel(data[i].state_type);							
