@@ -6,7 +6,7 @@ var story3html = '';
 var story4html = '';
 var lsKey = 'listings';
 var fromLS = {
-	story_mode:true
+	story_mode:false
 };
 
 //toggle story mode
@@ -85,7 +85,7 @@ function show_tx_step(obj, cb_orig){
 			story1_animation(function(){
 				setTimeout(function(){
 					show_tx_step({state: 'endorsing'}, cb_orig);			//we pass callback to next step!
-				}, 500);
+				}, 250);
 			});
 		}
 
@@ -117,7 +117,7 @@ function show_tx_step(obj, cb_orig){
 				$('#txStep1, #txStep2, #txStep3').addClass('stepComplete');
 
 				story4_animation();
-			}, 4000);
+			}, 100);
 		}
 
 		//exit
@@ -156,7 +156,7 @@ function show_tx_step(obj, cb_orig){
 			$('#commitBoxStable span').removeClass('fa-search').addClass('fa-close');
 			$('.closeTxStory').show();
 		}
-	}, 300);
+	}, 150);
 }
 
 function reset(){
@@ -172,12 +172,12 @@ function story1_animation(cb){
 	var dist = 50;
 	$('#marbleBorderTop, #marbleBorderBottom, #marbleBorderLeft, #marbleBorderRight').show();
 	$('#marbleBorderTop').animate({top: '+=' + dist}, {
-		duration: 1800,
+		duration: 900,
 		complete: cb
 	});
-	$('#marbleBorderBottom').animate({top: '-=' + dist}, {duration: 1300});
-	$('#marbleBorderLeft').animate({left: '+=' + dist}, {duration: 800});
-	$('#marbleBorderRight').animate({left: '-=' + dist}, {duration: 800});
+	$('#marbleBorderBottom').animate({top: '-=' + dist}, {duration: 750});
+	$('#marbleBorderLeft').animate({left: '+=' + dist}, {duration: 400});
+	$('#marbleBorderRight').animate({left: '-=' + dist}, {duration: 400});
 }
 
 //1. show marble that will roll
@@ -217,15 +217,15 @@ function story3_animation(cb){
 		$('#endorseMarbleStable').show();
 		$('.ordererMarbles').fadeIn();
 		setTimeout(function(){
-			$('#orderBoxStable').fadeIn(500);
+			$('#orderBoxStable').fadeIn(250);
 			setTimeout(function(){
 			$('#orderBoxStable').css('border', '2px #fff solid');
 				setTimeout(function(){
 					$('#endorseMarble').hide();
 					if(cb) cb();
-				}, 500);
-			}, 1000);
-		}, 300);
+				}, 250);
+			}, 500);
+		}, 150);
 	});
 }
 
@@ -238,19 +238,19 @@ function story4_animation(cb){
 	var dist4 = $('#txStep4 .txStatusWrap .txStatus').offset();
 	var diff = dist4.left - dist3.left;
 
-	$('#orderBox').fadeIn(1000);
+	$('#orderBox').fadeIn(500);
 	setTimeout(function(){
 		setTimeout(function(){
 			$('#orderBox').animate({left: '+=' + diff}, {
-				duration: 2000,
+				duration: 1000,
 				complete: function(){
 					$('#commitBoxStable').show();
 					$('#orderBox').hide();
 					if(cb) cb();
 				}
 			});
-		}, 500);
-	}, 1000);
+		}, 250);
+	}, 500);
 }
 
 //roll a circle right xxx distance
@@ -258,7 +258,7 @@ function roll_ball(who, move, cb) {
 	if(!cb) cb = function(){};
 
 	$(who).animate({left: '+='+move}, {
-		duration: 2000,
+		duration: 1000,
 		step: function(distance) {
 			var degree = distance * 360 / move;
 			$(who).css('transform','rotate(' + degree + 'deg)');

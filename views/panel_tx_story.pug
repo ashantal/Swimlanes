@@ -9,7 +9,7 @@
 		.txLegend Build Proposal
 		.txStoryWrap
 			.marbleWrap
-				div.ball#proposeMarbleStable.hideBorders.leftPos(title="Your marble tx")
+				div.ball#proposeMarbleStable.hideBorders.leftPos(title="Your event tx")
 				div.ball#proposeMarble.hideBorders.leftPos
 				div.ball#marbleBorderTop.leftPos
 				div.ball#marbleBorderBottom.leftPos
@@ -17,7 +17,7 @@
 				div.ball#marbleBorderRight.leftPos
 		.txDescription
 			span The invocation needs to be signed and packaged as a proposal. 
-			span This is done here, in the Marbles application. 
+			span This is done here, in the application. 
 
 	//----------------- Step 2 Content
 	.txStepWrap#txStep2.inactiveStep
@@ -26,14 +26,14 @@
 		.txLegend Endorsement
 		.txStoryWrap 
 			.marbleWrap
-				div.ball#endorseMarbleStable(title="Your marble tx")
+				div.ball#endorseMarbleStable(title="Your event tx")
 					span.fa.fa-check
 				div.ball#endorseMarble
 					span.fa.fa-check
 		.txDescription
 			span Next, we send the transaction proposal to our peer for endorsement. 
 			span The peer will simulate the transaction, verify the proposal, and then sign the proposal. 
-			span It is then sent back to Marbles.
+			span It is then sent back to the application.
 
 	//----------------- Step 3 Content
 	.txStepWrap#txStep3.inactiveStep
@@ -50,7 +50,7 @@
 					span.fa.fa-check
 				#orderBox Block
 		.txDescription
-			span Then Marbles will send our endorsed proposal to the orderer. 
+			span Then our application will send our endorsed proposal to the orderer. 
 			span The orderer will sequence transactions from throughout the network including ours. 
 
 	//----------------- Step 4 Content

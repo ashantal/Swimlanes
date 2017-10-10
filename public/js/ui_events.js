@@ -1,12 +1,5 @@
 $(document).on('ready', function () {
     connect_to_server();
-
-    $(document).on('click', '.addListing', function () {
-        console.log('add listing');
-        $('#tint').fadeIn();
-		$('#createPanel').fadeIn();
-    });
-
 	$('#createMarbleButton').click(function () {
 		var id  = populate_uid();					
 		var obj = {
@@ -59,41 +52,18 @@ $(document).on('ready', function () {
 	*/		
 	$(document).on('click', '.ball', function () {
 		var state = $(this).attr('state_type');
+		var id=$(this).attr('id');
+		var sid=$(this).attr('sid');
+		var uid=$(this).attr('uid')
 		if(state=="premarket"){
-			$('input[name=id]').val($(this).attr('id'));
-			$('.market').html($(this).attr('uid'));		
+			$('input[name=id]').val(id);
+			$('.market').html(uid);		
 			$('#tint').fadeIn();
 			$('#marketPanel').fadeIn();
 		}else{
-			auditMarble(this);					
+			auditMarble(id,sid,uid);					
 		}				
 	});
-
-	function auditMarble(that) {
-		var obj1 = {
-			type: 'query_listing',
-			listing_id: $(that).attr('sid')
-		};
-		var obj2 = {
-			type: 'audit',
-			listing_id: $(that).attr('id')
-		};
-		
-		$('.auditingMarble').removeClass('auditingMarble');
-		/*if (!auditingMarbleId || listing_id != auditingMarbleId) {//different marble than before!
-			for (var x in pendingTxDrawing) clearTimeout(pendingTxDrawing[x]);
-			$('.txHistoryWrap').html('');										//clear
-		}*/
-		$('.txHistoryWrap').html('');
-		$('.txListingWrap').html('');		
-		$(that).addClass('auditingMarble');
-		$('#auditContentWrap').fadeIn();
-		$('#marbleId').html($(that).attr('uid'));
-		$('#rightEverything').addClass('rightEverythingOpened');
-		$('#leftEverything').fadeIn();
-		ws.send(JSON.stringify(obj1));		
-		ws.send(JSON.stringify(obj2));
-	}
 
 	$('#auditClose').click(function () {
 		$('#auditContentWrap').slideUp(500);
@@ -112,9 +82,7 @@ $(document).on('ready', function () {
 	});
 
 	$('#auditButton').click(function () {
-		$('#auditContentWrap').fadeIn();
-		$('#rightEverything').addClass('rightEverythingOpened');
-		$('#leftEverything').fadeIn();
+		openAuditPanel('Audit');
 	});
 
 	/**
@@ -146,6 +114,17 @@ $(document).on('ready', function () {
 	});
 	$('input[name="sub"').keyup(function (e) {
 		populate_uid();
+	});
+	
+	//story mode selection
+	$('#disableStoryMode').click(function () {
+		fromLS.story_mode = false;
+		$('#disableStoryMode').prop('disabled', true);
+		$('#enableStoryMode').prop('disabled', false);
+	});
+	$('#enableStoryMode').click(function () {
+		fromLS.story_mode = true;
+		$('#enableStoryMode').prop('disabled', true);
+		$('#disableStoryMode').prop('disabled', false);
 	});	
 });
-

@@ -3,7 +3,7 @@ $left_width: 255px;
 #auditWrap {
 	position: absolute;
 	width: 100%;
-	background: $acc_color2;
+	background: #2f2f2f;
 	color: $main_color;
 	height: 100%;
 	font-family: monospace;	
@@ -51,7 +51,7 @@ $left_width: 255px;
 	vertical-align:top;
 	padding: 5px;
 	font-size: 12px;
-	background-color:#343d48;	
+	background-color:transparent;	
 	position: relative;
 	left: 100%;	
 } 
@@ -67,7 +67,7 @@ $left_width: 255px;
 	margin:5px;
 	padding: 5px;
 	font-size: 12px;
-	background-color:#343d48;		
+	background-color:transparent;		
 	position: relative;
 	vertical-align: bottom;
 	display: inline-block;
@@ -109,6 +109,7 @@ $left_width: 255px;
 
 #marbleIdWrap{
 	font-weight: 700;
+	color: #DAC94E;
 }
 
 #marbleId{

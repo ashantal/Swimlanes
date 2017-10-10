@@ -4,15 +4,15 @@
 /* exported build_a_tx, listings */
 
 var listings = {};
-var colors = ["whitebg","orangebg","greenbg","redbg"];
+var colors = ["greybg","orangebg","greenbg","redbg"];
 // =================================================================================
 //	UI Building
 // =================================================================================
 //build a listing
 function build_listing(listing) {
 	console.log(listing);
-	var lane =$('.companyPanel[company="' + listing.state.state_type + '"]');
-	var colorClass =colors[$('.companyPanel').index(lane)];
+	var lane =$('.lanePanel[lane="' + listing.state.state_type + '"]');
+	var colorClass =colors[$('.lanePanel').index(lane)];
 	var size = 'smallMarble';
 	var auditing = '';
 
@@ -83,21 +83,26 @@ function size_state_name(name) {
 	return 'font-size: 12px;';
 }
 
-function build_company_panel(company) {
-	company = escapeHtml(company);
-	console.log('[ui] building company panel ' + company);
+function build_lane_panel(lane) {
+	lane = escapeHtml(lane);
+	console.log('[ui] building lane' + lane);
 
-	var mycss = '';
-	if (company === escapeHtml(bag.marble_company)) mycss = 'myCompany';
-
-	var html = `<div class="companyPanel bluebg" style="width:22%;margin:5px;height:1200px;overflow:hiddel;float:left" company="` + company + `">
-					<div class="companyNameWrap ` + mycss + `">
-					<span class="companyName">` + toTitleCase(company) + `</span>`;
-			html += '<span class="fa fa-exchange floatRight"></span>';
-		html += `	</div>
+	var html = `<div class="lanePanel bluebg" style="width:22%;margin:5px;height:1200px;overflow:hiddel;float:left" lane="` + lane + `">
+					<div class="laneNameWrap ` + lane + `Lane">
+					<span class="laneName">` + toTitleCase(lane) + `</span>`;
+					if(lane=='offmarket'){
+						html +=`<span id='registerProperty' class="fa fa-plus floatRight"></span>`;
+					}else{
+						html += '<span class="fa fa-exchange floatRight"></span>';
+					}
+					html += `	</div>
 				<div class="ownerWrap"></div>
 			</div>`;
 	$('#allUserPanelsWrap').append(html);
+	$('#registerProperty').click(function () {
+		$('#tint').fadeIn();
+		$('#createPanel').fadeIn();
+	});
 }
 
 //build all state panels
@@ -111,9 +116,9 @@ function build_state_panels(data) {
 		var colorClass = '';
 		data[i].id = escapeHtml(data[i].id);
 		data[i].state_name = escapeHtml(data[i].state_name);
-		var lane =$('.companyPanel[company="' + data[i].state_type + '"]');
+		var lane =$('.lanePanel[lane="' + data[i].state_type + '"]');
 		if(lane.length==0){
-			build_company_panel(data[i].state_type);							
+			build_lane_panel(data[i].state_type);							
 		}
 		var state = $('.listingsWrap[state_id="' + data[i].id  + '"]');
 		if(state.length>0){			
@@ -129,7 +134,7 @@ function build_state_panels(data) {
 						<div class="innerlistingWrap innerMarbleWrap"></div>
 						<div class="nolistingsMsg hint">No listings</div>
 					</div>`;
-			$('.companyPanel[company="' + data[i].state_type + '"]').find('.ownerWrap').append(html);
+			$('.lanePanel[lane="' + data[i].state_type + '"]').find('.ownerWrap').append(html);
 		}
 	}
 
@@ -150,10 +155,6 @@ function build_state_panels(data) {
 				}
 			}
 	});
-
-	//state count
-	$('#foundstates').html(data.length);
-	$('#totalstates').html(data.length);
 }
 
 
@@ -183,7 +184,6 @@ function build_a_tx(data, pos) {
 	if (data && data.value) {
 		html += `<div class="txDetails">
 				<div class="txCount"><strong>Tx ` + (Number(pos) + 1) + '</strong> ' + data.value.sid +' <strong>'+ data.value.state.state_name + `</strong></div>
-				<div class="txId">` + data.txId.substring(0, 27) + `...</div>
 				<div class="txId">`+`</div>
 			</div>`;
 	}
@@ -244,10 +244,42 @@ function render_obj(obj){
 		var result = "";		
 		$.each(obj, function(k, v) {
 			if(v.constructor === Object || v.constructor === Array){
-				result += "<strong>" + k + "</strong><hr/><div style='margin-left:10px'>" + render_obj(v) + "</div>";
+				result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
 			}else{
 				result += "<strong>" + k + "</strong>&nbsp;" + v + "<br/>";
 			}
 		});		
 		return result;
+}
+
+function auditMarble(id,sid,uid) {
+	var obj1 = {
+		type: 'query_listing',
+		listing_id: sid
+	};
+	var obj2 = {
+		type: 'audit',
+		listing_id: id
+	};		
+	openAuditPanel(uid.toUpperCase());
+	ws.send(JSON.stringify(obj1));		
+	ws.send(JSON.stringify(obj2));
+}
+
+function auditBlock(block_id){
+	var obj = { 
+		type: 'query_block', 
+		id:block_id
+	}			
+	openAuditPanel("Block #" + block_id);		
+	ws.send(JSON.stringify(obj));			
+}
+
+function openAuditPanel(title){
+	$('.txHistoryWrap').html('');
+	$('.txListingWrap').html('');	
+	$('#marbleId').html(title);		
+	$('#auditContentWrap').fadeIn();
+	$('#rightEverything').addClass('rightEverythingOpened');
+	$('#leftEverything').fadeIn();
 }

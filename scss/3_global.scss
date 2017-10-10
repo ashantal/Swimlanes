@@ -176,7 +176,7 @@ $auditSize: 300px;
 	padding-right: 10px;
 	margin: 0;
 }
-.companyPanel{
+.lanePanel{
 	background: $acc_color2;
 	padding: 0;
 	border-radius: 3px;
@@ -189,11 +189,11 @@ $auditSize: 300px;
 .ownerWrap{
 	padding: 20px;
 }
-.companyNameWrap{
+.laneNameWrap{
 	border-bottom: 1px $acc_color1-5 solid;
 	padding: 16px;
 }
-.companyName{
+.laneName{
 	margin-left: 10px;
 	font-weight: 700;
 }
@@ -201,7 +201,6 @@ $auditSize: 300px;
 	margin: 0; 
 	text-align:left;
 	position: relative;
-	height: 100px;
 }
 .smallMarble{
 	height: 40px;
@@ -378,10 +377,17 @@ $auditSize: 300px;
 	width:100%;
 	border-top:25px $acc_color1 solid;
 }
-.myCompany{
+.offmarketLane{
 	background: #545658;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+}
+.premarketLane{
+	background: #ED8F30;;
+}
+.onmarketLane{
+	background: #68B369;;
+}
+.preclosingLane{
+	background: #F15847;;
 }
 
 
@@ -405,7 +411,7 @@ $auditSize: 300px;
 .pinkbg{background:#CC5AA2}
 .orangebg{background:#ED8F30}
 .yellowbg{background:#DAC94E}
-
+.greybg{background: #545658;}
 
 .colorSelectWrap{
 	text-align: left;

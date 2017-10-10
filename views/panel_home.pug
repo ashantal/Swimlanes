@@ -9,11 +9,12 @@
 						option(value="state.state_name") State Name										
 						option(value="state.state_type") State Type						
 					input(type="text" placeholder="Search Listings" style="margin-left: 0; border-radius:2px;")#searchUsers.longer
-					span.hint(style="margin-left: 10px;margin-right: 10px; font-size: 16px;") 
-						span#foundUsers 0
-						span /
-						span#totalUsers 0
-					span.fa.fa-plus.addListing
+					span &nbsp;&nbsp;
+					span Story&nbsp;
+					button(type="button" disabled="disabled")#disableStoryMode Off
+					span &nbsp;&nbsp;
+					button(type="button")#enableStoryMode On
+					
 	div
 		#allUserPanelsWrap
 			#appStartingText Connecting To Server...

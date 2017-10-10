@@ -61,12 +61,7 @@ function build_block(id) {										//build and append the block html
 	$('.block:last').animate({ opacity: 1, left: (uiBlocksCount * block_left_px) + block_left_px * 2 }, 600, function () {
 		$('.lastblock').removeClass('lastblock');
 		$('.block:last').addClass('lastblock').click(function(){
-			var obj = { 
-				type: 'query_block', 
-				id:$(this).attr('block_id')
-			}
-			console.log(obj);
-			ws.send(JSON.stringify(obj));	
+			auditBlock($(this).attr('block_id'));
 			return false;												
 		});
 	});
