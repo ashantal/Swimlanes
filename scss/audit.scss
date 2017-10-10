@@ -1,5 +1,5 @@
 @import 'color_theme';
-$left_width: 175px;
+$left_width: 255px;
 #auditWrap {
 	position: absolute;
 	width: 100%;
@@ -28,7 +28,7 @@ $left_width: 175px;
 .txHistoryWrap{
 	display: inline-block;
 	vertical-align: bottom;
-	margin:10px;
+	margin:5px;
 } 
 .txListingWrap{
 	display: inline-block;
@@ -72,6 +72,8 @@ $left_width: 175px;
 	vertical-align: bottom;
 	display: inline-block;
 	left: 100%;
+	overflow-wrap:break-word;
+	width: $left_width;
 }
 
 .leftTxWrap{

@@ -182,8 +182,8 @@ function build_a_tx(data, pos) {
 	var html = '';
 	if (data && data.value) {
 		html += `<div class="txDetails">
-				<div class="txCount"><strong>Tx ` + (Number(pos) + 1) + ' ' + data.value.sid +' '+ data.value.state.state_name + `</strong></div>
-				<div class="txId">` + data.txId.substring(0, 30) + `</div>
+				<div class="txCount"><strong>Tx ` + (Number(pos) + 1) + '</strong> ' + data.value.sid +' <strong>'+ data.value.state.state_name + `</strong></div>
+				<div class="txId">` + data.txId.substring(0, 27) + `...</div>
 				<div class="txId">`+`</div>
 			</div>`;
 	}
@@ -243,11 +243,10 @@ function build_a_block(obj) {
 function render_obj(obj){
 		var result = "";		
 		$.each(obj, function(k, v) {
-			result += "<strong>" + k + "</strong>&nbsp;"
 			if(v.constructor === Object || v.constructor === Array){
-				result += "<hr/><div style='margin-left:5px'>" + render_obj(v) + "</div>";
+				result += "<strong>" + k + "</strong><hr/><div style='margin-left:10px'>" + render_obj(v) + "</div>";
 			}else{
-				result += v + "<br/>";
+				result += "<strong>" + k + "</strong>&nbsp;" + v + "<br/>";
 			}
 		});		
 		return result;
