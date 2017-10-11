@@ -37,6 +37,7 @@ function new_block(id) {											//rec a new block
 			block_height = id;
 		}
 	}
+	get_everything_or_else();
 }
 
 function build_block(id) {										//build and append the block html

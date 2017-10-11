@@ -360,9 +360,6 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 	};
 
 	listings_chaincode.query_results = function (options, cb) {
-		console.log('');
-		logger.info('Querying...');
-
 		var opts = {
 			peer_urls: g_options.peer_urls,
 			peer_tls_opts: g_options.peer_tls_opts,

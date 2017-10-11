@@ -39,11 +39,16 @@ $(document).on('ready', function () {
 		return false;
 	});
 
-
+	//right click opens audit on marble
+	$(document).on('contextmenu', '.ball', function () {
+		$('input[name="xfr_id"]').val($(this).attr('id'));
+		$('#tint,#stateNamesPanel').fadeIn();
+		return false;
+	});
 
 	//close create panel
 	$('.fa-close').click(function () {
-		$('#createPanel,#marketPanel, #tint, #infoPanel').fadeOut();
+		$('#createPanel,#marketPanel, #tint, #infoPanel,#stateNamesPanel').fadeOut();
 	});
 
 	/**  
@@ -91,9 +96,10 @@ $(document).on('ready', function () {
 	//username/company search
 	$('#searchUsers').keyup(function (e) {
 		if(e.keyCode==13){
-			var qt = $('select[name="query-type"]').val();
+			/*ar qt = $('select[name="query-type"]').val();
 			var input = $('#searchUsers').val();
-			query_results(qt,'$regex',input)
+			query_results(qt,'$regex',input)*/
+			get_everything_or_else();
 		}
 	});
 

@@ -182,6 +182,10 @@ $auditSize: 300px;
 	border-radius: 3px;
 	margin-bottom: 5px;
 	color: $main_color;
+	width:22%;
+	margin:5px;
+	height:1200px;
+	float:left;	
 }
 .floatRight{
 	float: right;
@@ -351,7 +355,15 @@ $auditSize: 300px;
 	margin-left: -265px;
 	width: 200px;
 }
-
+#stateNamesPanel{
+	position: fixed;
+	top: 75px;
+	background: #343d48;
+	z-index: 1005;
+	padding: 10px 10px;
+	left: 50%;
+	margin-left: -265px;
+}
 #tint{
 	display:none;
 	background: #000;
@@ -365,6 +377,14 @@ $auditSize: 300px;
 }
 
 // --------- common ---------
+.targetState{
+	width: 200px;
+	display:block;
+	padding: 5px;
+	text-align: left;
+	cursor: pointer;
+	font-size:12px;
+}
 .hint{
 	font-size:12px;
 	font-weight:bold;
@@ -387,7 +407,7 @@ $auditSize: 300px;
 	background: #68B369;;
 }
 .preclosingLane{
-	background: #F15847;;
+	background: #634FA1;;
 }
 
 

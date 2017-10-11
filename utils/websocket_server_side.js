@@ -120,7 +120,8 @@ module.exports = function (g_options, fcw, logger) {
 		// get all states, listings, & companies
 		else if (data.type === 'read_everything') {
 			logger.info('[ws] read everything req');
-			ws_server.check_for_updates(ws);
+			read_everything(ws);			
+			//ws_server.check_for_updates(ws);
 		}
 		else if(data.type == "query_block"){
 			listings_lib.query_block(data.id,function(err,block){
@@ -289,9 +290,9 @@ module.exports = function (g_options, fcw, logger) {
 			}
 
 			if (newBlock || ws_client) {
-				read_everything(ws_client, function () {
+				/*read_everything(ws_client, function () {
 					sch_next_check();						//check again
-				});
+				});*/
 			} else {
 				sch_next_check();							//check again
 			}
@@ -327,7 +328,7 @@ module.exports = function (g_options, fcw, logger) {
 				}
 
 				data.states = organize_states(data.states);
-				data.listings = organize_listings(data.listings);
+				//data.listings = organize_listings(data.listings);
 				var knownAsString = JSON.stringify(known_everything);			//stringify for easy comparison (order should stay the same)
 				var latestListAsString = JSON.stringify(data);
 

@@ -3,7 +3,7 @@
     "api_filename": "api_creds_local.json",
     "use_events": true,
     "keep_alive_secs": 120,
-    "org": "MLS Blockchain Alliance",
+    "org": "SWIM LANES",
     "states": [
         {"state_type" :"offmarket","state_names":["registered","bedroom added","kitchen upgraded","floors upgraded","new loan","loan paid"]},
         {"state_type" :"premarket","state_names":["contract signed", "coming soon"]},        

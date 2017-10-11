@@ -32,6 +32,7 @@ function connect_to_server() {
 
 	function onOpen(evt) {
 		console.log(wsTxt + ' CONNECTED');
+		ws.send(JSON.stringify({ type: 'read_everything', v: 1 }));
 		connected = true;
 	}
 
@@ -47,16 +48,9 @@ function connect_to_server() {
 			var msgObj = JSON.parse(msg.data);
 			console.log(wsTxt + ' rec', msgObj.msg, msgObj);			
 			if (msgObj.msg === 'everything') {
-				clearTimeout(getEverythingWatchdog);
-				clearTimeout(pendingTransaction);
-				$('#appStartingText').hide();
-				build_state_panels(msgObj.everything.states);
-				for (var i in msgObj.everything.listings) {
-					populate_state_listings(msgObj.everything.listings[i]);
-				}							
-				start_up = false;
+				build_state_list(msgObj.everything.states);
 			}else if (msgObj.msg === 'query_block') {
-			 console.log(build_a_block(msgObj.data));
+			 	build_a_block(msgObj.data);
 			}else if (msgObj.msg === 'query_listing') {
 				build_a_listing(msgObj.data);
 			}else if (msgObj.msg === 'query_media') {
@@ -135,26 +129,27 @@ function transfer_listing(listingId, to_state_id) {
 
 //get everything with timeout to get it all again!
 function get_everything_or_else(attempt) {
-	console.log(wsTxt + ' sending get everything msg');
-	clearTimeout(getEverythingWatchdog);
-	ws.send(JSON.stringify({ type: 'read_everything', v: 1 }));
-
-	if (!attempt) attempt = 1;
-	else attempt++;
-
-	getEverythingWatchdog = setTimeout(function () {
-		if (attempt <= 3) {
-			console.log('\n\n! [timeout] did not get owners in time, impatiently calling it again', attempt, '\n\n');
-			get_everything_or_else(attempt);
-		}
-		else {
-			console.log('\n\n! [timeout] did not get owners in time, hopeless', attempt, '\n\n');
-		}
-	}, 5000 + getRandomInt(0, 10000));
-/*
 	var qt = $('select[name="query-type"]').val();
-	var input = $('#searchUsers').val();
-	query_results(qt,'$regex',input);*/
+	var input = $('#searchUsers').val();	
+	if(input.length == 0){
+		input='[a-zA-Z]';
+	}
+	query_results(qt,'$regex',input);		
+		/*
+		clearTimeout(getEverythingWatchdog);	
+		ws.send(JSON.stringify({ type: 'read_everything', v: 1 }));
+		if (!attempt) attempt = 1;
+		else attempt++;
+
+		getEverythingWatchdog = setTimeout(function () {
+			if (attempt <= 3) {
+				console.log('\n\n! [timeout] did not get owners in time, impatiently calling it again', attempt, '\n\n');
+				get_everything_or_else(attempt);
+			}
+			else {
+				console.log('\n\n! [timeout] did not get owners in time, hopeless', attempt, '\n\n');
+			}
+		}, 5000 + getRandomInt(0, 10000));*/
 }
 
 //get everything with timeout to get it all again!

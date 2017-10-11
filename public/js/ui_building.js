@@ -4,22 +4,18 @@
 /* exported build_a_tx, listings */
 
 var listings = {};
-var colors = ["greybg","orangebg","greenbg","redbg"];
 var default_state = {};
 // =================================================================================
 //	UI Building
 // =================================================================================
 //build a listing
 function build_listing(listing) {
-	console.log(listing);
-	var lane =$('.lanePanel[lane="' + listing.state.state_type + '"]');
-	var colorClass =colors[$('.lanePanel').index(lane)];
+	var colorClass =listing.state.state_type+'Lane';
 	var size = 'smallMarble';
 	var auditing = '';
 
 	listings[listing.id] = listing;
 	listing.id = escapeHtml(listing.id);
-	console.log('[ui] building : ', listing);
 	//if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
 	var html = '<span id="' + listing.id + 
 	'" uid="' + listing.uid + 
@@ -33,23 +29,14 @@ function build_listing(listing) {
 //redraw the state's listings
 function populate_state_listings(msg) {
 	//reset
-	console.log('[ui] clearing listings for state ');
 	$('.listingsWrap[state_id="' + msg.state_id + '"]').find('.innerlistingWrap').html('');
 	$('.listingsWrap[state_id="' + msg.state_id + '"]').find('.nolistingsMsg').show();
-	console.log(msg);
 	for (var i in msg.listings) {
 		build_listing(msg.listings[i]);
 	}
 }
 
-//show query results
-function populate_query_results(msg) {
-	console.log('[ui] clearing listings for all states');
-	$('.listingsWrap').find('.innerlistingWrap').html('');
-	for (var i in msg.data.parsed) {
-		build_listing(msg.data.parsed[i].Record);
-	}	
-}
+
 //show query results
 function populate_query_fips(msg) {
 	if(msg.data!=null){
@@ -86,7 +73,7 @@ function size_state_name(name) {
 
 function build_lane_panel(lane) {
 	lane = escapeHtml(lane);
-	var html = `<div class="lanePanel bluebg" style="width:22%;margin:5px;height:1200px;overflow:hiddel;float:left" lane="` + lane + `">
+	var html = `<div class="lanePanel bluebg" lane="` + lane + `">
 					<div class="laneNameWrap ` + lane + `Lane">
 					<span class="laneName">` + toTitleCase(lane) + `</span>`;
 					if(lane=='offmarket'){
@@ -103,44 +90,36 @@ function build_lane_panel(lane) {
 		$('#createPanel').fadeIn();
 	});
 }
-
-//build all state panels
-function build_state_panels(data) {
-	//reset
-	console.log('[ui] clearing all state panels');
-	
-	$('.stateWrap').html('');
-	for (var i in data) {
-		var html = '';
-		var colorClass = '';
-		data[i].id = escapeHtml(data[i].id);
-		data[i].state_name = escapeHtml(data[i].state_name);
-		if(data[i].state_name=="registered"){
-			default_state = data[i];			
-		}
-		var lane =$('.lanePanel[lane="' + data[i].state_type + '"]');
-		if(lane.length==0){
-			build_lane_panel(data[i].state_type);							
-		}
-		var state = $('.listingsWrap[state_id="' + data[i].id  + '"]');
-		if(state.length>0){			
-			state.find('.innerlistingWrap').html('');
-		}else{		
-			let disableHtml = '';
-			html += `<div id="state` + i + `wrap" state_name="` + data[i].state_name + `" state_type="` + data[i].state_type +
-				`" state_id="` + data[i].id + `" class="listingsWrap ` + colorClass + `">
-						<div class="legend" style="` + size_state_name(data[i].state_name) + `">
-							` + toTitleCase(data[i].state_name) + `
-							` + disableHtml + `
-						</div>
-						<div class="innerlistingWrap innerMarbleWrap"></div>
-						<div class="nolistingsMsg hint">No listings</div>
-					</div>`;
-			$('.lanePanel[lane="' + data[i].state_type + '"]').find('.ownerWrap').append(html);
-		}
+//build state panel
+function build_state_panel(data){
+	var html = '';
+	var colorClass = '';
+	data.id = escapeHtml(data.id);
+	data.state_name = escapeHtml(data.state_name);
+	var lane =$('.lanePanel[lane="' + data.state_type + '"]');
+	if(lane.length==0){
+		build_lane_panel(data.state_type);							
 	}
+	var state = $('.listingsWrap[state_id="' + data.id  + '"]');
+	if(state.length>0){			
+		state.find('.innerlistingWrap').html('');
+	}else{		
+		let disableHtml = '';
+		html += `<div state_name="` + data.state_name + `" state_type="` + data.state_type +
+			`" state_id="` + data.id + `" class="listingsWrap ` + colorClass + `">
+					<div class="legend" style="` + size_state_name(data.state_name) + `">
+						` + toTitleCase(data.state_name) + `
+						` + disableHtml + `
+					</div>
+					<div class="innerlistingWrap innerMarbleWrap"></div>
+					<div class="nolistingsMsg hint">No listings</div>
+				</div>`;
+		$('.lanePanel[lane="' + data.state_type + '"]').find('.ownerWrap').append(html);
+	}	
+}
 
-	//drag and drop listing
+//drag and drop listing
+function setup_drag_drop(){
 	$('.innerlistingWrap').sortable({ connectWith: '.innerlistingWrap', items: 'span' }).disableSelection();
 	$('.innerlistingWrap').droppable({
 		drop:
@@ -159,6 +138,36 @@ function build_state_panels(data) {
 	});
 }
 
+//build all state panels
+function build_state_list(states) {
+	for (var i in states) {
+		var data = states[i];
+		data.id = escapeHtml(data.id);
+		data.state_name = escapeHtml(data.state_name);
+		if(data.state_name=="registered"){
+			default_state = data;			
+		}
+		var html = `<div class="targetState `+ data.state_type +`Lane " state_id="` + data.id + `">` + toTitleCase(data.state_name) + `</div>`;
+		$('.stateNames').append(html);
+	}
+	$('.targetState').click(function () {
+		$('#tint,#stateNamesPanel').fadeOut();		
+		transfer_listing($('input[name="xfr_id"]').val(), $(this).attr('state_id'));
+	});	
+}
+
+//show query results
+function populate_query_results(msg) {
+	$('#allUserPanelsWrap').html('');
+	//$('.listingsWrap').find('.innerlistingWrap').html('');	
+	for (var i in msg.data.parsed) {
+		build_state_panel(msg.data.parsed[i].Record.state);				
+	}
+	setup_drag_drop();	
+	for (var i in msg.data.parsed) {
+		build_listing(msg.data.parsed[i].Record);
+	}	
+}
 
 //build a notification msg, `error` is boolean
 function build_notification(error, msg) {
