@@ -8,7 +8,7 @@ $auditSize: 300px;
 }
 
 .rightEverythingOpened{
-	width: calc(100% - 300px);
+	//width: calc(100% - 300px);
 	left: $auditSize;
 	position: absolute;
 }
@@ -30,7 +30,9 @@ $auditSize: 300px;
 	font-size: 15px;
 	color: $acc_color1-5;
 }
-
+.fa-columns{
+	padding:10px;
+}
 #mainPanel{
 	color: $main_color;
 	min-height: 750px;
@@ -39,7 +41,7 @@ $auditSize: 300px;
 #contentPanel {
 	min-height:500px;
 	position: relative;
-	margin:35px 50px auto;
+	margin:5px 6px 0px 30px;
 }
 
 #footerPanel{
@@ -162,7 +164,7 @@ $auditSize: 300px;
 	background: $acc_color1-5;
 }
 .innerMarbleWrap{
-	min-height:100px;
+	min-height:20px;
 	padding-right: 10px;
 }
 .legend{
@@ -183,8 +185,9 @@ $auditSize: 300px;
 	margin-bottom: 5px;
 	color: $main_color;
 	width:22%;
+	min-width:140px;
 	margin:5px;
-	height:1200px;
+	height:500px;
 	float:left;	
 }
 .floatRight{
@@ -213,7 +216,6 @@ $auditSize: 300px;
 .ball{
 	display:inline-block;
 	border:2px transparent solid;
-	padding:0;
 	vertical-align: bottom;
 	border-radius: 10px;
 }
