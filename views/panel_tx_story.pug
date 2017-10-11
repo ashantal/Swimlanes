@@ -9,7 +9,7 @@
 		.txLegend Build Proposal
 		.txStoryWrap
 			.marbleWrap
-				div.ball#proposeMarbleStable.hideBorders.leftPos(title="Your event tx")
+				div.ball.fa.fa-home#proposeMarbleStable.hideBorders.leftPos(title="Your event tx")
 				div.ball#proposeMarble.hideBorders.leftPos
 				div.ball#marbleBorderTop.leftPos
 				div.ball#marbleBorderBottom.leftPos
@@ -26,7 +26,7 @@
 		.txLegend Endorsement
 		.txStoryWrap 
 			.marbleWrap
-				div.ball#endorseMarbleStable(title="Your event tx")
+				div.ball.fa.fa-home#endorseMarbleStable(title="Your event tx")
 					span.fa.fa-check
 				div.ball#endorseMarble
 					span.fa.fa-check
@@ -42,12 +42,12 @@
 		.txLegend Ordering
 		.txStoryWrap
 			#orderBoxStable 
-				span.ball.ordererMarbles.hideMe(title="Another marble tx")
-					span.fa.fa-check
-				span.ball.ordererMarbles.hideMe(title="Your marble tx")
-					span.fa.fa-check
-				span.ball.ordererMarbles.hideMe(title="Another marble tx")
-					span.fa.fa-check
+				span.ball.ordererMarbles.hideMe(title="Another listing tx")
+					span.fa.fa-chain
+				span.ball.ordererMarbles.hideMe(title="Your listing tx")
+					span.fa.fa-chain
+				span.ball.ordererMarbles.hideMe(title="Another listing tx")
+					span.fa.fa-chain
 				#orderBox Block
 		.txDescription
 			span Then our application will send our endorsed proposal to the orderer. 

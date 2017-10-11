@@ -19,7 +19,7 @@ function build_listing(listing) {
 	//if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
 	var html = '<span id="' + listing.id + 
 	'" uid="' + listing.uid + 
-	'" sid="' + listing.sid + '" class="ball ' + size + ' ' + colorClass + ' ' + auditing + 
+	'" sid="' + listing.sid + '" class="ball fa fa-home ' + colorClass + ' ' + auditing + 
 	'" state_id="' + listing.state.id + 
 	'" state_type="' + listing.state.state_type + '" state_name="' + listing.state.state_name + '"></span>';
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.innerlistingWrap').prepend(html);
