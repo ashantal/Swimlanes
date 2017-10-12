@@ -731,8 +731,15 @@ module.exports = function (config_filename, logger) {
 		}
 		return null;
 	};
+	helper.query_api= function(data,cb){
+		var api = this.api[data.source];
+		var q = this.odata({service: api.uri, resources: api.Property, headers:{"Authorization":"Bearer "+api.access_token}});		
+		q.top(10).filter(data.filter).select('CountyOrParish','StateOrProvince','ParcelNumber','StreetNumber','StreetName','ListingId').get().then(function(response){
+			cb(JSON.parse(response.body));
+		});
+	};
 
-	helper.query_api= function(id,cb){
+	helper.query_listing= function(id,cb){
 		//,'RoomBathroomFeatures','RoomBedroomFeatures','RoomDiningRoomFeatures','RoomFamilyRoomFeatures'
 		//var q = this.odata({service: this.api.uri, resources: 'Property', headers:{"Authorization":"Bearer "+this.api.access_token}});
 		var parts = id.split('.');
@@ -745,7 +752,7 @@ module.exports = function (config_filename, logger) {
 		}else{
 			cb("");
 		}
-	}
+	};
 	helper.query_media= function(key,cb){
 		var api = this.api['spark'];
 		if(api.Media.length>0){
@@ -756,7 +763,7 @@ module.exports = function (config_filename, logger) {
 		}else{
 			cb("");
 		}
-	}
+	};
 
 	return helper;
 };

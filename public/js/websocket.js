@@ -53,6 +53,8 @@ function connect_to_server() {
 			 	build_a_block(msgObj.data);
 			}else if (msgObj.msg === 'query_listing') {
 				build_a_listing(msgObj.data);
+			}else if (msgObj.msg === 'query_api') {
+				build_api_results(msgObj.data);
 			}else if (msgObj.msg === 'query_media') {
 				build_a_media(msgObj.data);
 			}else if (msgObj.msg === 'query_results') {
@@ -160,8 +162,10 @@ function query_results(l, o, r) {
 
 //get everything with timeout to get it all again!
 function query_fips(text) {
-	console.log(wsTxt + ' sending query msg' + text);
 	ws.send(JSON.stringify({ type: 'query_fips', search:text, v: 1 }));
+}
+function query_api(source,filter) {
+	ws.send(JSON.stringify({ type: 'query_api', source:source, filter: filter }));
 }
 
 // delay build each transaction

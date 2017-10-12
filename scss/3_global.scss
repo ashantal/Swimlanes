@@ -357,6 +357,16 @@ $auditSize: 300px;
 	margin-left: -265px;
 	width: 200px;
 }
+#importPanel{
+	position: fixed;
+	top: 75px;
+	background: #343d48;
+	z-index: 1005;
+	padding: 20px 20px;
+	left: 50%;
+	margin-left: -265px;
+	width: 500px;
+}
 #stateNamesPanel{
 	position: fixed;
 	top: 75px;
@@ -379,6 +389,22 @@ $auditSize: 300px;
 }
 
 // --------- common ---------
+.apiResultsWrap{
+	margin: 5px;
+	background-color:transparent;	
+} 
+
+.apiResultsRow{
+	vertical-align:top;
+	text-align: left;
+	padding-bottom: 10px;
+	font-size: 12px;
+	position: relative;
+} 
+.txListingDetails strong{
+	color: #67F508;
+} 
+
 .targetState{
 	width: 200px;
 	display:block;

@@ -78,6 +78,8 @@ function build_lane_panel(lane) {
 					<span class="laneName">` + toTitleCase(lane) + `</span>`;
 					if(lane=='offmarket'){
 						html +=`<span id='registerProperty' class="fa fa-plus floatRight"></span>`;
+					}else if(lane=='onmarket'){
+						html +=`<span id='importProperty' class="fa fa-download floatRight"></span>`;
 					}else{
 						html += '<span class="fa fa-exchange floatRight"></span>';
 					}
@@ -89,6 +91,10 @@ function build_lane_panel(lane) {
 		$('#tint').fadeIn();
 		$('#createPanel').fadeIn();
 	});
+	$('#importProperty').click(function () {
+		$('#tint').fadeIn();
+		$('#importPanel').fadeIn();
+	});	
 }
 //build state panel
 function build_state_panel(data){
@@ -218,6 +224,20 @@ function build_a_listing(data) {
 		}
 	});
 }
+
+function build_api_results(data) {
+	var html =`` 
+	if(data.length>0){
+		for(var i in data){
+			var o=data[i];
+			html+= `<div class="apiResultsRow"><span class="fa fa-home"></span> `			
+			+ o['ListingId']+ '  '+ o['ParcelNumber'] +' '+ o['StreetNumber'] +', '+ o['StreetName']+' '+o['CountyOrParish'] +', '+ o['StateOrProvince']
+			+`<br/></div>`;
+		}
+	} 
+	$('.apiResultsWrap').html(html);
+}
+
 
 function build_a_media(data) {
 	var html = '';

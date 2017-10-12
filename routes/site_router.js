@@ -51,7 +51,7 @@ router.route('/').get(function (req, res) {
 // Login
 // ============================================================================================================================
 router.route('/login').get(function (req, res) {
-	res.render('login', { title: 'MLS Blockchain Alliance - Login', bag: build_bag(req) });
+	res.render('login', { title: 'Swim Lanes - Login', bag: build_bag(req) });
 });
 
 router.route('/login').post(function (req, res) {
@@ -63,7 +63,6 @@ router.route('/logout').get(function (req, res) {
 	req.session.destroy();
 	res.redirect('/login');
 });
-
 
 // ============================================================================================================================
 // Home
@@ -81,7 +80,7 @@ function route_me(req, res) {
 		res.redirect('/login');
 	}
 	else {
-		res.render('listings', { title: 'Listings - Home', bag: build_bag(req) });
+		res.render('listings', { title: 'Swim Lanes - Home', bag: build_bag(req) });
 	}
 }
 

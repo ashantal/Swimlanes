@@ -141,8 +141,13 @@ module.exports = function (g_options, fcw, logger) {
 			});
 		}
 		else if(data.type=="query_listing"){
-			helper.query_api(data.listing_id, function(body){
+			helper.query_listing(data.listing_id, function(body){
 				options.ws.send(JSON.stringify({ msg: 'query_listing', data: body.value}));											
+			});	
+		}		
+		else if(data.type=="query_api"){
+			helper.query_api(data, function(body){
+				options.ws.send(JSON.stringify({ msg: 'query_api', data: body.value}));											
 			});	
 		}		
 		else if(data.type=="query_media"){

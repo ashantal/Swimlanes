@@ -48,7 +48,7 @@ $(document).on('ready', function () {
 
 	//close create panel
 	$('.fa-close').click(function () {
-		$('#createPanel,#marketPanel, #tint, #infoPanel,#stateNamesPanel').fadeOut();
+		$('#createPanel,#marketPanel, #tint, #infoPanel,#stateNamesPanel,#importPanel').fadeOut();
 	});
 
 	/**  
@@ -97,11 +97,11 @@ $(document).on('ready', function () {
 	//username/company search
 	$('#searchUsers').keyup(function (e) {
 		if(e.keyCode==13){
-			/*ar qt = $('select[name="query-type"]').val();
-			var input = $('#searchUsers').val();
-			query_results(qt,'$regex',input)*/
 			get_everything_or_else();
 		}
+	});
+	$('.fa-search').click(function (e) {
+		query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());
 	});
 
 	//username/company search

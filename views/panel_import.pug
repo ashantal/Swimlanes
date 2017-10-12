@@ -1,0 +1,18 @@
+#importPanel(hidden).panel
+	
+	span.fa.fa-close#closeCreate
+
+	h5.reg Import
+	hr
+
+	#innerWrap
+		form(action="/import" method="POST")#importform
+			legend
+			select(name="apiSource")
+				option(value="mlsl" selected="selected") MLSL
+				option(value="spark") Spark
+				option(value="bridge") Bridge
+			input.longer(type="text" id="apiFilter" name="apiFilter" placeholder="$filter=" value="startswith(StreetNumber,'12')")
+			span.fa.fa-search &nbsp;&nbsp;
+			hr
+			div.apiResultsWrap
