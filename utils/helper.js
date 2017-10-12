@@ -740,9 +740,10 @@ module.exports = function (config_filename, logger) {
 			var api = this.api[parts[0]];
 			var q = this.odata({service: api.uri, resources: api.Property, headers:{"Authorization":"Bearer "+api.access_token}});		
 			q.top(1).filter("ListingId eq '"+parts[1]+"'").get().then(function(response){
-				console.log(response.body);
 				cb(JSON.parse(response.body));
 			});
+		}else{
+			cb("");
 		}
 	}
 	helper.query_media= function(key,cb){

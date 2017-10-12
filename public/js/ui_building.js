@@ -203,8 +203,8 @@ function build_a_tx(data, pos) {
 
 //build a tx history div
 function build_a_listing(data) {
-	var html = '';
-	if(data.length>0){
+	var html =`<div class="txListingDetails">` + render_obj(data)+`</div>`;
+	if(data.length>1234){
 		var o = data[0];		
 		html = `<div class="txListingDetails"><div class="txListingImageWrap"/>
 			<strong>`+ o['PropertyType'] +` (#`+ o['ParcelNumber'] + `)</strong> 
@@ -252,15 +252,19 @@ function build_a_block(obj) {
 }
 
 function render_obj(obj){
-		var result = "";		
+	var result = "";
+	if(obj!=null){		
 		$.each(obj, function(k, v) {
-			if(v.constructor === Object || v.constructor === Array){
-				result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
-			}else{
-				result += "<strong>" + k + "</strong>&nbsp;" + v + "<br/>";
+			if(v!=null){
+				if(v.constructor === Object || v.constructor === Array){
+					result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
+				}else{
+					result += "<strong>" + k + "</strong>&nbsp;" + v + "<br/>";
+				}
 			}
 		});		
-		return result;
+	}
+	return result;
 }
 
 function auditMarble(id,sid,uid) {
