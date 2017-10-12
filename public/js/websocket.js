@@ -161,8 +161,8 @@ function query_results(l, o, r) {
 }
 
 //get everything with timeout to get it all again!
-function query_fips(text) {
-	ws.send(JSON.stringify({ type: 'query_fips', search:text, v: 1 }));
+function query_fips(st,text) {
+	ws.send(JSON.stringify({ type: 'query_fips',state:st, search:text }));
 }
 function query_api(source,filter) {
 	ws.send(JSON.stringify({ type: 'query_api', source:source, filter: filter }));

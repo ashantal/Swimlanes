@@ -40,8 +40,6 @@ function populate_state_listings(msg) {
 //show query results
 function populate_query_fips(msg) {
 	if(msg.data!=null){
-		console.log(msg.data.STATEFP);
-		console.log(msg.data.COUNTYFP);
 		var s = ('00' + msg.data.STATEFP).slice(-2)
 		var c = ('000' + msg.data.COUNTYFP).slice(-3)
 		$('input[name="county"]').val(s+c);
@@ -230,12 +228,37 @@ function build_api_results(data) {
 	if(data.length>0){
 		for(var i in data){
 			var o=data[i];
+			var sid=$('select[name="apiSource"]').val() + '.' + o['ListingId'];
+			var state=o['StateOrProvince'];
+			var county=o['CountyOrParish'];
+			var parcel=o['ParcelNumber'];
+			
 			html+= `<div class="apiResultsRow"><span class="fa fa-home"></span> `			
-			+ o['ListingId']+ '  '+ o['ParcelNumber'] +' '+ o['StreetNumber'] +', '+ o['StreetName']+' '+o['CountyOrParish'] +', '+ o['StateOrProvince']
-			+`<br/></div>`;
+			+ sid + ' '+ parcel +' '+ o['StreetNumber'] +', '+ o['StreetName']+' '+county +', '+ state;
+			if(parcel!=null){
+				html +=`&nbsp;<span class="import fa fa-download" sid="`+sid+`" state="`+state+`" county="`+county+`" parcel="`+parcel+`"></span>`; 	
+			}
+			html +=`<br/></div>`;
 		}
 	} 
 	$('.apiResultsWrap').html(html);
+	$('.import').click(function(){
+		var obj = {
+			type: 'import',
+			state:$(this).attr('state'),
+			county: $(this).attr('county'),
+			parcel: $(this).attr('parcel'),
+            sid: $(this).attr('sid'),
+			state_id: default_state.id
+		};
+		console.log('importing', obj);
+		$('#importPanel').fadeOut();
+		$('#tint').fadeOut();
+		show_tx_step({ state: 'building_proposal' }, function () {
+			ws.send(JSON.stringify(obj));
+			refreshHomePanel();
+		});		
+	});	
 }
 
 

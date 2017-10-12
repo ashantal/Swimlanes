@@ -93,7 +93,6 @@ $(document).on('ready', function () {
 	/**
 	 * Query
  	*/
-
 	//username/company search
 	$('#searchUsers').keyup(function (e) {
 		if(e.keyCode==13){
@@ -106,7 +105,7 @@ $(document).on('ready', function () {
 
 	//username/company search
 	$('#fips').keyup(function (e) {
-		query_fips($('#fips').val());
+		query_fips($('#state').val(),$('#fips').val());
 	});
 	$('input[name="parcel"').keyup(function (e) {
 		populate_uid();

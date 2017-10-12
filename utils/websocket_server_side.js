@@ -66,8 +66,30 @@ module.exports = function (g_options, fcw, logger) {
 				if (err != null) send_err(err, data);
 				else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
 			});
+		} 
+		//import listing via API
+		else if (data.type === 'import') {
+			logger.info('[ws] import listing req');
+			var resp = jsonQuery('fips[STATE='+data.state+' & COUNTYNAME~'+ data.county +']', {
+				data: fips
+			});						
+			if(resp.value!=null){
+				var s = ('00' + resp.value.STATEFP).slice(-2);
+				var c = ('000' + resp.value.COUNTYFP).slice(-3);
+				var p = data.parcel.replace(/[-+()\s]/g, '');
+				var uid = 'US' + '-' + s + c + '-R-' + p + '-N';
+				console.log('resistering ' + uid);
+				options.args = {
+					uid: uid,
+					sid: data.sid,
+					state_id: data.state_id
+				};				
+				listings_lib.create_a_listing(options, function (err, resp) {
+					if (err != null) send_err(err, data);
+					else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
+				});					
+			}
 		}
-		
 		// transfer a listing
 		else if (data.type === 'transfer_listing') {
 			logger.info('[ws] transferring req');
@@ -156,7 +178,7 @@ module.exports = function (g_options, fcw, logger) {
 			});	
 		}		
 		else if(data.type=="query_fips"){
-			var resp = jsonQuery('fips[STATE=CA & COUNTYNAME~'+ data.search +']', {
+			var resp = jsonQuery('fips[STATE='+data.state+' & COUNTYNAME~'+ data.search +']', {
 				data: fips
 			});			
 			/*resp = jsonQuery('fips[*COUNTYNAME~'+ data.search +']:select(STATE)', {

@@ -9,17 +9,18 @@
 		//span.createball
 		
 		form(action="/create" method="POST")#createform
-			input(type="text" id="fips" name="fips" placeholder="County Name")
-			br
 			input(type="text" name="country" placeholder="Country" value="US" disabled="disabled")
 			br
 			input(type="text" name="county" placeholder="County" value="00000"  disabled="disabled")
 			br
 			input(type="text" name="sub-county" placeholder="N/A" value="N"  disabled="disabled")
 			br
+			input(type="text" id="state" name="state" placeholder="State" value="CA")
+			br
+			input(type="text" id="fips" name="fips" placeholder="County Name")
+			br
 			input(type="text" name="parcel" placeholder="APN")
 			br
-			legend
 			select(name="property-type")
 				option(value="R" selected="selected") Real
 				option(value="S") Stock
