@@ -66,7 +66,7 @@ $(document).on('ready', function () {
 			$('#tint').fadeIn();
 			$('#marketPanel').fadeIn();
 		}else{
-			auditMarble(id,sid,uid);					
+			auditMarble(id,uid);					
 		}				
 	});
 

@@ -193,43 +193,32 @@ function build_notification(error, msg) {
 function build_a_tx(data, pos) {
 	var html = '';
 	if (data && data.value) {
-		html += `<div class="txDetails">
-				<div class="txCount"><strong>Tx ` + (Number(pos) + 1) + '</strong> ' + data.value.sid +' <strong>'+ data.value.state.state_name + `</strong></div>
-				<div class="txId">`+`</div>
-			</div>`;
+		html += `<div class="txDetails" sid="`+data.value.sid+`">
+					<div class="fa fa-chain"></div>
+					<strong>Tx ` + (Number(pos) + 1) + '</strong> ' + data.value.sid +' <strong>'+ data.value.state.state_name + `</strong>
+				</div>`;
 	}
 	return html;
 }
 
 //build a tx history div
 function build_a_listing(data) {
-	var html =`<div class="txListingDetails">` + render_obj(data)+`</div>`;
-	if(data.length>1234){
-		var o = data[0];		
-		html = `<div class="txListingDetails"><div class="txListingImageWrap"/>
-			<strong>`+ o['PropertyType'] +` (#`+ o['ParcelNumber'] + `)</strong> 
-			<br/>
-			`+ o['UnparsedAddress'] +`
-			<br/>
-			` +  o['StateOrProvince'] +` `+ o['CountyOrParish'] +`
-			<hr/>
-			`+ o['PropertySubType']  +` Built ` + o['YearBuilt'] +`
-			<br/>
-			Listed For $`+  o['ListPrice']+` By ` + o['ListAgentFullName'] +` ` + o['ListOfficeName'] +` 
-			<hr/>
-			`+ o['AssociationAmenities'] +` `+ o['Appliances'] +` `+ o['RoomBathroomFeatures'] +` `+ o['RoomBedroomFeatures'] +` `+ o['RoomDiningRoomFeatures']
-			+`</div>`;
-		var obj = {
-			type: 'query_media',
-			listing_key: o["ListingKeyNumeric"]
-		}
-		ws.send(JSON.stringify(obj));				   			  		
-	}
+	var html =`<div class="txListingDetails"><div class="txListingImageWrap"/>` 
+					+ (data.length>0?render_obj(data[0]):'') 
+				+`</div>`;
 	$('.txListingWrap').html(html);
 	$('.txListingDetails').animate({ opacity: 1, left: 0 }, 600, function () {
-		//after animate
+		if(data.length>123456789){
+			var o = data[0];		
+			var obj = {
+				type: 'query_media',
+				listing_key: o["ListingKeyNumeric"]
+			}
+			ws.send(JSON.stringify(obj));				   			  		
+		}
 	});
 }
+
 function build_a_media(data) {
 	var html = '';
 	if(data.length>0){
@@ -259,7 +248,9 @@ function render_obj(obj){
 				if(v.constructor === Object || v.constructor === Array){
 					result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
 				}else{
-					result += "<strong>" + k + "</strong>&nbsp;" + v + "<br/>";
+					if(v.length>0){
+						result += "<strong>" + (k.length>12?(k.substring(0,5)+'..'+k.substring(k.length-5)):k) + " </strong>" + v + "<br/>";
+					}
 				}
 			}
 		});		
@@ -267,18 +258,13 @@ function render_obj(obj){
 	return result;
 }
 
-function auditMarble(id,sid,uid) {
-	var obj1 = {
-		type: 'query_listing',
-		listing_id: sid
-	};
-	var obj2 = {
+function auditMarble(id,uid) {
+	var obj = {
 		type: 'audit',
 		listing_id: id
 	};		
 	openAuditPanel(uid.toUpperCase());
-	ws.send(JSON.stringify(obj1));		
-	ws.send(JSON.stringify(obj2));
+	ws.send(JSON.stringify(obj));		
 }
 
 function auditBlock(block_id){

@@ -88,7 +88,6 @@ function connect_to_server() {
 						var html = build_a_tx(msgObj.data.parsed[x], x);
 						$('.txHistoryWrap').prepend(html);
 						$('.txDetails:first').animate({ opacity: 1, left: 0 }, 600, function () {
-							//after animate
 						});
 					}
 				}
@@ -171,7 +170,13 @@ function slowBuildtx(data, txNumber, built){
 		var html = build_a_tx(data, txNumber);
 		$('.txHistoryWrap').append(html);
 		$('.txDetails:last').animate({ opacity: 1, left: 0 }, 600, function () {
-			//after animate
+			$(this).click(function(){
+				var obj = {
+					type: 'query_listing',
+					listing_id: $(this).attr('sid')
+				};
+				ws.send(JSON.stringify(obj));																		
+			});					
 		});
 	}, (built * 150)));
 }
