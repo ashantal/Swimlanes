@@ -61,6 +61,7 @@ $(document).on('ready', function () {
 		var uid=$(this).attr('uid')
 		if(state=="premarket"){
 			$('input[name=id]').val(id);
+			$('input[name=sid]').val(sid);
 			$('.market').html(uid);		
 			$('#tint').fadeIn();
 			$('#marketPanel').fadeIn();
