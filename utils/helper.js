@@ -733,17 +733,27 @@ module.exports = function (config_filename, logger) {
 	};
 
 	helper.query_odata= function(api,cb){
-		var q = this.odata({service: api.uri, resources: api.resource, headers:{"Authorization":"Bearer "+api.access_token}}).top(api.top).filter(api.filter)
+		var q = this.odata({service: api.uri, resources: api.resource, headers:{"Authorization":"Bearer "+api.access_token}});
+		q.top(api.top);
+		if(api.filter!=null){
+			q.filter(api.filter);
+		}
 		if(api.select!=null){
 			q.select(api.select);
 		}
 		q.get().then(function(response){
-			console.log(response);
-			cb(JSON.parse(response.body));
+			var res = '[]';
+			try{
+				res = JSON.parse(response.body);
+			}
+			catch(e){
+				console.log(e);
+				console.log(res);	
+			}
+			cb(res);
 		});
 	};
 	
-
 	helper.query_api= function(data,cb){
 		var api = this.api[data.source];
 		api.filter = data.filter;		
@@ -767,17 +777,21 @@ module.exports = function (config_filename, logger) {
 		}
 	};
 	helper.query_media= function(id,cb){
-		var parts = id.split('.');
-		if(parts.length==2){
-			var api = this.api[parts[0]];
-			api.filter = "ResourceRecordKeyNumeric eq "+parts[1];	
-			api.top = 1;
-			api.resource = api.Media;
-			api.select = 'MediaURL';
-			helper.query_odata(api,cb);
+		var api = {
+			top:1,
+			select:'MediaURL'
+		};
+		if(isNaN(id)){
+			api.uri=id;
+			api.access_token = this.api['spark'].access_token;
+			api.resource = this.api['spark'].Media;			
 		}else{
-			cb("");
-		}		
+			api.uri = this.api['mlsl'].uri;			
+			api.access_token = this.api['mlsl'].access_token;			
+			api.filter = "ResourceRecordKeyNumeric eq " + id;	
+			api.resource = this.api['mlsl'].Media;			
+		}
+		helper.query_odata(api,cb);	
 	};
 	return helper;
 };

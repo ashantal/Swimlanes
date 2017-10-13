@@ -186,10 +186,9 @@ function build_a_tx(data, pos) {
 	}
 	return html;
 }
-
 //build a tx history div
 function build_a_listing(data) {
-	var html =`<div class="txListingDetails"><div class="txListingImageWrap"/>` 
+	var html =`<div class="txListingImageWrap"/><div class="txListingDetails">` 
 					+ (data.length>0?render_obj(data[0]):'') 
 				+`</div>`;
 	$('.txListingWrap').html(html);	
@@ -198,9 +197,13 @@ function build_a_listing(data) {
 			var media = data[0].Media;
 			build_a_media(media);		
 		}else{
+			var id = data[0]['@odata.id'];
+			if(id==null){
+				id = data[0]["ListingKeyNumeric"];
+			}
 			var obj = {
 				type: 'query_media',
-				listing_key: 'mlsl.'+ data[0]["ListingKeyNumeric"]
+				listing_key: id
 			}
 			ws.send(JSON.stringify(obj));			   			  		
 		}
