@@ -103,7 +103,7 @@ $(document).on('ready', function () {
 	 * Query
  	*/
 	//username/company search
-	$('#searchUsers').keyup(function (e) {
+	$('#search').keyup(function (e) {
 		if(e.keyCode==13){
 			get_everything_or_else();
 		}

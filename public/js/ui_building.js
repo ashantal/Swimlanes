@@ -133,7 +133,7 @@ function build_state_list(states) {
 		if(data.state_name=="registered"){
 			default_state = data;			
 		}
-		var html = `<div class="targetState `+ data.state_type +`Lane " state_id="` + data.id + `">` + toTitleCase(data.state_name) + `</div>`;
+		var html = `<div class="targetState `+ data.state_type +`Lane" state_id="` + data.id + `"><span class=' fa fa-bolt'>` + toTitleCase(data.state_name) + `</span></div>`;
 		$('.stateNames').append(html);
 	}
 	$('.targetState').click(function () {
@@ -216,12 +216,12 @@ function build_api_results(data) {
 			var state=o['StateOrProvince'];
 			var county=o['CountyOrParish'];
 			var parcel=o['ParcelNumber'];
-			
+			if(parcel==null){
+				parcel=o['ListingId'];
+			}			
 			html+= `<div class="apiResultsRow"><span class="fa fa-home"></span> `			
 			+ sid + ' '+ parcel +' '+ o['StreetNumber'] +', '+ o['StreetName']+' '+county +', '+ state;
-			if(parcel!=null){
-				html +=`&nbsp;<span class="import fa fa-download" sid="`+sid+`" state="`+state+`" county="`+county+`" parcel="`+parcel+`"></span>`; 	
-			}
+			html +=`&nbsp;<span class="import fa fa-download" sid="`+sid+`" state="`+state+`" county="`+county+`" parcel="`+parcel+`"></span>`; 				
 			html +=`<br/></div>`;
 		}
 	} 

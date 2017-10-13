@@ -131,7 +131,7 @@ function transfer_listing(listingId, to_state_id) {
 //get everything with timeout to get it all again!
 function get_everything_or_else(attempt) {
 	var qt = $('select[name="query-type"]').val();
-	var input = $('#searchUsers').val();	
+	var input = $('#search').val();	
 	if(input.length == 0){
 		input='[a-zA-Z]';
 	}

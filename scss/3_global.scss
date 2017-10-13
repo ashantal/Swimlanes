@@ -42,6 +42,9 @@ $auditSize: 300px;
 .fa-download{
 	cursor: pointer;
 }
+.fa-bolt{
+	cursor: pointer;
+}
 #mainPanel{
 	color: $main_color;
 	min-height: 750px;
@@ -353,7 +356,7 @@ $auditSize: 300px;
 	z-index: 1005;
 	padding: 20px 60px;
 	left: 50%;
-	margin-left: -265px;
+	margin-left: -150px;
 	width: 200px;
 }
 #marketPanel{
@@ -363,7 +366,7 @@ $auditSize: 300px;
 	z-index: 1005;
 	padding: 20px 20px;
 	left: 50%;
-	margin-left: -265px;
+	margin-left: -100px;
 	width: 200px;
 }
 #importPanel{
@@ -383,7 +386,7 @@ $auditSize: 300px;
 	z-index: 1005;
 	padding: 10px 10px;
 	left: 50%;
-	margin-left: -265px;
+	margin-left: -100px;
 }
 #tint{
 	display:none;
@@ -419,7 +422,6 @@ $auditSize: 300px;
 	display:block;
 	padding: 5px;
 	text-align: left;
-	cursor: pointer;
 	font-size:12px;
 }
 .hint{

@@ -4,16 +4,17 @@
 			div#toolbarWrap
 				.topAlign
 					select(name="query-type")
-						option(value="uid" selected="selected") UPId
-						option(value="sid") Source
-						option(value="state.state_name") State Name										
-						option(value="state.state_type") State Type						
-					input(type="text" placeholder="Search Listings" style="margin-right: 20px; border-radius:2px;")#searchUsers.longer
+						option(value="sid" selected="selected") Source					
+						option(value="state.state_type") Lanes						
+						option(value="state.state_name") States						
+						option(value="uid") UId																
+					input(type="text" placeholder="Search.." style="margin-right: 10px; border-radius:2px;")#search
 					span#registerProperty.fa.fa-plus
 					span &nbsp;
 					span#importProperty.fa.fa-download
-					span.floatRight.fa.fa-toggle-on(style="display:none;font-size:15px") &nbsp;Story On
-					span.floatRight.fa.fa-toggle-off(style="font-size:15px") &nbsp;Story Off
+					span &nbsp;	
+					span.fa.fa-toggle-on(style="display:none;font-size:15px") &nbsp;Story
+					span.fa.fa-toggle-off(style="font-size:15px") &nbsp;Silent
 	div
 		#allUserPanelsWrap
 			#appStartingText Connecting To Server...
