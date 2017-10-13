@@ -11,15 +11,11 @@ var default_state = {};
 //build a listing
 function build_listing(listing) {
 	var colorClass =listing.state.state_type+'Lane';
-	var size = 'smallMarble';
-	var auditing = '';
-
 	listings[listing.id] = listing;
 	listing.id = escapeHtml(listing.id);
-	//if (auditinglisting && listing.id === auditinglisting.id) auditing = 'auditinglisting';
 	var html = '<span id="' + listing.id + 
 	'" uid="' + listing.uid + 
-	'" sid="' + listing.sid + '" class="ball fa fa-home ' + colorClass + ' ' + auditing + 
+	'" sid="' + listing.sid + '" class="ball fa fa-home ' + colorClass + 
 	'" state_id="' + listing.state.id + 
 	'" state_type="' + listing.state.state_type + '" state_name="' + listing.state.state_name + '"></span>';
 	$('.listingsWrap[state_id="' + listing.state.id + '"]').find('.innerlistingWrap').prepend(html);
