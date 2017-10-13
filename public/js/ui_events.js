@@ -1,5 +1,14 @@
 $(document).on('ready', function () {
-    connect_to_server();
+	connect_to_server();
+	$('#registerProperty').click(function () {
+		$('#tint').fadeIn();
+		$('#createPanel').fadeIn();
+	});
+	$('#importProperty').click(function () {
+		$('#tint').fadeIn();
+		$('#importPanel').fadeIn();
+	});	
+	
 	$('#createMarbleButton').click(function () {
 		var id  = populate_uid();					
 		var obj = {

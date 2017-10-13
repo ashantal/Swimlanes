@@ -73,26 +73,12 @@ function build_lane_panel(lane) {
 	lane = escapeHtml(lane);
 	var html = `<div class="lanePanel bluebg" lane="` + lane + `">
 					<div class="laneNameWrap ` + lane + `Lane">
-					<span class="laneName">` + toTitleCase(lane) + `</span>`;
-					if(lane=='offmarket'){
-						html +=`<span id='registerProperty' class="fa fa-plus floatRight"></span>`;
-					}else if(lane=='onmarket'){
-						html +=`<span id='importProperty' class="fa fa-download floatRight"></span>`;
-					}else{
-						html += '<span class="fa fa-exchange floatRight"></span>';
-					}
-					html += `	</div>
+					<span class="laneName">` + toTitleCase(lane) + `</span>
+					<span class="fa fa-exchange floatRight"></span>
+				</div>
 				<div class="ownerWrap"></div>
 			</div>`;
 	$('#allUserPanelsWrap').append(html);
-	$('#registerProperty').click(function () {
-		$('#tint').fadeIn();
-		$('#createPanel').fadeIn();
-	});
-	$('#importProperty').click(function () {
-		$('#tint').fadeIn();
-		$('#importPanel').fadeIn();
-	});	
 }
 //build state panel
 function build_state_panel(data){
