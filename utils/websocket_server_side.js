@@ -65,6 +65,7 @@ module.exports = function (g_options, fcw, logger) {
 			listings_lib.create_a_listing(options, function (err, resp) {
 				if (err != null) send_err(err, data);
 				else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
+				ws_server.check_for_updates(null);
 			});
 		} 
 		//import listing via API
@@ -87,6 +88,7 @@ module.exports = function (g_options, fcw, logger) {
 				listings_lib.create_a_listing(options, function (err, resp) {
 					if (err != null) send_err(err, data);
 					else options.ws.send(JSON.stringify({ msg: 'tx_step', state: 'finished' }));
+					ws_server.check_for_updates(null);
 				});					
 			}
 		}
