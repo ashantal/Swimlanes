@@ -173,7 +173,7 @@ function slowBuildtx(data, txNumber, built){
 	pendingTxDrawing.push(setTimeout(function () {
 		var html = build_a_tx(data, txNumber);
 		$('.txHistoryWrap').append(html);
-		$('.txDetails:last').animate({ opacity: 1, left: 0 }, 600, function () {
+		$('.txDetails:last').animate({ opacity: 1, left: 0 }, 400, function () {
 			$(this).click(function(){
 				var obj = {
 					type: 'query_listing',
@@ -182,5 +182,5 @@ function slowBuildtx(data, txNumber, built){
 				ws.send(JSON.stringify(obj));																		
 			});					
 		});
-	}, (built * 150)));
+	}, (built * 100)));
 }

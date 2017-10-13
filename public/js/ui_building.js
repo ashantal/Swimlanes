@@ -181,7 +181,7 @@ function build_a_tx(data, pos) {
 	if (data && data.value) {
 		html += `<div class="txDetails" sid="`+data.value.sid+`">
 					<div class="fa fa-chain"></div>
-					<strong>Tx ` + (Number(pos) + 1) + '</strong> ' + data.value.sid +' <strong>'+ data.value.state.state_name + `</strong>
+					<strong>Tx` + (Number(pos) + 1) + '</strong>' + data.value.sid +'<strong>'+ data.value.state.state_name + `</strong>
 				</div>`;
 	}
 	return html;
@@ -192,15 +192,17 @@ function build_a_listing(data) {
 	var html =`<div class="txListingDetails"><div class="txListingImageWrap"/>` 
 					+ (data.length>0?render_obj(data[0]):'') 
 				+`</div>`;
-	$('.txListingWrap').html(html);
+	$('.txListingWrap').html(html);	
 	$('.txListingDetails').animate({ opacity: 1, left: 0 }, 600, function () {
-		if(data.length>123456789){
-			var o = data[0];		
+		if(data[0].Media!=null){
+			var media = data[0].Media;
+			build_a_media(media);		
+		}else{
 			var obj = {
 				type: 'query_media',
-				listing_key: o["ListingKeyNumeric"]
+				listing_key: 'mlsl.'+ data[0]["ListingKeyNumeric"]
 			}
-			ws.send(JSON.stringify(obj));				   			  		
+			ws.send(JSON.stringify(obj));			   			  		
 		}
 	});
 }
@@ -246,9 +248,11 @@ function build_api_results(data) {
 
 function build_a_media(data) {
 	var html = '';
-	if(data.length>0){
-		var o = data[0];		
-		html = `<img class="txListingImage" src="`+ o['MediaURL'] +`"/>`
+	if(data!=null){
+		if(data.length>0){
+			var o = data[0];		
+			html = `<img class="txListingImage" src="`+ o['MediaURL'] +`"/>`
+		}
 	}
 	$('.txListingImageWrap').html(html);
 	$('.txListingImage').animate({ opacity: 1, left: 0 }, 600, function () {
@@ -271,9 +275,11 @@ function render_obj(obj){
 		$.each(obj, function(k, v) {
 			if(v!=null){
 				if(v.constructor === Object || v.constructor === Array){
-					result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
+					if(k!='Media' && k!='Location'){
+						result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
+					}
 				}else{
-					if(v.length>0){
+					if(v.length>0 && v.indexOf('/')==-1){
 						result += "<strong>" + (k.length>12?(k.substring(0,5)+'..'+k.substring(k.length-5)):k) + " </strong>" + v + "<br/>";
 					}
 				}

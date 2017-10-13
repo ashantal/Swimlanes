@@ -731,39 +731,53 @@ module.exports = function (config_filename, logger) {
 		}
 		return null;
 	};
-	helper.query_api= function(data,cb){
-		var api = this.api[data.source];
-		var q = this.odata({service: api.uri, resources: api.Property, headers:{"Authorization":"Bearer "+api.access_token}});		
-		q.top(10).filter(data.filter).select('CountyOrParish','StateOrProvince','ParcelNumber','StreetNumber','StreetName','ListingId').get().then(function(response){
+
+	helper.query_odata= function(api,cb){
+		var q = this.odata({service: api.uri, resources: api.resource, headers:{"Authorization":"Bearer "+api.access_token}}).top(api.top).filter(api.filter)
+		if(api.select!=null){
+			q.select(api.select);
+		}
+		q.get().then(function(response){
+			console.log(response);
 			cb(JSON.parse(response.body));
 		});
 	};
+	
+
+	helper.query_api= function(data,cb){
+		var api = this.api[data.source];
+		api.filter = data.filter;		
+		api.top = 10;
+		api.resource = api.Property;
+		api.select = ['CountyOrParish','StateOrProvince','ParcelNumber','StreetNumber','StreetName','ListingId'];
+		helper.query_odata(api,cb);
+	};
 
 	helper.query_listing= function(id,cb){
-		//,'RoomBathroomFeatures','RoomBedroomFeatures','RoomDiningRoomFeatures','RoomFamilyRoomFeatures'
-		//var q = this.odata({service: this.api.uri, resources: 'Property', headers:{"Authorization":"Bearer "+this.api.access_token}});
 		var parts = id.split('.');
 		if(parts.length==2){
 			var api = this.api[parts[0]];
-			var q = this.odata({service: api.uri, resources: api.Property, headers:{"Authorization":"Bearer "+api.access_token}});		
-			q.top(1).filter("ListingId eq '"+parts[1]+"'").get().then(function(response){
-				cb(JSON.parse(response.body));
-			});
+			api.filter = "ListingId eq '"+parts[1]+"'";	
+			api.top = 1;
+			api.resource = api.Property;
+			api.select = null;
+			helper.query_odata(api,cb);
 		}else{
 			cb("");
 		}
 	};
-	helper.query_media= function(key,cb){
-		var api = this.api['spark'];
-		if(api.Media.length>0){
-			var q = this.odata({service: api.uri, resources: api.Media, headers:{"Authorization":"Bearer "+api.access_token}});		
-			q.top(1).filter("ResourceRecordKeyNumeric eq "+key).select('MediaURL').get().then(function(response){
-				cb(JSON.parse(response.body));
-			});
+	helper.query_media= function(id,cb){
+		var parts = id.split('.');
+		if(parts.length==2){
+			var api = this.api[parts[0]];
+			api.filter = "ResourceRecordKeyNumeric eq "+parts[1];	
+			api.top = 1;
+			api.resource = api.Media;
+			api.select = 'MediaURL';
+			helper.query_odata(api,cb);
 		}else{
 			cb("");
-		}
+		}		
 	};
-
 	return helper;
 };

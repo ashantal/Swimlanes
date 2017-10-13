@@ -1,5 +1,5 @@
 @import 'color_theme';
-$left_width: 300px;
+$left_width: 310px;
 #auditWrap {
 	position: absolute;
 	width: 100%;
@@ -44,6 +44,7 @@ $left_width: 300px;
 	vertical-align:top;
 	padding: 5px;
 	position: relative;
+	width:230px;
 	left: 100%;	
 } 
  
@@ -76,7 +77,7 @@ $left_width: 300px;
 	width: $left_width;
 	cursor: pointer;
 }
-.fa-chain{transform: rotate(45deg);font-size:25px}
+.fa-chain{transform: rotate(45deg);font-size:16px}
 
 .leftTxWrap{
 	width: 100%;
