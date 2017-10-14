@@ -55,7 +55,10 @@ function populate_uid(){
 	'-' + $('input[name="parcel"]').val() + 
 	'-' + $('input[name="sub"]').val() 
 	}
-	$('.sreg').html(uid);
+	$('.sreg').fadeOut(function(){			
+		$('.sreg').html(uid);
+		$('.sreg').fadeIn();
+	});
 	return uid;   	
 }
 
