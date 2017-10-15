@@ -603,20 +603,11 @@ module.exports = function (config_filename, logger) {
 		if (helper.getNetworkName() === 'Place Holder Network Name') {
 			console.log('\n');
 			logger.warn('----------------------------------------------------------------------');
-			logger.warn('----------------------------- Hey Buddy! -----------------------------');
-			logger.warn('------------------------- It looks like you --------------------------');
-			logger.error('----------------------------- skipped -------------------------------');
-			logger.warn('------------------------- some instructions --------------------------');
-			logger.warn('----------------------------------------------------------------------');
 			logger.warn('Your network config JSON has a network name of "Place Holder Network Name"...');
-			logger.warn('I\'m afraid you cannot use the default settings as is.');
 			logger.warn('These settings must be edited to point to YOUR network.');
 			logger.warn('----------------------------------------------------------------------');
 			logger.error('Fix this file: ./config/' + helper.getNetworkCredFileName());
 			logger.warn('It must have credentials/hostnames/ports/channels/etc for YOUR network');
-			logger.warn('How/where would I get that info? Are you using the Bluemix service? Then look at these instructions(near the end): ');
-			logger.warn('https://github.com/IBM-Blockchain/listings/blob/v4.0/docs/install_chaincode.md');
-			logger.warn('----------------------------------------------------------------------');
 			console.log('\n\n');
 			errors.push('Using default values');
 			return errors;
@@ -630,15 +621,11 @@ module.exports = function (config_filename, logger) {
 		if (!v || !v.parsed) v = { parsed: '0.x.x' };		//default
 		if (v.parsed[0] !== version[0]) {					//only check the major version
 			console.log('\n');
-			logger.warn('---------------------------------------------------------------');
-			logger.warn('----------------------------- Ah! -----------------------------');
-			logger.warn('---------------------------------------------------------------');
 			logger.error('Looks like you are using an old version of listings chaincode...');
 			logger.warn('The INTERNAL version of the chaincode found is: v' + v.parsed);
 			logger.warn('But this UI is expecting INTERNAL chaincode version: v' + version[0] + '.x.x');
 			logger.warn('This mismatch won\'t work =(');
 			logger.warn('Install and instantiate the chaincode found in the ./chaincode folder on your channel ' + helper.getChannelId());
-			logger.warn('----------------------------------------------------------------------');
 			console.log('\n\n');
 			return true;
 		}
@@ -671,18 +658,12 @@ module.exports = function (config_filename, logger) {
 
 		if (errors.length > 0) {
 			console.log('\n');
-			logger.warn('----------------------------------------------------------------------');
-			logger.warn('------------------------------- Whoops -------------------------------');
 			logger.warn('----------- You are missing some data in your creds file -------------');
-			logger.warn('----------------------------------------------------------------------');
 			for (var i in errors) {
 				logger.error(errors[i]);
 			}
 			logger.warn('----------------------------------------------------------------------');
 			logger.error('Fix this file: ./config/' + helper.getNetworkCredFileName());
-			logger.warn('----------------------------------------------------------------------');
-			logger.warn('See this file for help:');
-			logger.warn('https://github.com/IBM-Blockchain/listings/blob/v4.0/docs/config_file.md');
 			logger.warn('----------------------------------------------------------------------');
 			console.log('\n\n');
 			return errors;

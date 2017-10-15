@@ -161,7 +161,11 @@ module.exports = function (g_options, fcw, logger) {
 			};
 			listings_lib.query_results(options, function (err, resp) {
 				if (err != null) send_err(err, resp);
-				else options.ws.send(JSON.stringify({ msg: 'query_results', data: resp }));
+				else{
+					resp.ref = data.ref; 
+					console.log(resp);
+					options.ws.send(JSON.stringify({ msg: 'query_results', data: resp }));
+				}
 			});
 		}
 		else if(data.type=="query_listing"){

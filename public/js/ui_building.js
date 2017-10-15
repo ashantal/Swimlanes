@@ -147,15 +147,23 @@ function build_state_list(states) {
 
 //show query results
 function populate_query_results(msg) {
-	$('#allUserPanelsWrap').html('');
-	//$('.listingsWrap').find('.innerlistingWrap').html('');	
-	for (var i in msg.data.parsed) {
-		build_state_panel(msg.data.parsed[i].Record.state);				
+	if(msg.data.ref!=null){
+		if(msg.data.parsed.length>0){
+			$(msg.data.ref).html(`<span class="fa fa-chain"></span>`).click(function(){
+				$('#tint,#importPanel').fadeOut();						
+				auditMarble(msg.data.parsed[0].Record.id,msg.data.parsed[0].Record.uid);
+			});
+		}
+	}else{
+		$('#allUserPanelsWrap').html('');
+		for (var i in msg.data.parsed) {
+			build_state_panel(msg.data.parsed[i].Record.state);				
+		}
+		setup_drag_drop();	
+		for (var i in msg.data.parsed) {
+			build_listing(msg.data.parsed[i].Record);
+		}	
 	}
-	setup_drag_drop();	
-	for (var i in msg.data.parsed) {
-		build_listing(msg.data.parsed[i].Record);
-	}	
 }
 
 //build a notification msg, `error` is boolean
@@ -227,8 +235,10 @@ function build_api_results(data) {
 			}			
 			html+= `<div class="apiResultsRow"><span class="fa fa-home"></span> `			
 			+ sid + ' '+ parcel +' '+ o['StreetNumber'] +', '+ o['StreetName']+' '+county +', '+ state;
-			html +=`&nbsp;<span class="import fa fa-download" sid="`+sid+`" state="`+state+`" county="`+county+`" parcel="`+parcel+`"></span>`; 				
-			html +=`<br/></div>`;
+			html += `&nbsp;<span id="ref`+ o['ListingId'] +`">`;
+			html +=`<span class="import fa fa-download" sid="`+sid+`" state="`+state+`" county="`+county+`" parcel="`+parcel+`"></span>`; 				
+			html +=`</span></div>`;
+			query_results("sid","$eq",sid.toLowerCase(), '#ref'+ o['ListingId']);
 		}
 	} 
 	$('.apiResultsWrap').html(html);
@@ -241,7 +251,6 @@ function build_api_results(data) {
             sid: $(this).attr('sid'),
 			state_id: default_state.id
 		};
-		console.log('importing', obj);
 		$('#importPanel').fadeOut();
 		$('#tint').fadeOut();
 		show_tx_step({ state: 'building_proposal' }, function () {
@@ -249,6 +258,7 @@ function build_api_results(data) {
 			refreshHomePanel();
 		});		
 	});	
+	$('#importPanel').fadeIn();			
 }
 
 

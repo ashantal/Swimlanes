@@ -154,10 +154,10 @@ function get_everything_or_else(attempt) {
 }
 
 //get everything with timeout to get it all again!
-function query_results(l, o, r) {
+function query_results(l, o, r, ref) {
 	console.log(wsTxt + ' sending query msg' + r);
 	clearTimeout(getEverythingWatchdog);
-	ws.send(JSON.stringify({ type: 'query_results', left:l,op:o,right: r, v: 1 }));
+	ws.send(JSON.stringify({ type: 'query_results', left:l,op:o,right: r, ref: ref }));
 }
 
 //get everything with timeout to get it all again!

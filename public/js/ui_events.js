@@ -4,10 +4,6 @@ $(document).on('ready', function () {
 		$('#tint').fadeIn();
 		$('#createPanel').fadeIn();
 	});
-	$('#importProperty').click(function () {
-		$('#tint').fadeIn();
-		$('#importPanel').fadeIn();
-	});	
 	
 	$('#createMarbleButton').click(function () {
 		var id  = populate_uid();					
@@ -108,6 +104,16 @@ $(document).on('ready', function () {
 			get_everything_or_else();
 		}
 	});
+
+	$('#importProperty').click(function () {
+		$('#tint').fadeIn();		
+		query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());				
+	});	
+	$('#apiFilter').keyup(function (e) {
+		if(e.keyCode==13){
+			query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());			
+		}
+	});	
 	$('.fa-search').click(function (e) {
 		query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());
 	});
