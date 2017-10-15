@@ -64,7 +64,7 @@ $(document).on('ready', function () {
 		var id=$(this).attr('id');
 		var sid=$(this).attr('sid');
 		var uid=$(this).attr('uid')
-		if(state=="premarket"){
+		if(state=="staging"){
 			$('input[name=id]').val(id);
 			$('input[name=sid]').val(sid);
 			$('.market').html(uid);		
@@ -104,15 +104,15 @@ $(document).on('ready', function () {
 			get_everything_or_else();
 		}
 	});
-
-	$('#importProperty').click(function () {
-		$('#tint').fadeIn();		
-		query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");
-	});	
 	$('#apiFilter').keyup(function (e) {
 		if(e.keyCode==13){
 			query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");
 		}
+	});	
+
+	$('#importProperty').click(function () {
+		$('#tint').fadeIn();		
+		query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");
 	});	
 	$('.fa-search').click(function (e) {
 		query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");

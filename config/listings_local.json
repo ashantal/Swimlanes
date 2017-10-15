@@ -5,10 +5,10 @@
     "keep_alive_secs": 120,
     "org": "SWIM LANES",
     "states": [
-        {"state_type" :"offmarket","state_names":["registered","bedroom added","kitchen upgraded","floors upgraded","new loan","loan paid"]},
-        {"state_type" :"premarket","state_names":["contract signed", "coming soon"]},        
-        {"state_type" :"onmarket","state_names":["active","open house","price reduced","price increased","appraisal received","offer made","offer accepted"]},
-        {"state_type" :"preclosing","state_names" : ["sale pending","in escrow","closed","deed recorded"]}    
+        {"state_type" :"offmarket","state_names":["registered","upgraded","new lien","sold"]},
+        {"state_type" :"staging","state_names":["contract signed", "coming soon"]},        
+        {"state_type" :"onmarket","state_names":["active","updated","appraised","pending"]},
+        {"state_type" :"closing","state_names" : ["in escrow","deed recorded"]}    
     ],
     "port": 3001
 }
