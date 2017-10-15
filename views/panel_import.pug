@@ -1,18 +1,19 @@
 #importPanel(hidden).panel
-	
-	span.fa.fa-close#closeCreate
-
-	h5.reg Import
-	hr
-
-	#innerWrap
-		form(action="/import" method="POST")#importform
-			legend
-			select(name="apiSource")
-				option(value="bridge" selected="selected") Bridge
-				option(value="mlsl") MLSL
-				option(value="spark") Spark
-			input.longer(type="text" id="apiFilter" name="apiFilter" placeholder="$filter=" value="startswith(StreetNumber,'1234')")
-			span.fa.fa-search &nbsp;&nbsp;
-			hr
-			div.apiResultsWrap
+	form(action="/import" method="POST")#importform
+		legend
+		select(name="apiSource")
+			option(value="bridge" selected="selected") Bridge
+			option(value="spark") Spark
+			option(value="mlsl") MLSL
+		select(name="apiField")
+			option(value="StreetName" selected="selected") Street Name
+			option(value="StreetNumber") House #
+			option(value="ListingId") ID
+		select(name="apiFunction")
+			option(value="contains" selected="selected") Contains
+			option(value="startswith") Stars With
+		span.fa.fa-close#closeCreate
+		input.longer(type="text" id="apiFilter" name="apiFilter" value="ash")
+		span.fa.fa-search &nbsp;&nbsp;
+		hr
+		div.apiResultsWrap

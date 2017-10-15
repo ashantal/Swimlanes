@@ -233,9 +233,9 @@ function build_api_results(data) {
 			if(parcel==null){
 				parcel=o['ListingId'];
 			}			
-			html+= `<div class="apiResultsRow"><span class="fa fa-home"></span> `			
+			html+= `<div class="apiResultsRow"><span class="fa fa-home"></span>&nbsp;<strong>`			
 			+ sid + ' '+ parcel +' '+ o['StreetNumber'] +', '+ o['StreetName']+' '+county +', '+ state;
-			html += `&nbsp;<span id="ref`+ o['ListingId'] +`">`;
+			html += `</strong>&nbsp;<span id="ref`+ o['ListingId'] +`">`;
 			html +=`<span class="import fa fa-download" sid="`+sid+`" state="`+state+`" county="`+county+`" parcel="`+parcel+`"></span>`; 				
 			html +=`</span></div>`;
 			query_results("sid","$eq",sid.toLowerCase(), '#ref'+ o['ListingId']);

@@ -107,15 +107,15 @@ $(document).on('ready', function () {
 
 	$('#importProperty').click(function () {
 		$('#tint').fadeIn();		
-		query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());				
+		query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");
 	});	
 	$('#apiFilter').keyup(function (e) {
 		if(e.keyCode==13){
-			query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());			
+			query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");
 		}
 	});	
 	$('.fa-search').click(function (e) {
-		query_api($('select[name="apiSource"]').val(), $('#apiFilter').val());
+		query_api($('select[name="apiSource"]').val(),$('select[name="apiFunction"]').val()+"("+ $('select[name="apiField"]').val()+",'"+$('#apiFilter').val()+"')");
 	});
 
 	//username/company search
