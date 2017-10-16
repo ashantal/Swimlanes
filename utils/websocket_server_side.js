@@ -152,6 +152,11 @@ module.exports = function (g_options, fcw, logger) {
 				options.ws.send(JSON.stringify({ msg: 'query_block', e:err, data: block }));													
 			});							
 		}
+		else if(data.type == "query_tx"){
+			listings_lib.query_tx(data.id,function(err,tx){
+				options.ws.send(JSON.stringify({ msg: 'query_tx', e:err, data: tx }));													
+			});							
+		}
 		else if(data.type =="query_results"){
 			logger.info('[ws] query results');
 			options.args = {

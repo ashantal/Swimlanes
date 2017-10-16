@@ -135,6 +135,10 @@ module.exports = function (g_options, logger) {
 		query_peer.query_block(obj, options, cb_done);
 	};
 
+	// Get Tx Data
+	fcw.query_tx = function (obj, options, cb_done) {
+		query_peer.query_tx(obj, options, cb_done);
+	};
 
 	// ------------------------------------------------------------------------
 	// Channel Functions

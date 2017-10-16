@@ -17,6 +17,34 @@ module.exports = function (logger) {
 					block_id: integer - block number
 		}
 	*/
+	query_peer.query_tx = function (obj, options, cb) {
+		logger.debug('[fcw] Querying tx: ' + options.tx_id);
+		var channel = obj.channel;
+
+		// send proposal to peer
+		channel.queryTransaction(options.tx_id).then(
+			function (tx_resp) {
+				if (cb) return cb(null, tx_resp);
+			}
+		).catch(
+			function (err) {
+				logger.error('[fcw] Error in query tx', typeof err, err);
+				var formatted = common.format_error_msg(err);
+
+				if (cb) return cb(formatted, null);
+				else return;
+			}
+			);
+	};
+	
+	//-------------------------------------------------------------------
+	// Get Block
+	//-------------------------------------------------------------------
+	/*
+		options: {
+					block_id: integer - block number
+		}
+	*/
 	query_peer.query_block = function (obj, options, cb) {
 		logger.debug('[fcw] Querying Block: ' + options.block_id);
 		var channel = obj.channel;

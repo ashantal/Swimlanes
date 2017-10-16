@@ -390,6 +390,13 @@ module.exports = function (enrollObj, g_options, fcw, logger) {
 		});		
 	}
 
+	listings_chaincode.query_tx = function (id,cb) {
+		fcw.query_tx(enrollObj, {
+			tx_id:id,
+		}, function(err,obj){
+			cb(err,obj);
+		});		
+	}
 
 
 

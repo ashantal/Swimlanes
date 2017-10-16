@@ -49,7 +49,7 @@ function connect_to_server() {
 			console.log(wsTxt + ' rec', msgObj.msg, msgObj);			
 			if (msgObj.msg === 'everything') {
 				build_state_list(msgObj.everything.states);
-			}else if (msgObj.msg === 'query_block') {
+			}else if (msgObj.msg === 'query_block' || msgObj.msg === 'query_tx') {
 			 	build_a_block(msgObj.data);
 			}else if (msgObj.msg === 'query_listing') {
 				build_a_listing(msgObj.data);
@@ -174,7 +174,14 @@ function slowBuildtx(data, txNumber, built){
 		var html = build_a_tx(data, txNumber);
 		$('.txHistoryWrap').append(html);
 		$('.txDetails:last').animate({ opacity: 1, left: 0 }, 400, function () {
-			$(this).click(function(){
+			$(this).find('.fa-chain').click(function(){
+				var obj = {
+					type: 'query_tx',
+					id: $(this).attr('txid')
+				};
+				ws.send(JSON.stringify(obj));																		
+			});								
+			$(this).find('.sid').click(function(){
 				var obj = {
 					type: 'query_listing',
 					listing_id: $(this).attr('sid')

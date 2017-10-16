@@ -190,9 +190,9 @@ function build_notification(error, msg) {
 function build_a_tx(data, pos) {
 	var html = '';
 	if (data && data.value) {
-		html += `<div class="txDetails" sid="`+data.value.sid+`">
-					<div class="fa fa-chain"></div>
-					<strong>Tx` + (Number(pos) + 1) + '</strong>' + data.value.sid +'<strong>'+ data.value.state.state_name + `</strong>
+		html += `<div class="txDetails">
+					<div class="fa fa-chain" txid="`+ data.txId +`" ></div>
+					<strong>Tx` + (Number(pos) + 1) + '</strong><span class="sid" sid="'+data.value.sid+'">' + data.value.sid +'</span><strong>'+ data.value.state.state_name + `</strong>
 				</div>`;
 	}
 	return html;
@@ -292,7 +292,7 @@ function render_obj(obj){
 			if(v!=null){
 				if(v.constructor === Object || v.constructor === Array){
 					if(k!='Media' && k!='Location'){
-						result += "<strong>" + k + "</strong><div style='margin-left:10px'>" + render_obj(v) + "</div>";
+						result += "<strong>" + k + "</strong><div style='margin-left:4px'>" + render_obj(v) + "</div>";
 					}
 				}else{
 					if(v.length>0 && v.indexOf('/')==-1){
