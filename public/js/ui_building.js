@@ -4,7 +4,7 @@
 /* exported build_a_tx, listings */
 
 var listings = {};
-var default_state = {};
+var default_state = null;
 // =================================================================================
 //	UI Building
 // =================================================================================
@@ -129,20 +129,22 @@ function setup_drag_drop(){
 
 //build all state panels
 function build_state_list(states) {
-	for (var i in states) {
-		var data = states[i];
-		data.id = escapeHtml(data.id);
-		data.state_name = escapeHtml(data.state_name);
-		if(data.state_name=="registered"){
-			default_state = data;			
+	if(default_state==null){
+		for (var i in states) {
+			var data = states[i];
+			data.id = escapeHtml(data.id);
+			data.state_name = escapeHtml(data.state_name);
+			if(data.state_name=="registered"){
+				default_state = data;			
+			}
+			var html = `<div class="targetState `+ data.state_type +`Lane" state_id="` + data.id + `"><span class=' fa fa-bolt'>` + toTitleCase(data.state_name) + `</span></div>`;
+			$('.stateNames').append(html);
 		}
-		var html = `<div class="targetState `+ data.state_type +`Lane" state_id="` + data.id + `"><span class=' fa fa-bolt'>` + toTitleCase(data.state_name) + `</span></div>`;
-		$('.stateNames').append(html);
+		$('.targetState').click(function () {
+			$('#tint,#stateNamesPanel').fadeOut();		
+			transfer_listing($('input[name="xfr_id"]').val(), $(this).attr('state_id'));
+		});	
 	}
-	$('.targetState').click(function () {
-		$('#tint,#stateNamesPanel').fadeOut();		
-		transfer_listing($('input[name="xfr_id"]').val(), $(this).attr('state_id'));
-	});	
 }
 
 //show query results
