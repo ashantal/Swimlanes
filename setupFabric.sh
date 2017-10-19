@@ -18,11 +18,11 @@ fi
 cp $PWD/config/crypto/prebaked/* ~/.hfc-key-store/
 
 # launch network; create channel and join peer to channel
-cd ../fabric-samples/basic-network
+cd ./basic-network
 ./start.sh
 
 # install chaincode
-cd ../../demo/scripts
+cd ../scripts
 node install_chaincode.js
 node instantiate_chaincode.js
 
