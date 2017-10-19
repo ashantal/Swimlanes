@@ -40,6 +40,9 @@ There are certain keywords and context clues to help you identify one from anoth
 ## Setup 
 - The underlying network for this application is the [Hyperledger Fabric](http://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html), a Linux Foundation project.  You must install all the prerequsites to get started with Hyperledger Fabric.Once you have the basic environment ready then Clone this repo, and follow these steps:
 
+** warning ****
+*** running this script will remove all existing containers so please remember to comment out the step if you have ohter containers running.***
+
 1. Execute "./setupFabric.sh" This script will launch all required docker containers, create a channel and install listings chaincode.
 2. Run the node app by executing "node app.js" (or use gulp or nodemon), this will launch Swim lanes app on port 3001 
 3. Open browser and navigate to localhost:3001

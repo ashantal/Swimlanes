@@ -11,4 +11,4 @@ certificate.pem
 chaincode.exe
 app_state*
 /utils/fc_wrangler/kvs
-/config/api_creds_local_.json
+/config/api_creds_local.json
