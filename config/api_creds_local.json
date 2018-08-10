@@ -1,0 +1,20 @@
+{
+    "bridge":{
+        "uri": "https://rets.io/api/v1/OData/sandicor/",
+        "access_token": "",
+        "Property":"Properties",
+        "Media":""  
+    },
+    "mlsl":{
+        "uri": "https://mlslwww.azurewebsites.net/",
+        "access_token": "",
+        "Property":"Property",
+        "Media":"Media"    
+    },
+    "spark":{
+        "uri": "https://sparkapi.com/Reso/OData/",
+        "access_token": "",
+        "Property":"Property",
+        "Media":"Media"    
+    }                    
+}
