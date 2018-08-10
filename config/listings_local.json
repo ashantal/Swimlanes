@@ -8,7 +8,7 @@
         {"state_type" :"offmarket","state_names":["registered","upgraded","new lien","sold"]},
         {"state_type" :"staging","state_names":["contract signed", "coming soon"]},        
         {"state_type" :"onmarket","state_names":["active","updated","appraised","pending"]},
-        {"state_type" :"closing","state_names" : ["in escrow","deed recorded"]}    
+        {"state_type" :"closing","state_names" : ["escrow","recorded"]}    
     ],
     "port": 3001
 }
